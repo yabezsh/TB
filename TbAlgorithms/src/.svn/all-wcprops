@@ -1,0 +1,173 @@
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/guest/lhcb/!svn/ver/201952/Kepler/trunk/Tb/TbAlgorithms/src
+END
+TbClusterPlots.h
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/guest/lhcb/!svn/ver/200685/Kepler/trunk/Tb/TbAlgorithms/src/TbClusterPlots.h
+END
+TbDUTMonitor.h
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/guest/lhcb/!svn/ver/200231/Kepler/trunk/Tb/TbAlgorithms/src/TbDUTMonitor.h
+END
+TbClusterAssociator.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/guest/lhcb/!svn/ver/200706/Kepler/trunk/Tb/TbAlgorithms/src/TbClusterAssociator.cpp
+END
+TbTriggerMonitor.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/guest/lhcb/!svn/ver/200231/Kepler/trunk/Tb/TbAlgorithms/src/TbTriggerMonitor.cpp
+END
+TbSimpleTracking.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/guest/lhcb/!svn/ver/201952/Kepler/trunk/Tb/TbAlgorithms/src/TbSimpleTracking.cpp
+END
+TbVisualiserOutput.h
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/guest/lhcb/!svn/ver/197618/Kepler/trunk/Tb/TbAlgorithms/src/TbVisualiserOutput.h
+END
+TbClusterAssociator.h
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/guest/lhcb/!svn/ver/200706/Kepler/trunk/Tb/TbAlgorithms/src/TbClusterAssociator.h
+END
+TbClustering.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/guest/lhcb/!svn/ver/201952/Kepler/trunk/Tb/TbAlgorithms/src/TbClustering.cpp
+END
+TbTriggerMonitor.h
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/guest/lhcb/!svn/ver/200231/Kepler/trunk/Tb/TbAlgorithms/src/TbTriggerMonitor.h
+END
+TbSimpleTracking.h
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/guest/lhcb/!svn/ver/201952/Kepler/trunk/Tb/TbAlgorithms/src/TbSimpleTracking.h
+END
+TbClustering.h
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/guest/lhcb/!svn/ver/201952/Kepler/trunk/Tb/TbAlgorithms/src/TbClustering.h
+END
+TbTrackPlots.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/guest/lhcb/!svn/ver/200904/Kepler/trunk/Tb/TbAlgorithms/src/TbTrackPlots.cpp
+END
+TbCalibration.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/guest/lhcb/!svn/ver/200231/Kepler/trunk/Tb/TbAlgorithms/src/TbCalibration.cpp
+END
+TbTrackPlots.h
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/guest/lhcb/!svn/ver/200706/Kepler/trunk/Tb/TbAlgorithms/src/TbTrackPlots.h
+END
+TbTriggerAssociator.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/guest/lhcb/!svn/ver/200231/Kepler/trunk/Tb/TbAlgorithms/src/TbTriggerAssociator.cpp
+END
+TbHitMonitor.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/guest/lhcb/!svn/ver/200592/Kepler/trunk/Tb/TbAlgorithms/src/TbHitMonitor.cpp
+END
+TbCalibration.h
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/guest/lhcb/!svn/ver/200231/Kepler/trunk/Tb/TbAlgorithms/src/TbCalibration.h
+END
+TbTrackVolume.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/guest/lhcb/!svn/ver/200231/Kepler/trunk/Tb/TbAlgorithms/src/TbTrackVolume.cpp
+END
+TbTriggerAssociator.h
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/guest/lhcb/!svn/ver/200231/Kepler/trunk/Tb/TbAlgorithms/src/TbTriggerAssociator.h
+END
+TbVertexTracking.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/guest/lhcb/!svn/ver/200231/Kepler/trunk/Tb/TbAlgorithms/src/TbVertexTracking.cpp
+END
+TbHitMonitor.h
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/guest/lhcb/!svn/ver/200592/Kepler/trunk/Tb/TbAlgorithms/src/TbHitMonitor.h
+END
+TbTrackVolume.h
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/guest/lhcb/!svn/ver/200231/Kepler/trunk/Tb/TbAlgorithms/src/TbTrackVolume.h
+END
+TbTracking.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/guest/lhcb/!svn/ver/200231/Kepler/trunk/Tb/TbAlgorithms/src/TbTracking.cpp
+END
+TbClusterPlots.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/guest/lhcb/!svn/ver/200904/Kepler/trunk/Tb/TbAlgorithms/src/TbClusterPlots.cpp
+END
+TbDUTMonitor.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/guest/lhcb/!svn/ver/200231/Kepler/trunk/Tb/TbAlgorithms/src/TbDUTMonitor.cpp
+END
+TbVertexTracking.h
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/guest/lhcb/!svn/ver/186577/Kepler/trunk/Tb/TbAlgorithms/src/TbVertexTracking.h
+END
+TbTracking.h
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/guest/lhcb/!svn/ver/200231/Kepler/trunk/Tb/TbAlgorithms/src/TbTracking.h
+END
+TbVisualiserOutput.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/guest/lhcb/!svn/ver/200231/Kepler/trunk/Tb/TbAlgorithms/src/TbVisualiserOutput.cpp
+END

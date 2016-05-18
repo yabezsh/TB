@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/guest/lhcb/!svn/ver/176267/Kepler/trunk/Tb/Kepler/options/online
+END
+OnlineMonitor.py
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/guest/lhcb/!svn/ver/176267/Kepler/trunk/Tb/Kepler/options/online/OnlineMonitor.py
+END
+presenter.cfg
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/guest/lhcb/!svn/ver/176267/Kepler/trunk/Tb/Kepler/options/online/presenter.cfg
+END
+runOnlineMonitor.py
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/guest/lhcb/!svn/ver/176267/Kepler/trunk/Tb/Kepler/options/online/runOnlineMonitor.py
+END

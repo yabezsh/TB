@@ -1,0 +1,101 @@
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/guest/lhcb/!svn/ver/205735/Kepler/trunk/Tb/TbAlignment/src
+END
+TbAlignmentBase.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/guest/lhcb/!svn/ver/205019/Kepler/trunk/Tb/TbAlignment/src/TbAlignmentBase.cpp
+END
+TbAlignmentBase.h
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/guest/lhcb/!svn/ver/197093/Kepler/trunk/Tb/TbAlignment/src/TbAlignmentBase.h
+END
+TbAlignment.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/guest/lhcb/!svn/ver/197093/Kepler/trunk/Tb/TbAlignment/src/TbAlignment.cpp
+END
+TbAlignment.h
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/guest/lhcb/!svn/ver/197093/Kepler/trunk/Tb/TbAlignment/src/TbAlignment.h
+END
+TbAlignmentMinuit0.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/guest/lhcb/!svn/ver/197185/Kepler/trunk/Tb/TbAlignment/src/TbAlignmentMinuit0.cpp
+END
+TbAlignmentMinuit1.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/guest/lhcb/!svn/ver/197055/Kepler/trunk/Tb/TbAlignment/src/TbAlignmentMinuit1.cpp
+END
+TbAlignmentMinuit2.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/guest/lhcb/!svn/ver/205019/Kepler/trunk/Tb/TbAlignment/src/TbAlignmentMinuit2.cpp
+END
+TbAlignmentMinuit0.h
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/guest/lhcb/!svn/ver/197185/Kepler/trunk/Tb/TbAlignment/src/TbAlignmentMinuit0.h
+END
+TbAlignmentMinuit1.h
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/guest/lhcb/!svn/ver/196953/Kepler/trunk/Tb/TbAlignment/src/TbAlignmentMinuit1.h
+END
+TbAlignmentMinuit2.h
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/guest/lhcb/!svn/ver/205019/Kepler/trunk/Tb/TbAlignment/src/TbAlignmentMinuit2.h
+END
+TbAlignmentSurvey.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/guest/lhcb/!svn/ver/197055/Kepler/trunk/Tb/TbAlignment/src/TbAlignmentSurvey.cpp
+END
+TbAlignmentMinuitBase.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/guest/lhcb/!svn/ver/197185/Kepler/trunk/Tb/TbAlignment/src/TbAlignmentMinuitBase.cpp
+END
+TbMillepede.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/guest/lhcb/!svn/ver/205735/Kepler/trunk/Tb/TbAlignment/src/TbMillepede.cpp
+END
+TbAlignmentSurvey.h
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/guest/lhcb/!svn/ver/196613/Kepler/trunk/Tb/TbAlignment/src/TbAlignmentSurvey.h
+END
+TbAlignmentMinuitBase.h
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/guest/lhcb/!svn/ver/197185/Kepler/trunk/Tb/TbAlignment/src/TbAlignmentMinuitBase.h
+END
+TbMillepede.h
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/guest/lhcb/!svn/ver/197055/Kepler/trunk/Tb/TbAlignment/src/TbMillepede.h
+END

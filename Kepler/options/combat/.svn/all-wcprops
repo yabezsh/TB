@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/guest/lhcb/!svn/ver/185430/Kepler/trunk/Tb/Kepler/options/combat
+END
+combatExample.py
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/guest/lhcb/!svn/ver/184842/Kepler/trunk/Tb/Kepler/options/combat/combatExample.py
+END
+singleChipExample.py
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/guest/lhcb/!svn/ver/185430/Kepler/trunk/Tb/Kepler/options/combat/singleChipExample.py
+END
+CombatAlignment.dat
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/guest/lhcb/!svn/ver/184842/Kepler/trunk/Tb/Kepler/options/combat/CombatAlignment.dat
+END
+CombatAlignment.py
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/guest/lhcb/!svn/ver/184842/Kepler/trunk/Tb/Kepler/options/combat/CombatAlignment.py
+END

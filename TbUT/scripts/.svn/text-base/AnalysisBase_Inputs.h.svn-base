@@ -1,0 +1,42 @@
+//const TString m_fileIndir = "/data2/pmmannin/"; 
+//const TString m_fileIndir = "/data2/pmmannin/FullProcessing/Nov2015/"; 
+//const TString m_fileIndir = "/data2/pmmannin/FullProcessing/July2015/"; 
+//const TString m_fileIndir = "/data2/pmmannin/November2015/";
+//const TString m_board 	= "A1_Full"; 
+//const TString m_board 	= "D7_All"; 
+// Board, use: _board = "D5_All", A8_All" - October TB
+// const TString m_board 	= "D5_All"; 
+
+// =========================================================
+
+const TString m_fileIndir = "/data2/pmmannin/FullProcessing/"; 
+const TString m_board 	= "A2"; 
+
+TString m_bias  	= "300";
+const TString m_sector	= "1"; 
+//const TString m_scanType = "Angle";
+const TString m_scanType = "Bias";
+const TString m_angle = "0";
+
+const TString m_fileOutdir = "~/lhcb/testbeam/"; 
+
+const TString plotdir 	= "plots";
+
+const double nChan 			= 512.0;
+const double stripPitch = 0.190;
+
+const bool writeEventsWithMissinhHitsToFile = false;   // flag to write events to file with missing DUT hit
+
+const double trackTriggerTimeDiffCut = 2.5;   // Default = 2.5
+
+const bool isPType = true;
+
+const int kClusterChargeMin = 150;
+const double ratioForHole 	= 0.05;
+const double ratioForDeadStrip 	= 0.6;
+const double ratioForNoisyStrip = 1.8;
+const bool vetoDeadStripRegions = false;
+const double k_DeadStrip 				= 0.12;
+
+const double m_minDistFromHole = 0.05;
+const bool removeTracksInHoleDef = false;

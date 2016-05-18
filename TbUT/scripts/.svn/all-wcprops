@@ -1,0 +1,125 @@
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/guest/lhcb/!svn/ver/204982/Kepler/trunk/Tb/TbUT/scripts
+END
+ExampleAnalysis.C
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/guest/lhcb/!svn/ver/197014/Kepler/trunk/Tb/TbUT/scripts/ExampleAnalysis.C
+END
+ClusterAna.C
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/guest/lhcb/!svn/ver/204982/Kepler/trunk/Tb/TbUT/scripts/ClusterAna.C
+END
+ExampleAnalysis.h
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/guest/lhcb/!svn/ver/196947/Kepler/trunk/Tb/TbUT/scripts/ExampleAnalysis.h
+END
+ThresholdPlotter.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/guest/lhcb/!svn/ver/194849/Kepler/trunk/Tb/TbUT/scripts/ThresholdPlotter.cpp
+END
+ClusterAna.h
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/guest/lhcb/!svn/ver/204982/Kepler/trunk/Tb/TbUT/scripts/ClusterAna.h
+END
+runClusterWithTrackAna.C
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/guest/lhcb/!svn/ver/204982/Kepler/trunk/Tb/TbUT/scripts/runClusterWithTrackAna.C
+END
+fastAnalysis.py
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/guest/lhcb/!svn/ver/197407/Kepler/trunk/Tb/TbUT/scripts/fastAnalysis.py
+END
+plotADCs.C
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/guest/lhcb/!svn/ver/196459/Kepler/trunk/Tb/TbUT/scripts/plotADCs.C
+END
+AnalysisBase.C
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/guest/lhcb/!svn/ver/204982/Kepler/trunk/Tb/TbUT/scripts/AnalysisBase.C
+END
+ClusterWithTrackAna_README
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/guest/lhcb/!svn/ver/205202/Kepler/trunk/Tb/TbUT/scripts/ClusterWithTrackAna_README
+END
+runClusterAnaLoop.C
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/guest/lhcb/!svn/ver/204982/Kepler/trunk/Tb/TbUT/scripts/runClusterAnaLoop.C
+END
+CMS.C
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/guest/lhcb/!svn/ver/196913/Kepler/trunk/Tb/TbUT/scripts/CMS.C
+END
+ClusterWithTrackAna.C
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/guest/lhcb/!svn/ver/204982/Kepler/trunk/Tb/TbUT/scripts/ClusterWithTrackAna.C
+END
+AnalysisBase.h
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/guest/lhcb/!svn/ver/204982/Kepler/trunk/Tb/TbUT/scripts/AnalysisBase.h
+END
+runExampleAnalysis.C
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/guest/lhcb/!svn/ver/196910/Kepler/trunk/Tb/TbUT/scripts/runExampleAnalysis.C
+END
+AnalysisBase_Inputs.h
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/guest/lhcb/!svn/ver/204982/Kepler/trunk/Tb/TbUT/scripts/AnalysisBase_Inputs.h
+END
+runClusterAna.C
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/guest/lhcb/!svn/ver/204982/Kepler/trunk/Tb/TbUT/scripts/runClusterAna.C
+END
+ClusterWithTrackAna.h
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/guest/lhcb/!svn/ver/204982/Kepler/trunk/Tb/TbUT/scripts/ClusterWithTrackAna.h
+END
+CMS.h
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/guest/lhcb/!svn/ver/196913/Kepler/trunk/Tb/TbUT/scripts/CMS.h
+END
+ClusterWithTrackAna_Inputs.h
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/guest/lhcb/!svn/ver/196821/Kepler/trunk/Tb/TbUT/scripts/ClusterWithTrackAna_Inputs.h
+END

@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/guest/lhcb/!svn/ver/205730/Kepler/trunk/Tb/TbIO/src
+END
+TbEventBuilder.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/guest/lhcb/!svn/ver/205730/Kepler/trunk/Tb/TbIO/src/TbEventBuilder.cpp
+END
+TbRawFile.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/guest/lhcb/!svn/ver/183200/Kepler/trunk/Tb/TbIO/src/TbRawFile.cpp
+END
+TbRawStream.h
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/guest/lhcb/!svn/ver/205730/Kepler/trunk/Tb/TbIO/src/TbRawStream.h
+END
+TbTupleWriter.h
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/guest/lhcb/!svn/ver/205429/Kepler/trunk/Tb/TbIO/src/TbTupleWriter.h
+END
+TbCombatBuilder.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/guest/lhcb/!svn/ver/196683/Kepler/trunk/Tb/TbIO/src/TbCombatBuilder.cpp
+END
+TbEventBuilder.h
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/guest/lhcb/!svn/ver/205730/Kepler/trunk/Tb/TbIO/src/TbEventBuilder.h
+END
+TbHeaderDecoder.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/guest/lhcb/!svn/ver/196750/Kepler/trunk/Tb/TbIO/src/TbHeaderDecoder.cpp
+END
+TbRawFile.h
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/guest/lhcb/!svn/ver/198356/Kepler/trunk/Tb/TbIO/src/TbRawFile.h
+END
+TbPacketRecycler.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/guest/lhcb/!svn/ver/196750/Kepler/trunk/Tb/TbIO/src/TbPacketRecycler.cpp
+END
+TbCombatBuilder.h
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/guest/lhcb/!svn/ver/196683/Kepler/trunk/Tb/TbIO/src/TbCombatBuilder.h
+END
+TbHeaderDecoder.h
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/guest/lhcb/!svn/ver/182097/Kepler/trunk/Tb/TbIO/src/TbHeaderDecoder.h
+END
+TbPacketRecycler.h
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/guest/lhcb/!svn/ver/181195/Kepler/trunk/Tb/TbIO/src/TbPacketRecycler.h
+END
+TbRawStream.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/guest/lhcb/!svn/ver/205730/Kepler/trunk/Tb/TbIO/src/TbRawStream.cpp
+END
+TbTupleWriter.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/guest/lhcb/!svn/ver/205429/Kepler/trunk/Tb/TbIO/src/TbTupleWriter.cpp
+END

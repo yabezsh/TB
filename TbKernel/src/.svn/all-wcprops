@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/guest/lhcb/!svn/ver/201949/Kepler/trunk/Tb/TbKernel/src
+END
+TbTimingSvc.h
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/guest/lhcb/!svn/ver/196561/Kepler/trunk/Tb/TbKernel/src/TbTimingSvc.h
+END
+TbClusterFinder.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/guest/lhcb/!svn/ver/196561/Kepler/trunk/Tb/TbKernel/src/TbClusterFinder.cpp
+END
+TbDataSvc.h
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/guest/lhcb/!svn/ver/201949/Kepler/trunk/Tb/TbKernel/src/TbDataSvc.h
+END
+TbKalmanTrackFit.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/guest/lhcb/!svn/ver/201499/Kepler/trunk/Tb/TbKernel/src/TbKalmanTrackFit.cpp
+END
+TbGeometrySvc.h
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/guest/lhcb/!svn/ver/197740/Kepler/trunk/Tb/TbKernel/src/TbGeometrySvc.h
+END
+TbTrackFit.h
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/guest/lhcb/!svn/ver/201499/Kepler/trunk/Tb/TbKernel/src/TbTrackFit.h
+END
+TbPixelSvc.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/guest/lhcb/!svn/ver/197740/Kepler/trunk/Tb/TbKernel/src/TbPixelSvc.cpp
+END
+TbClusterFinder.h
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/guest/lhcb/!svn/ver/196561/Kepler/trunk/Tb/TbKernel/src/TbClusterFinder.h
+END
+TbKalmanTrackFit.h
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/guest/lhcb/!svn/ver/201499/Kepler/trunk/Tb/TbKernel/src/TbKalmanTrackFit.h
+END
+TbPixelSvc.h
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/guest/lhcb/!svn/ver/198356/Kepler/trunk/Tb/TbKernel/src/TbPixelSvc.h
+END
+TbTimingSvc.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/guest/lhcb/!svn/ver/196561/Kepler/trunk/Tb/TbKernel/src/TbTimingSvc.cpp
+END
+TbDataSvc.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/guest/lhcb/!svn/ver/201949/Kepler/trunk/Tb/TbKernel/src/TbDataSvc.cpp
+END
+TbGeometrySvc.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/guest/lhcb/!svn/ver/197783/Kepler/trunk/Tb/TbKernel/src/TbGeometrySvc.cpp
+END
+TbTrackFit.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/guest/lhcb/!svn/ver/201499/Kepler/trunk/Tb/TbKernel/src/TbTrackFit.cpp
+END

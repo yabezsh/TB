@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/guest/lhcb/!svn/ver/200901/Kepler/trunk/Tb/TbEvent/xml
+END
+TbVertex.xml
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/guest/lhcb/!svn/ver/180600/Kepler/trunk/Tb/TbEvent/xml/TbVertex.xml
+END
+ChiSquare.xml
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/guest/lhcb/!svn/ver/179152/Kepler/trunk/Tb/TbEvent/xml/ChiSquare.xml
+END
+TbState.xml
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/guest/lhcb/!svn/ver/185837/Kepler/trunk/Tb/TbEvent/xml/TbState.xml
+END
+TbCluster.xml
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/guest/lhcb/!svn/ver/200901/Kepler/trunk/Tb/TbEvent/xml/TbCluster.xml
+END
+TbTrigger.xml
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/guest/lhcb/!svn/ver/179695/Kepler/trunk/Tb/TbEvent/xml/TbTrigger.xml
+END
+gdd.dtd
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/guest/lhcb/!svn/ver/170762/Kepler/trunk/Tb/TbEvent/xml/gdd.dtd
+END
+TbHit.xml
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/guest/lhcb/!svn/ver/200589/Kepler/trunk/Tb/TbEvent/xml/TbHit.xml
+END
+TbTrack.xml
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/guest/lhcb/!svn/ver/185857/Kepler/trunk/Tb/TbEvent/xml/TbTrack.xml
+END

@@ -1,0 +1,20 @@
+__author__ = 'ja'
+
+
+import sys
+sys.path.append("options/python")
+from TbUTClusterizator import TbUTClusterizator
+
+app = TbUTClusterizator()
+# set parameters
+app.inputData = "data/Run_Bias_Scan-B1-A-229-8713.dat"
+app.isAType = True
+app.sensorType = "PType"
+
+app.eventMax = 100000
+app.pedestalInputData = "$KEPLERROOT/../TbUT/options/UT/ped-BoardA4Redo.dat"
+app.eventNumberDisplay = 100
+
+app.runClusterization()
+
+

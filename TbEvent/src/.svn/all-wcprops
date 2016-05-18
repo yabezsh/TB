@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/guest/lhcb/!svn/ver/201498/Kepler/trunk/Tb/TbEvent/src
+END
+TbKalmanTrack.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/guest/lhcb/!svn/ver/201498/Kepler/trunk/Tb/TbEvent/src/TbKalmanTrack.cpp
+END
+TbKalmanNode.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/guest/lhcb/!svn/ver/201498/Kepler/trunk/Tb/TbEvent/src/TbKalmanNode.cpp
+END
+TbKalmanPixelMeasurement.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/guest/lhcb/!svn/ver/201498/Kepler/trunk/Tb/TbEvent/src/TbKalmanPixelMeasurement.cpp
+END
+ChiSquare.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/guest/lhcb/!svn/ver/185530/Kepler/trunk/Tb/TbEvent/src/ChiSquare.cpp
+END
+TbState.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/guest/lhcb/!svn/ver/173162/Kepler/trunk/Tb/TbEvent/src/TbState.cpp
+END
+TbCluster.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/guest/lhcb/!svn/ver/182079/Kepler/trunk/Tb/TbEvent/src/TbCluster.cpp
+END
+TbTrack.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/guest/lhcb/!svn/ver/197049/Kepler/trunk/Tb/TbEvent/src/TbTrack.cpp
+END

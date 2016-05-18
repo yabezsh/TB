@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/guest/lhcb/!svn/ver/196718/Kepler/trunk/Tb/TbUT/scripts/AddTrigTracks
+END
+combDUTwithTrack.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/guest/lhcb/!svn/ver/196718/Kepler/trunk/Tb/TbUT/scripts/AddTrigTracks/combDUTwithTrack.cpp
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/guest/lhcb/!svn/ver/196219/Kepler/trunk/Tb/TbUT/scripts/AddTrigTracks/Makefile
+END

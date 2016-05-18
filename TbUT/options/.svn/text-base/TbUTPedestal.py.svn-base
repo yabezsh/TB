@@ -1,0 +1,16 @@
+__author__ = 'ja'
+import sys
+sys.path.append( "options/python" )
+
+from TbUTPedestalRunner import TbUTPedestalRunner
+app=TbUTPedestalRunner()
+# set parameter
+app.inputData= "/afs/cern.ch/user/a/adendek/eos/lhcb/testbeam/ut/OfficialData/July2015/BoardA6/RawData/Pedestal-B6-A-209-0.dat"  
+app.isAType=True
+# have to be more than 4k (~10k)
+app.eventMax=20000
+#  keep the pedestals files in $KEPLERROOT/../TbUT/options/UT/ directory !!!!!
+app.pedestalOutputData ="$KEPLERROOT/../TbUT/options/UT/Pedestal-BoardA6.dat"
+
+app.runPedestals()
+

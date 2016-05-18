@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/guest/lhcb/!svn/ver/188051/Kepler/trunk/Tb/Kepler/options/alignment
+END
+dut.py
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/guest/lhcb/!svn/ver/185430/Kepler/trunk/Tb/Kepler/options/alignment/dut.py
+END
+survey.py
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/guest/lhcb/!svn/ver/185430/Kepler/trunk/Tb/Kepler/options/alignment/survey.py
+END
+alignment.sh
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/guest/lhcb/!svn/ver/185430/Kepler/trunk/Tb/Kepler/options/alignment/alignment.sh
+END
+millepede.py
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/guest/lhcb/!svn/ver/188051/Kepler/trunk/Tb/Kepler/options/alignment/millepede.py
+END
+minuit_alignment.py
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/guest/lhcb/!svn/ver/185430/Kepler/trunk/Tb/Kepler/options/alignment/minuit_alignment.py
+END
+minuit_alignment.sh
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/guest/lhcb/!svn/ver/184842/Kepler/trunk/Tb/Kepler/options/alignment/minuit_alignment.sh
+END

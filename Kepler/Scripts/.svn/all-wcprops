@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/guest/lhcb/!svn/ver/197454/Kepler/trunk/Tb/Kepler/Scripts
+END
+DaemonScript.sh
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/guest/lhcb/!svn/ver/197451/Kepler/trunk/Tb/Kepler/Scripts/DaemonScript.sh
+END
+Kepler
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/guest/lhcb/!svn/ver/197371/Kepler/trunk/Tb/Kepler/Scripts/Kepler
+END
+PixelMapAnalysis.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/guest/lhcb/!svn/ver/176307/Kepler/trunk/Tb/Kepler/Scripts/PixelMapAnalysis.cpp
+END
+spatialEfficiency.py
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/guest/lhcb/!svn/ver/176372/Kepler/trunk/Tb/Kepler/Scripts/spatialEfficiency.py
+END
+UTDaemonScript.sh
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/guest/lhcb/!svn/ver/197454/Kepler/trunk/Tb/Kepler/Scripts/UTDaemonScript.sh
+END
+PixelMapAnalysis_Kepler.h
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/guest/lhcb/!svn/ver/175890/Kepler/trunk/Tb/Kepler/Scripts/PixelMapAnalysis_Kepler.h
+END
+PixelMapAnalysis_KeplerConfig.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/guest/lhcb/!svn/ver/175613/Kepler/trunk/Tb/Kepler/Scripts/PixelMapAnalysis_KeplerConfig.cpp
+END

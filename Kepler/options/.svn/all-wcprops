@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/guest/lhcb/!svn/ver/197726/Kepler/trunk/Tb/Kepler/options
+END
+example.py
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/guest/lhcb/!svn/ver/197520/Kepler/trunk/Tb/Kepler/options/example.py
+END
+EmptyPixelMask.dat
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/guest/lhcb/!svn/ver/178010/Kepler/trunk/Tb/Kepler/options/EmptyPixelMask.dat
+END
+MaskPixels.dat
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/guest/lhcb/!svn/ver/176251/Kepler/trunk/Tb/Kepler/options/MaskPixels.dat
+END
+batch.py
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/guest/lhcb/!svn/ver/185430/Kepler/trunk/Tb/Kepler/options/batch.py
+END
+singleChipExample.py
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/guest/lhcb/!svn/ver/178010/Kepler/trunk/Tb/Kepler/options/singleChipExample.py
+END
+TbTrackingWithKalman.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/guest/lhcb/!svn/ver/178725/Kepler/trunk/Tb/Kepler/options/TbTrackingWithKalman.cpp
+END
+efficiency.py
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/guest/lhcb/!svn/ver/197726/Kepler/trunk/Tb/Kepler/options/efficiency.py
+END
+debug.py
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/guest/lhcb/!svn/ver/176280/Kepler/trunk/Tb/Kepler/options/debug.py
+END
+TbTrackingWithKalman.h
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/guest/lhcb/!svn/ver/178726/Kepler/trunk/Tb/Kepler/options/TbTrackingWithKalman.h
+END

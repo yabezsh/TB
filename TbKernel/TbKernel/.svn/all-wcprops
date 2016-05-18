@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/guest/lhcb/!svn/ver/201949/Kepler/trunk/Tb/TbKernel/TbKernel
+END
+TbAlignmentTrack.h
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/guest/lhcb/!svn/ver/197783/Kepler/trunk/Tb/TbKernel/TbKernel/TbAlignmentTrack.h
+END
+TbCondFile.h
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/guest/lhcb/!svn/ver/201949/Kepler/trunk/Tb/TbKernel/TbKernel/TbCondFile.h
+END
+TbFunctors.h
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/guest/lhcb/!svn/ver/197031/Kepler/trunk/Tb/TbKernel/TbKernel/TbFunctors.h
+END
+TbModule.h
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/guest/lhcb/!svn/ver/197056/Kepler/trunk/Tb/TbKernel/TbKernel/TbModule.h
+END
+ITbPixelSvc.h
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/guest/lhcb/!svn/ver/196751/Kepler/trunk/Tb/TbKernel/TbKernel/ITbPixelSvc.h
+END
+TbAlgorithm.h
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/guest/lhcb/!svn/ver/201949/Kepler/trunk/Tb/TbKernel/TbKernel/TbAlgorithm.h
+END
+ITbTimingSvc.h
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/guest/lhcb/!svn/ver/196561/Kepler/trunk/Tb/TbKernel/TbKernel/ITbTimingSvc.h
+END
+TbConstants.h
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/guest/lhcb/!svn/ver/187449/Kepler/trunk/Tb/TbKernel/TbKernel/TbConstants.h
+END
+ITbDataSvc.h
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/guest/lhcb/!svn/ver/201949/Kepler/trunk/Tb/TbKernel/TbKernel/ITbDataSvc.h
+END
+ITbGeometrySvc.h
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/guest/lhcb/!svn/ver/196751/Kepler/trunk/Tb/TbKernel/TbKernel/ITbGeometrySvc.h
+END
+ITbTrackFit.h
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/guest/lhcb/!svn/ver/201499/Kepler/trunk/Tb/TbKernel/TbKernel/ITbTrackFit.h
+END
+TbGeomFunctions.h
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/guest/lhcb/!svn/ver/197740/Kepler/trunk/Tb/TbKernel/TbKernel/TbGeomFunctions.h
+END
+ITbClusterFinder.h
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/guest/lhcb/!svn/ver/196561/Kepler/trunk/Tb/TbKernel/TbKernel/ITbClusterFinder.h
+END
+TbBufferedFile.h
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/guest/lhcb/!svn/ver/198356/Kepler/trunk/Tb/TbKernel/TbKernel/TbBufferedFile.h
+END

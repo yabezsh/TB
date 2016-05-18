@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/guest/lhcb/!svn/ver/196708/Kepler/trunk/Tb/Kepler/tests/refs
+END
+testJuly2014.ref
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/guest/lhcb/!svn/ver/196509/Kepler/trunk/Tb/Kepler/tests/refs/testJuly2014.ref
+END
+testMillepede.ref
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/guest/lhcb/!svn/ver/196708/Kepler/trunk/Tb/Kepler/tests/refs/testMillepede.ref
+END

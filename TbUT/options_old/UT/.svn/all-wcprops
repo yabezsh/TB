@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/guest/lhcb/!svn/ver/196283/Kepler/trunk/Tb/TbUT/options/UT
+END
+MambaMasksSecond.dat
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/guest/lhcb/!svn/ver/193730/Kepler/trunk/Tb/TbUT/options/UT/MambaMasksSecond.dat
+END
+noise_Mamba.dat
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/guest/lhcb/!svn/ver/196283/Kepler/trunk/Tb/TbUT/options/UT/noise_Mamba.dat
+END
+MambaMasks.dat
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/guest/lhcb/!svn/ver/194758/Kepler/trunk/Tb/TbUT/options/UT/MambaMasks.dat
+END
+Masks_DTypeSensor.dat
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/guest/lhcb/!svn/ver/194560/Kepler/trunk/Tb/TbUT/options/UT/Masks_DTypeSensor.dat
+END
+ChannelMask_NO.dat
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/guest/lhcb/!svn/ver/191831/Kepler/trunk/Tb/TbUT/options/UT/ChannelMask_NO.dat
+END
+ped_mamba.dat
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/guest/lhcb/!svn/ver/193201/Kepler/trunk/Tb/TbUT/options/UT/ped_mamba.dat
+END

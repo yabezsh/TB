@@ -1,0 +1,16 @@
+#include <stdlib.h> 
+#include "AnalysisBase_Inputs.h"
+
+void runClusterWithTrackAna(){
+
+  int bias = atoi(m_bias);
+  
+  gROOT->ProcessLine(".L CMS.C+");
+  gROOT->ProcessLine(".L AnalysisBase.C+");
+  gROOT->ProcessLine(".L ClusterWithTrackAna.C+");
+  
+  TTree *t;
+  ClusterWithTrackAna a(bias);
+  a.Loop();
+
+}

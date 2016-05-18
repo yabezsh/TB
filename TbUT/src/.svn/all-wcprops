@@ -1,0 +1,533 @@
+K 25
+svn:wc:ra_dav:version-url
+V 52
+/guest/lhcb/!svn/ver/198103/Kepler/trunk/Tb/TbUT/src
+END
+TbUTMambaDataReader.h
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/guest/lhcb/!svn/ver/198103/Kepler/trunk/Tb/TbUT/src/TbUTMambaDataReader.h
+END
+TbUTRawDataMonitorAlgorithm.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/guest/lhcb/!svn/ver/187186/Kepler/trunk/Tb/TbUT/src/TbUTRawDataMonitorAlgorithm.cpp
+END
+TbUTCommonModeSubtractorFactory.h
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTCommonModeSubtractorFactory.h
+END
+Doxyfile
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/guest/lhcb/!svn/ver/186100/Kepler/trunk/Tb/TbUT/src/Doxyfile
+END
+TbUTClusterCreator.h
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTClusterCreator.h
+END
+TbUTIDataReader.h
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTIDataReader.h
+END
+TbUTClusterCreatorDataMonitorAlgorithm.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTClusterCreatorDataMonitorAlgorithm.cpp
+END
+TbUTNoise.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTNoise.cpp
+END
+TbUTIChannelMaskProvider.h
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/guest/lhcb/!svn/ver/186100/Kepler/trunk/Tb/TbUT/src/TbUTIChannelMaskProvider.h
+END
+TbUTClusterCreatorAlgorithm.h
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTClusterCreatorAlgorithm.h
+END
+TbUTSensor.h
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/guest/lhcb/!svn/ver/193201/Kepler/trunk/Tb/TbUT/src/TbUTSensor.h
+END
+TbUTNoiseCalculatorfactory.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/guest/lhcb/!svn/ver/186100/Kepler/trunk/Tb/TbUT/src/TbUTNoiseCalculatorfactory.cpp
+END
+TbUTCommonModeSubtractorDataMonitorAlgorithm.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTCommonModeSubtractorDataMonitorAlgorithm.cpp
+END
+TbUTPedestalCalculator.h
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTPedestalCalculator.h
+END
+TbUTNoiseCalculatorFake.h
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTNoiseCalculatorFake.h
+END
+TbUTPedestalSubtractorDataMonitorAlgorithm.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTPedestalSubtractorDataMonitorAlgorithm.cpp
+END
+TbUTRawData.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTRawData.cpp
+END
+TbUTAlibavaDataRetreiver.h
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/guest/lhcb/!svn/ver/186100/Kepler/trunk/Tb/TbUT/src/TbUTAlibavaDataRetreiver.h
+END
+TbUTCluster.h
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/guest/lhcb/!svn/ver/195966/Kepler/trunk/Tb/TbUT/src/TbUTCluster.h
+END
+TbUTDataMonitorAlgorithm.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTDataMonitorAlgorithm.cpp
+END
+TbUTPedestalRetreiver.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTPedestalRetreiver.cpp
+END
+TbUTMambaDataReader.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTMambaDataReader.cpp
+END
+TbUTCommonModeSubtractorFactory.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTCommonModeSubtractorFactory.cpp
+END
+TbUTChannelMaskProvider.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTChannelMaskProvider.cpp
+END
+TbUTIPedestalFollowing.h
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTIPedestalFollowing.h
+END
+TbUTPedestal.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTPedestal.cpp
+END
+TbUTPedestalFileValidator.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/guest/lhcb/!svn/ver/186100/Kepler/trunk/Tb/TbUT/src/TbUTPedestalFileValidator.cpp
+END
+TbUTClusterCreatorAlgorithm.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTClusterCreatorAlgorithm.cpp
+END
+TbUTRawDataFactory.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTRawDataFactory.cpp
+END
+TbUTNoiseCalculatorFake.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTNoiseCalculatorFake.cpp
+END
+TbUTIClusterCreator.h
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTIClusterCreator.h
+END
+TbUTCmsPerBeetle.h
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTCmsPerBeetle.h
+END
+TbUTAlibavaDataReader.h
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTAlibavaDataReader.h
+END
+TbUTNoise.h
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTNoise.h
+END
+TbUTNoiseCalculatorfactory.h
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/guest/lhcb/!svn/ver/186100/Kepler/trunk/Tb/TbUT/src/TbUTNoiseCalculatorfactory.h
+END
+TbUTICommonModeSubtractor.h
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTICommonModeSubtractor.h
+END
+TbUTCommonModeSubtractorDataMonitorAlgorithm.h
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTCommonModeSubtractorDataMonitorAlgorithm.h
+END
+TbUTPedestalSubtractorDataMonitorAlgorithm.h
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/guest/lhcb/!svn/ver/186100/Kepler/trunk/Tb/TbUT/src/TbUTPedestalSubtractorDataMonitorAlgorithm.h
+END
+TbUTRawData.h
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTRawData.h
+END
+TbUTClusterCreatorFactory.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/guest/lhcb/!svn/ver/197306/Kepler/trunk/Tb/TbUT/src/TbUTClusterCreatorFactory.cpp
+END
+TbUTPedestalRetreiver.h
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTPedestalRetreiver.h
+END
+TbUTChannelMaskFileValidator.h
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/guest/lhcb/!svn/ver/186100/Kepler/trunk/Tb/TbUT/src/TbUTChannelMaskFileValidator.h
+END
+TbUTTresholdProvider.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/guest/lhcb/!svn/ver/194351/Kepler/trunk/Tb/TbUT/src/TbUTTresholdProvider.cpp
+END
+TbUTCMSIterativelyPerBeetle.h
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTCMSIterativelyPerBeetle.h
+END
+TbUTChannelMaskProvider.h
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTChannelMaskProvider.h
+END
+TbUTINoiseCalculator.h
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTINoiseCalculator.h
+END
+TbUTPedestal.h
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTPedestal.h
+END
+TbUTCmsPerBeetle.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTCmsPerBeetle.cpp
+END
+TbUTPedestalFileValidator.h
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/guest/lhcb/!svn/ver/186100/Kepler/trunk/Tb/TbUT/src/TbUTPedestalFileValidator.h
+END
+TbUTAlibavaDataReader.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTAlibavaDataReader.cpp
+END
+TbUTITresholdProvider.h
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/guest/lhcb/!svn/ver/194351/Kepler/trunk/Tb/TbUT/src/TbUTITresholdProvider.h
+END
+TbUTCMSLinear.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTCMSLinear.cpp
+END
+TbUTCommonModeSubtractorAlgorithm.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTCommonModeSubtractorAlgorithm.cpp
+END
+TbUTRawDataReaderAlgorithm.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTRawDataReaderAlgorithm.cpp
+END
+TbUTIDataRetreiver.h
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/guest/lhcb/!svn/ver/186100/Kepler/trunk/Tb/TbUT/src/TbUTIDataRetreiver.h
+END
+TbUTPedestalFollowingFactory.h
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/guest/lhcb/!svn/ver/191830/Kepler/trunk/Tb/TbUT/src/TbUTPedestalFollowingFactory.h
+END
+TbUTPedestalSubtractor.h
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTPedestalSubtractor.h
+END
+TbUTIProcessingEngine.h
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTIProcessingEngine.h
+END
+TbUTRawDataFactory.h
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTRawDataFactory.h
+END
+TbUTPedestalSubtractorAlgorithm.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTPedestalSubtractorAlgorithm.cpp
+END
+TbUTRandomNoiseGenerator.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTRandomNoiseGenerator.cpp
+END
+TbUTNoiseCalculator.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTNoiseCalculator.cpp
+END
+TbUTNTupleCreator.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTNTupleCreator.cpp
+END
+TbUTChannelMaskFileValidator.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/guest/lhcb/!svn/ver/193201/Kepler/trunk/Tb/TbUT/src/TbUTChannelMaskFileValidator.cpp
+END
+TbUTCMSIterativelyPerBeetle.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTCMSIterativelyPerBeetle.cpp
+END
+TbUTClusterCreatorFactory.h
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/guest/lhcb/!svn/ver/197306/Kepler/trunk/Tb/TbUT/src/TbUTClusterCreatorFactory.h
+END
+TbUTAlbavaFileValidator.h
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/guest/lhcb/!svn/ver/191830/Kepler/trunk/Tb/TbUT/src/TbUTAlbavaFileValidator.h
+END
+TbUTClusterCreator.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTClusterCreator.cpp
+END
+TbUTIFileValidator.h
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/guest/lhcb/!svn/ver/186100/Kepler/trunk/Tb/TbUT/src/TbUTIFileValidator.h
+END
+TbUTTresholdProvider.h
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/guest/lhcb/!svn/ver/194373/Kepler/trunk/Tb/TbUT/src/TbUTTresholdProvider.h
+END
+TbUTRawDataMonitorAlgorithm.h
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/guest/lhcb/!svn/ver/186100/Kepler/trunk/Tb/TbUT/src/TbUTRawDataMonitorAlgorithm.h
+END
+TbUTSensor.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/guest/lhcb/!svn/ver/193201/Kepler/trunk/Tb/TbUT/src/TbUTSensor.cpp
+END
+TbUTPedestalFollowingFactory.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/guest/lhcb/!svn/ver/186100/Kepler/trunk/Tb/TbUT/src/TbUTPedestalFollowingFactory.cpp
+END
+TbUTPedestalSubtractor.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTPedestalSubtractor.cpp
+END
+TbUTPedestalCalculator.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTPedestalCalculator.cpp
+END
+TbUTClusterCreatorDataMonitorAlgorithm.h
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/guest/lhcb/!svn/ver/197308/Kepler/trunk/Tb/TbUT/src/TbUTClusterCreatorDataMonitorAlgorithm.h
+END
+TbUTCluster.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/guest/lhcb/!svn/ver/195644/Kepler/trunk/Tb/TbUT/src/TbUTCluster.cpp
+END
+TbUTAlibavaDataRetreiver.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/guest/lhcb/!svn/ver/186100/Kepler/trunk/Tb/TbUT/src/TbUTAlibavaDataRetreiver.cpp
+END
+TbUTCMSLinear.h
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTCMSLinear.h
+END
+TbUTCommonModeSubtractorAlgorithm.h
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTCommonModeSubtractorAlgorithm.h
+END
+TbUTRawDataReaderAlgorithm.h
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/guest/lhcb/!svn/ver/194758/Kepler/trunk/Tb/TbUT/src/TbUTRawDataReaderAlgorithm.h
+END
+TbUTPedestalSubtractorAlgorithm.h
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTPedestalSubtractorAlgorithm.h
+END
+TbUTDataLocations.h
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTDataLocations.h
+END
+TbUTRandomNoiseGenerator.h
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTRandomNoiseGenerator.h
+END
+TbUTNoiseCalculator.h
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTNoiseCalculator.h
+END
+TbUTNTupleCreator.h
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTNTupleCreator.h
+END
+TbUTAlbavaFileValidator.cpp
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/guest/lhcb/!svn/ver/193730/Kepler/trunk/Tb/TbUT/src/TbUTAlbavaFileValidator.cpp
+END
+TbUTDataMonitorAlgorithm.h
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/guest/lhcb/!svn/ver/197804/Kepler/trunk/Tb/TbUT/src/TbUTDataMonitorAlgorithm.h
+END
