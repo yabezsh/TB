@@ -1,0 +1,176 @@
+BOARD M1,FANIN,,DUT Run #,Kepler Run #,Stage,Stage,Stage,Bias,Current,Temp,RH,Online Flag,Offline Flag,Note
+Sector,Purpose,Bias,Run #,Run #,X (mm),Y (mm),Rot (deg),(V),(uA),( C ),(%),(Good/Bad),(Good/Bad),
+Central, Custom,Back+Top,4,15005,70,10,0,150,-,10,-,Good,Bad,Telescope did not stop.  Test run. Beetle ph.shift =-4ns. ADC ph.shift =7ns
+Central,Pedestal,Back+Top,5,-,70,10,0,150,-,10,-,Good,Good,
+Central, Custom,Back+Top,6,15007,70,10,0,150,-,10,-,Good,Good,
+"
+",,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+Central,Bias Scan,Back+Top,7,15008,70,10,0,25,-,10,-,Good,,
+Central,Pedestal,Back+Top,8,-,70,10,0,25,-,10,-,Good,,
+Central,Bias Scan,Back+Top,9,15009,70,10,0,50,-,10,-,Good,,
+Central,Pedestal,Back+Top,10,-,70,10,0,50,-,10,-,Good,,
+Central,Bias Scan,Back+Top,11,15010,70,10,0,75,-,10,-,Good,,
+Central,Pedestal,Back+Top,12,-,70,10,0,75,-,10,-,Good,,
+Central,Bias Scan,Back+Top,13,15011,70,10,0,100,-,10,-,Good,,
+Central,Pedestal,Back+Top,14,-,70,10,0,100,-,10,-,Good,,
+Central,Bias Scan,Back+Top,15,15012,70,10,0,125,-,10,-,Good,,
+Central,Pedestal,Back+Top,16,-,70,10,0,125,-,10,-,Good,,
+Central,Bias Scan,Back+Top,17,15013,70,10,0,150,-,10,-,Good,,
+Central,Pedestal,Back+Top,18,-,70,10,0,150,-,10,-,Good,,
+Central,Custom,Back+Top,19,-,70,10,0,150,-,10,-,Good,,"Pipeline delay =4, phase Beetle=0ns, ADC phase shift 11ns  "
+Central,Pedestal,Back+Top,20,-,70,10,0,150,-,10,-,Good,,"Pipeline delay =4, phase Beetle=0ns, ADC phase shift 11ns  "
+Central,Custom,Back+Top,21,-,70,10,0,150,-,10,-,Good,,"Pipeline delay =5, phase Beetle=0ns, ADC phase shift 11ns  "
+Central,Pedestal,Back+Top,22,-,70,10,0,150,-,10,-,Good,,"Pipeline delay =5, phase Beetle=0ns, ADC phase shift 11ns  "
+Central,Custom,Back+Top,23,-,70,10,0,150,-,10,-,Good,,"Pipeline delay =6, phase Beetle=0ns, ADC phase shift 11ns  "
+Central,Pedestal,Back+Top,24,-,70,10,0,150,-,10,-,Good,,"Pipeline delay =6, phase Beetle=0ns, ADC phase shift 11ns  "
+Central,Custom,Back+Top,25,-,70,10,0,150,-,10,-,Good,,"Pipeline delay =4, phase Beetle=0ns, ADC phase shift 11ns (after trigger time adjustment + 11 ns)  "
+Central,Pedestal,Back+Top,26,-,70,10,0,150,-,10,-,Good,,"Pipeline delay =4, phase Beetle=0ns, ADC phase shift 11ns (after trigger time adjustment + 11 ns)  "
+Central,Custom,Back+Top,27,-,70,10,0,150,-,10,-,Good,,"Pipeline delay =5, phase Beetle=0ns, ADC phase shift 11ns (after trigger time adjustment + 11 ns)  "
+Central,Pedestal,Back+Top,28,-,70,10,0,150,-,10,-,Good,,"Pipeline delay =5, phase Beetle=0ns, ADC phase shift 11ns (after trigger time adjustment + 11 ns)  "
+Central,Custom,Back+Top,29,-,70,10,0,150,-,10,-,Good,,"Pipeline delay =4, phase Beetle=-10ns, ADC phase shift 1ns (after trigger time adjustment + 11 ns)  "
+Central,Pedestal,Back+Top,30,-,70,10,0,150,-,10,-,Good,,"Pipeline delay =4, phase Beetle=-10ns, ADC phase shift 1ns (after trigger time adjustment + 11 ns)  "
+,,,,,,,,,,,,,,
+Central,Pedestal,Back+Top,31,-,70,10,0,0,-,8,-,Good,,Test run to check MAMBA connection
+Central,Custom,Back+Top,32,-,70,10,0,150,-,8,-,Good,,Test run after removing the red jumper
+,,,,,,,,,,,,,,
+Central,Bias Scan,Back+Top,34,15016,70,10,0,25,-,9,-,Good,Good,"Telescope error when stopping the run for DAQ3, not an issue"
+Central,Bias Scan,Back+Top,35,15017,70,10,0,25,-,9,-,Good,Good,"Telescope error when stopping the run for DAQ3, not an issue"
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+Central,Bias Scan,Back+Top,36,15020,70,10,0,25,-,9,-,Good,Good DUT,Bias scan after removing the red jumper
+Central,Pedestal,Back+Top,37,-,70,10,0,25,-,9,-,Good,Good DUT,
+Central,Bias Scan,Back+Top,38,15021,70,10,0,50,-,9,-,Good,Good DUT,
+Central,Pedestal,Back+Top,39,-,70,10,0,50,-,9,-,Good,Good DUT,
+Central,Bias Scan,Back+Top,40,15022,70,10,0,75,-,9,-,Good,Good DUT,
+Central,Pedestal,Back+Top,41,-,70,10,0,75,-,9,-,Good,Good DUT,
+Central,Bias Scan,Back+Top,42,15023,70,10,0,100,-,9,-,Good,Good DUT,
+Central,Pedestal,Back+Top,43,-,70,10,0,100,-,9,-,Good,Good DUT,
+Central,Bias Scan,Back+Top,44,15024,70,10,0,125,-,9,-,Good,Good DUT,
+Central,Pedestal,Back+Top,45,-,70,10,0,125,-,9,-,Good,Good DUT,
+Central,Bias Scan,Back+Top,46,15025,70,10,0,150,-,9,-,Good,Good DUT,
+Central,Pedestal,Back+Top,47,-,70,10,0,150,-,9,-,Good,Good DUT,
+Central,Bias Scan,Back+Top,48,15026,70,10,0,200,-,9,-,Good,Good DUT,
+Central,Pedestal,Back+Top,49,-,70,10,0,200,-,9,-,Good,Good DUT,
+Central,Bias Scan,Back+Top,50,15027,70,10,0,250,-,9,-,Good,Good DUT,
+Central,Pedestal,Back+Top,51,-,70,10,0,250,-,9,-,Good,Good DUT,
+Central,Bias Scan,Back+Top,52,15028,70,10,0,300,-,9,-,Good,Good DUT,
+Central,Pedestal,Back+Top,53,-,70,10,0,300,-,9,-,Good,Good DUT,
+Central,Calibration,Back+Top,54,-,70,10,0,300,-,9,-,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+PA,Bias Scan,Back+Top,55,15029,70,2,0,25,-,10,-,Good,,
+PA,Pedestal,Back+Top,56,-,70,2,0,25,-,10,-,Good,,
+PA,Bias Scan,Back+Top,57,15030,70,2,0,50,-,10,-,Good,,
+PA,Pedestal,Back+Top,58,-,70,2,0,50,-,10,-,Good,,
+PA,Bias Scan,Back+Top,61,15031,70,2,0,75,-,10,-,Good,,
+PA,Pedestal,Back+Top,62,-,70,2,0,75,-,10,-,Good,,
+PA,Bias Scan,Back+Top,63,15032,70,2,0,100,-,10,-,Good,,
+PA,Pedestal,Back+Top,64,-,70,2,0,100,-,10,-,Good,,
+PA,Bias Scan,Back+Top,65,15033,70,2,0,125,-,10,-,Good,,
+PA,Pedestal,Back+Top,66,-,70,2,0,125,-,10,-,Good,,
+PA,Bias Scan,Back+Top,67,15034,70,2,0,150,-,10,-,Good,,
+PA,Pedestal,Back+Top,68,-,70,2,0,150,-,10,-,Good,,
+PA,Bias Scan,Back+Top,69,15035,70,2,0,200,-,10,-,Good,,
+PA,Pedestal,Back+Top,70,-,70,2,0,200,-,10,-,Good,,
+PA,Bias Scan,Back+Top,71,15036,70,2,0,250,-,10,-,Good,,
+PA,Pedestal,Back+Top,72,-,70,2,0,250,-,10,-,Good,,
+PA,Bias Scan,Back+Top,73,15037,70,2,0,300,-,10,-,Good,,
+PA,Pedestal,Back+Top,74,-,70,2,0,300,-,10,-,Good,,
+PA,Calibration,Back+Top,75,-,70,2,0,300,-,10,-,Good,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+Central,Eff/Res,Back+Top,76,15038,65,10,0,300,-,10,-,Good,,"Scan over X coordinate 2mm steps: 65 and 70, the beam changed during the run"
+Central,Eff/Res,Back+Top,77,15039,65,10,0,300,-,10,-,Bad,Bad,"Check the correct voltage to use during bias scan, the measurement was stopped because there was no beam"
+Central,Eff/Res,Back+Top,78,15041,65,10,0,300,-,10,-,Bad,Bad,"There was no beam for long time, therefore we aborted this run."
+Central,Eff/Res,Back+Top,79,15042,65,10,0,300,-,10,-,Good,,
+Central,Pedestal,Back+Top,80,,65,10,0,300,-,,-,Good,,
+Central,Calibration,Back+Top,81,,65,10,0,300,-,,-,Good,,
+,,,,,,,,,,,,,,
+Central,Eff/Res,Back+Top,82,15043,65,18,0,300,-,10,-,Good,,
+Central,Pedestal,Back+Top,83,,65,18,0,300,-,10,-,Good,,
+Central,Calibration,Back+Top,84,,65,18,0,300,-,10,-,Good,,
+,,,,,,,,,,,,,,
+Central,Eff/Res,Back+Top,85,15044,70,10,0,300,-,,-,Good,,
+,,,,,,,,,,,,,,
+PA,Eff/Res,Back+Top,86,15045,65,0,0,300,-,10,-,Bad,,There was ERROR_TMPX3; Mamba crashed
+PA,Eff/Res,Back+Top,87,,65,0,0,300,-,10,-,Bad,,Mamba crashed; We restarted GUI
+PA,Eff/Res,Back+Top,88,15046,65,0,0,300,-,10,-,Good,,
+,,,,,,,,,,,,,,
+YScan,Custom,Back+Top,90,,65,0,0,300,,10,,Good,,Peak's height: 1.8e-3
+YScan,Custom,Back+Top,91,,65,0,0,300,,10,,Good,,
+YScan,Custom,Back+Top,92,,65,0,0,300,,10,,Good,,
+YScan,Custom,Back+Top,93,,65,0,0,300,,10,,Good,,
+YScan,Custom,Back+Top,94,,65,3,0,300,,10,,Good,,Peak's height: 3.e-3
+YScan,Custom,Back+Top,95,,65,6,0,300,,10,,Good,,Peak's height: 3.7e-3
+YScan,Custom,Back+Top,96,,65,9,0,300,,10,,Good,,Peak's height: 4.e-3
+YScan,Custom,Back+Top,97,,65,12,0,300,,10,,Good,,Peak's height: 4.e-3
+YScan,Custom,Back+Top,98,,65,15,0,300,,10,,Good,,Peak's height: 2.5e-3
+YScan,Custom,Back+Top,99,,65,18,0,300,,10,,Good,,Peak's height: 1.5e-3
+YScan,Custom,Back+Top,100,,65,21,0,300,,10,,Good,,Peak's height: 0.3e-3
+,,,,,,,,,,,,,,
+PA,Eff/Res,Back+Top,101,15047,70,0,0,300,-,10,-,Good,,Remove  the blue HV jumpers
+,,,,,,,,,,,,,,
+Check Anglel,Custom,Top,102,,,,,,,,,Bad,,Mamba crashed
+Check Anglel,Custom,Top,103,,,,,,,,,Bad,,Mamba crashed
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+Central,Angle scan,Top,104,15048,65,10,-10,300,,10,,Good,,Angular values already corrected by offset (-20 deg). See logbook entry.
+Central,Angle scan,Top,105,15049,65,10,-5,300,,10,,Good,,
+Central,Angle scan,Top,106,15050,65,10,-2,300,,10,,Good,,
+Central,Angle scan,Top,107,15051,65,10,0,300,,10,,Good,,
+Central,Angle scan,Top,108,15052,65,10,2,300,,10,,Good,,Running was aborted after some time because of the beam absence
+Central,Angle scan,Top,109,15053,65,10,2,300,,10,,Bad,,The run was started without a high voltage -> we aborted it
+Central,Angle scan,Top,110,15054,65,10,2,300,,10,,Good,,
+Central,Angle scan,Top,111,15055,65,10,5,300,,10,,Good,,
+Central,Angle scan,Top,112,15056,65,10,10,300,,10,,Good,,
+Central,Angle scan,Top,113,15057,65,10,15,300,,10,,Good,,
+Central,Angle scan,Top,114,15058,65,10,20,300,,10,,Good,,
+Central,Pedestal,Top,115,,65,10,,300,,10,,Good,,
+Central,Calibration,Top,116,,65,10,,300,,10,,Good,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,Put high voltage blue jumpers to extend bias scan to 450V
+Central,Bias Scan,Back+Top,162,15090,65,10,0,50,-,9,,Good,,Started Bias Scan for Top config with Back+Top config
+Central,Pedestal,Back+Top,163,-,65,10,0,50,-,9,,Good,Good,Started Bias Scan for Top config with Back+Top config
+Central,Bias Scan,Back+Top,164,15091,65,10,0,100,-,9,,Good,,Started Bias Scan for Top config with Back+Top config
+,,,,,,,,,,,,,,
+Central,Bias Scan,Back+Top,165,15092,65,10,0,350,-,9,,Good,Good,
+Central,Bias Scan,Back+Top,166,15093,65,10,0,400,-,9,,Good,Good,
+Central,Bias Scan,Back+Top,167,15094,65,10,0,450,-,9,,Good,Good,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+Central,Bias Scan,Top,168,15095,65,10,0,50,-,9,-,Good,Good DUT,removed high voltage blue jumpers
+Central,Pedestal,Top,169,-,65,10,0,50,-,9,-,Good,Good DUT,The correlations are visible. 
+Central,Bias Scan,Top,170,15096,65,10,0,100,-,9,-,Good,Good DUT,
+Central,Pedestal,Top,171,-,65,10,0,100,-,9,-,Good,Good DUT,
+Central,Bias Scan,Top,172,15097,65,10,0,150,-,9,-,Good,Good DUT,
+Central,Pedestal,Top,173,-,65,10,0,150,-,9,-,Good,Good DUT,
+Central,Bias Scan,Top,174,15098,65,10,0,200,-,9,-,Good,Good DUT,
+Central,Pedestal,Top,175,-,65,10,0,200,-,9,-,Good,Good DUT,
+Central,Bias Scan,Top,176,15099,65,10,0,250,-,9,-,Good,Good DUT,
+Central,Pedestal,Top,177,-,65,10,0,250,-,9,-,Good,Good DUT,
+Central,Bias Scan,Top,178,15100,65,10,0,300,-,9,-,Good,Good DUT,
+Central,Pedestal,Top,179,-,65,10,0,300,-,9,-,Good,Good DUT,
+Central,Bias Scan,Top,180,15101,65,10,0,350,-,9,-,bad,,
+Central,Bias Scan,Top,181,15102,65,10,0,350,,9,-,Good,Good DUT,
+Central,Pedestal,Top,182,-,65,10,0,350,-,9,-,Good,Good DUT,
+Central,Bias Scan,Top,183,15103,65,10,0,400,-,9,-,Good,Good DUT,995k events. Beam went off. Data are good
+Central,Pedestal,Top,184,-,65,10,0,400,-,9,-,Good,Good DUT,
+Central,Bias Scan,Top,185,15104,65,10,0,450,-,9,-,Good,Good DUT,
+Central,Pedestal,Top,186,-,65,10,0,450,-,9,-,Good,Good DUT,
+Central,Calibration,Top,187,-,65,10,0,450,,9,-,Good,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+Central,Eff/Res,Top,188,15105,65,10,0,300,-,8.5,-,Good,Good,Beam went off during acquisition --> very long data taking (about 1 hour)
+Central,Eff/Res,Top,189,15106,70,10,0,300,-,9,-,Good,Good,
+Central,Eff/Res,Top,190,15107,65,18,0,300,-,9,-,Good,Good,
+Central,Eff/Res,Top,191,15108,70,18,0,300,-,9,-,Good,Good,
+PA,Eff/Res,Top,192,15109,65,0,0,300,-,9,-,Good,Good,
+PA,Eff/Res,Top,193,15110,70,0,0,300,-,9,-,Good,Good,
+PA,Eff/Res,Top,194,15111,65,2,0,300,-,9,-,Good,Good,
+PA,Eff/Res,Top,195,15112,70,2,0,300,-,9,-,Good,Good,
+PA,Pedestal,Top,196,-,-,-,-,300,-,9,-,Good,Good,

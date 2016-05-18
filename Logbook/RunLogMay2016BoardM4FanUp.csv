@@ -1,0 +1,119 @@
+BOARD M4,FANUP,,DUT Run #,Kepler Run #,Stage,Stage,Stage,Bias,Current,Temp,RH,Online Flag,Offline Flag,Note
+Sector,Purpose,Bias,Run #,Run #,X (mm),Y (mm),Rot (deg),(V),(uA),( C ),(%),(Good/Bad),(Good/Bad),
+Central,Bias Scan,Top,453,15289,38,10,0,50,23,-2.5,,Good,,500K events for bias scan runs
+Central,Pedestal,Top,454,-,38,10,0,50,23,-2.5,,Good,,
+Central,Bias Scan,Top,455,15290,38,10,0,100,23,-2.5,,Bad,,current goes in cmpliance
+PA,Bias Scan,Top,456,15291,38,2,0,100,30,-2.5,,Bad,,current goes in cmpliance
+PA,Bias Scan,Top,457,15292,38,2,0,100,30,-2.2,,Good,,
+PA,Pedestal,Top,458,-,38,2,0,100,30,-2.2,,Good,,
+PA,Bias Scan,Top,459,15293,38,2,0,150,32,-2.2,,Good,,
+PA,Pedestal,Top,460,-,38,2,0,150,32,-2.2,,Good,,
+PA,Bias Scan,Top,461,15294,38,2,0,200,33,-2.2,,Good,,Run stopped after about 400K events. Telescope voltage between 90V and 100V
+PA,Pedestal,Top,462,-,38,2,0,200,33,-2.2,,Good,,
+PA,Bias Scan,Top,463,15295,38,2,0,200,33,-2.2,,Good,,Beetle have been reconfigured between RUNs 462/463
+PA,Pedestal,Top,464,-,38,2,0,200,33,-2.2,,Good,,
+PA,Bias Scan,Top,465,15296,38,2,0,250,33,-2.3,,Good,,
+PA,Pedestal,Top,466,-,38,2,0,250,33,-2.3,,Good,,
+PA,Bias Scan,Top,467,15297,38,2,0,300,76,-2.6,,Good,,
+PA,Pedestal,Top,468,-,38,2,0,300,76,-2.6,,Good,,
+PA,Bias Scan,Top,469,15298,38,2,0,350,79,-2.5,,Good,,
+PA,Pedestal,Top,470,-,38,2,0,350,79,-2.6,,Good,,
+PA,Bias Scan,Top,471,15299,38,2,0,400,83,-2.6,,Good,,
+PA,Pedestal,Top,472,-,38,2,0,400,83,-2.6,,Good,,
+PA,Bias Scan,Top,473,15300,38,2,0,450,93,-2.7,,Good,,
+PA,Pedestal,Top,474,-,38,2,0,450,90,-2.7,,Good,,
+PA,Calibration,Top,475,-,38,2,0,450,90,-2.7,,Good,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,1M events for bias scan runs
+Central,Eff/Res,Top,476,15301,38,10,0,300,73,-2.8,,Good,,"Check that X=38, 42 and Y=0,2,10,18 are OK"
+Central,Eff/Res,Top,477,15302,42,10,0,300,72,-2.9,,Good,,Check the correct voltage to use during bias scan
+Central,Eff/Res,Top,478,15303,38,18,0,300,71,-2.9,,Good,,
+Central,Eff/Res,Top,479,15304,42,18,0,300,71,-2.9,,Good,,
+PA,Eff/Res,Top,480,15305,38,0,0,300,71,-3,,Good,,
+PA,Eff/Res,Top,481,15306,42,0,0,300,70,-3,,Good,,
+PA,Eff/Res,Top,482,15307,46,0,0,300,70,-3,,Good,,Beam at the very edge (right) of the sensor in X. 
+PA,Eff/Res,Top,483,15308,38,2,0,300,70,-3,,Good,,
+PA,Eff/Res,Top,484,15309,42,2,0,300,70,-3,,Good,,
+PA,Eff/Res,Top,485,15310,46,2,0,300,70,-3,,Good,,Beam at the very edge (right) of the sensor in X. 
+PA,Pedestal,Top,486,-,46,2,0,300,70,-3.1,,Good,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+PA,Angle scan,Top,487,15311,38,2,-10,300,70,-3.1,,Good,,500K events for angle scan runs
+PA,Angle scan,Top,488,15312,38,2,-5,300,70,-3.1,,Good,,
+PA,Angle scan,Top,489,15313,38,2,-2,300,68,-3.1,,Good,,
+PA,Angle scan,Top,490,15314,38,2,0,300,68,-3.1,,Good,,
+PA,Angle scan,Top,491,15315,38,2,2,300,68,-3.1,,Good,,beam went down. very long acquisition
+PA,Angle scan,Top,492,15316,38,2,5,300,69,-3.1,,Good,,
+PA,Angle scan,Top,493,15317,38,2,10,300,69,-3.1,,Good,,
+PA,Angle scan,Top,494,15318,38,2,15,300,69,-3.1,,Good,,
+PA,Angle scan,Top,495,15319,38,2,20,300,69,-3.2,,Good,,
+PA,Pedestal,Top,,,,,,,,,,,,NOT TAKEN
+,,,,,,,,,,,,,,
+PA,Custom,Top,496,-,38,2,20,300,70,-3.2,,,,Custom RUN to check that the gain does not change after reprogramming the beetle chips. To be compared with run 495
+PA,Pedestal,Top,497,-,38,2,20,300,70,-3.2,,,,
+,,,,,,,,,,,,,,
+PA,Bias Scan,Top,498,15320,38,2,0,200,63,-3.2,,Good,,100k events run
+PA,Bias Scan,Top,499,15321,38,2,0,200,63,-3.2,,Good,,
+PA,Pedestal,Top,500,-,38,2,0,200,63,-3.2,,Good,,
+PA,Bias Scan,Top,501,15322,38,2,0,250,66,-3.14,,Good,,
+PA,Pedestal,Top,502,-,38,2,0,250,66,-3.14,,Good,,
+PA,Bias Scan,Top,503,15323,38,2,0,300,69,-3.1,,Good,,
+PA,Pedestal,Top,504,-,38,2,0,300,69,-3.1,,Good,,
+PA,Bias Scan,Top,505,15324,38,2,0,350,73,-3.15,,Good,,
+PA,Pedestal,Top,506,-,38,2,0,350,73,-3.15,,Good,,
+PA,Bias Scan,Top,507,15325,38,2,0,400,77,-3.17,,Good,,
+PA,Pedestal,Top,508,-,38,2,0,400,77,-3.17,,Good,,
+PA,Bias Scan,Top,509,15326,38,2,0,450,83,-3.18,,Good,,
+PA,Pedestal,Top,510,-,38,2,0,450,83,-3.18,,Good,,
+PA,Calibration,Top,511,-,38,2,0,450,83,-3.18,,Good,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,500K events for bias scan runs
+PA,Bias Scan,Back,563,15365,38,2,0,50,51,-3.5,,Bad,,Mamba error: Transfer aborted
+PA,Bias Scan,Back,564,15366,38,2,0,50,51,-3.5,,Good,,
+PA,Pedestal,Back,565,-,38,2,0,50,51,-3.5,,Good,,"Ran with 500k events, not with nominal 100k"
+PA,Bias Scan,Back,566,15367,38,2,0,100,73,-3.5,,Good,,
+PA,Pedestal,Back,567,-,38,2,0,100,73,-3.5,,Good,,
+PA,Bias Scan,Back,568,15368,38,2,0,150,90,-3.5,,Good,,
+PA,Pedestal,Back,569,-,38,2,0,150,90,-3.5,,Good,,
+PA,Bias Scan,Back,570,15369,38,2,0,200,122,-3.5,,Good,,
+PA,Pedestal,Back,571,-,38,2,0,200,122,-3.5,,Good,,
+PA,Bias Scan,Back,572,15370,38,2,0,250,170,-3.5,,Good,,
+PA,Pedestal,Back,573,-,38,2,0,250,170,-3.5,,Good,,
+PA,Bias Scan,Back,574,15371,38,2,0,300,236,-3.5,,Good,,
+PA,Pedestal,Back,575,-,38,2,0,300,236,-3.5,,Good,,
+PA,Bias Scan,Back,576,15372,38,2,0,350,334,-3.5,,Good,,
+PA,Pedestal,Back,577,-,38,2,0,350,334,-3.5,,Good,,
+PA,Bias Scan,Back,578,15373,38,2,0,380,400,-3.5,,Good,,High Current: Could not reach 400V
+PA,Pedestal,Back,579,-,38,2,0,380,400,-3.5,,Good,,
+PA,Calibration,Back,580,-,38,2,0,380,400,-3.5,,Good,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,1M events for Eff/Res runs
+Central,Eff/Res,Back,552,15355,38,10,0,300,239,-3.5,,Good,,"Check that X=38, 42 and Y=0,2,10,18 are OK"
+Central,Eff/Res,Back,553,15356,42,10,0,300,239,-3.5,,Good,,Check the correct voltage to use during bias scan
+Central,Eff/Res,Back,554,15357,38,18,0,300,239,-3.5,,Good,,
+Central,Eff/Res,Back,555,15358,42,18,0,300,239,-3.5,,Good,,
+PA,Eff/Res,Back,556,15359,38,0,0,300,239,-3.5,,Good,,Returned ADC threshold to 200
+PA,Eff/Res,Back,557,15360,40,0,0,300,238,-3.5,,Good,,
+PA,Eff/Res,Back,558,15361,42,0,0,300,238,-3.5,,Good,,
+PA,Eff/Res,Back,559,15362,38,2,0,300,238,-3.5,,Good,,
+PA,Eff/Res,Back,560,15363,40,2,0,300,238,-3.5,,Good,,
+PA,Eff/Res,Back,561,15364,42,2,0,300,238,-3.5,,Good,,
+PA,Pedestal,Back,562,-,42,2,0,300,238,-3.5,,Good,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+PA,Angle scan,Back,581,15374,38,2,-10,300,245,-3.5,,Good,,500K events for angle scan runs
+PA,Angle scan,Back,582,15375,38,2,-5,300,233,-3.5,,Good,,
+PA,Angle scan,Back,583,15376,38,2,-2,300,234,-3.5,,Good,,
+PA,Angle scan,Back,584,15377,38,2,0,300,234,-3.5,,Good,,
+PA,Angle scan,Back,585,15378,38,2,2,300,235,-3.5,,Good,,
+PA,Angle scan,Back,586,15379,38,2,5,300,235,-3.5,,Good,,
+PA,Angle scan,Back,587,15380,38,2,10,300,235,-3.5,,Good,,
+PA,Angle scan,Back,588,15381,38,2,15,300,235,-3.5,,Good,,
+PA,Angle scan,Back,589,15382,38,2,20,300,235,-3.5,,Good,,
+PA,Pedestal,Back,590,-,38,2,,300,235,-3.5,,Good,,
+PA,Calibration,Back,591,-,38,2,,300,-,,,,,
