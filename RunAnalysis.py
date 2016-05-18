@@ -143,13 +143,12 @@ def RunAnalysis(board,PA,DUTRun) :
         print command
         # subprocess.call(command,shell=True)
         # Use python directly 
-        command = "python Analysis.py --board "+board+" --PA "+PA+" --DUTRun "+str(DUTRun)+" --ped "+str(ped)+" --filenameNoPathPhys "+filenameNoPathPhys+" --filenameNoPathPed "+filenameNoPathPed
+        # command = "python Analysis.py --board "+board+" --PA "+PA+" --DUTRun "+str(DUTRun)+" --ped "+str(ped)+" --filenameNoPathPhys "+filenameNoPathPhys+" --filenameNoPathPed "+filenameNoPathPed
+        command = "python Analysis.py --board "+board+" --PA "+PA+" --signal "+filenameNoPathPhys+" --pedestal "+filenameNoPathPed
         print command
         # subprocess.call(command,shell=True)
 
     else :
-        # !!! Run the analysis for all the runs.
-        
         # Select runs for the loop.
         print 'Running the analysis for all runs.'
         logbook_df_subset = logbook_df_san.loc[(logbook_df_san['Purpose'] == 'Bias scan') | (logbook_df_san['Purpose'] == 'Angle scan') | (logbook_df_san['Purpose'] == 'Eff/Res')].copy(deep=True)
@@ -186,7 +185,8 @@ def RunAnalysis(board,PA,DUTRun) :
             print command
             # subprocess.call(command,shell=True)
             # Use python directly 
-            command = "python run.py --board "+board+" --PA "+PA+" --DUTRun "+str(DUTRun)+" --ped "+str(ped)+" --filenameNoPathPhys "+filenameNoPathPhys+    " --filenameNoPathPed "+filenameNoPathPed
+            # command = "python run.py --board "+board+" --PA "+PA+" --DUTRun "+str(DUTRun)+" --ped "+str(ped)+" --filenameNoPathPhys "+filenameNoPathPhys+    " --filenameNoPathPed "+filenameNoPathPed
+            command = "python Analysis.py --board "+board+" --PA "+PA+" --signal "+filenameNoPathPhys+" --pedestal "+filenameNoPathPed
             print command
             # subprocess.call(command,shell=True)
 
