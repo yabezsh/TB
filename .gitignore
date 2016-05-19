@@ -1,7 +1,11 @@
 *.pyc
+<<<<<<< HEAD
 *.d
 *.so
 
 run_k.sh
 
+=======
+*.swp
+>>>>>>> 49226759072dfeadeb18a87cb5c08587546722a3
 LogRunAnalysis.dat
