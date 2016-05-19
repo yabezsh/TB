@@ -10,4 +10,6 @@ TbUT/options/TbUTPedestal.py
 TbUT/options/TbUTRun.py
 run_k.sh
 
+TbUT/options/UT/noise_Mamba.dat
+
 LogRunAnalysis.dat
