@@ -25,7 +25,14 @@ How to run it:
     
     to loop over all the data of the test beam.
     For example:
+
     python -u RunAnalysis.py --board M1 --PA FanIn --DUTRun 7 | tee LogRunAnalysis.dat
+    
+    to analyse one physics run, or
+
+    python -u RunAnalysis.py --board M1 --PA FanIn | tee LogRunAnalysis.dat
+    
+    to analyse all of them.
 """
 
 import argparse
