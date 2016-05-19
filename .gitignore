@@ -4,6 +4,7 @@
 *.swp
 
 run_k.sh
+clusterRun.sh
 
 TbUT/options/TbUTPedestal.py
 TbUT/options/TbUTRun.py

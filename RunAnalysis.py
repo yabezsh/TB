@@ -148,14 +148,43 @@ def RunAnalysis(board,PA,DUTRun) :
                 filenameNoPathPed = filename
 
         # Use qsub
-        command = "qsub -l cput=" + cput + " -v board="+board+",PA="+PA+",DUTRun="+str(DUTRun)+",ped="+str(ped)+",filenameNoPathPhys="+filenameNoPathPhys+",filenameNoPathPed="+filenameNoPathPed+" SubmitAnalysis.pbs" # No spaces after ','.
+        # command = "qsub -l cput=" + cput + " -v board="+board+",PA="+PA+",DUTRun="+str(DUTRun)+",ped="+str(ped)+",filenameNoPathPhys="+filenameNoPathPhys+",filenameNoPathPed="+filenameNoPathPed+" SubmitAnalysis.pbs" # No spaces after ','.
+        
+        # !!!
+        path = os.environ['PATH']
+        ld_library_path = os.environ['LD_LIBRARY_PATH']
+        kepler = os.environ['KEPLERROOT']
+
+        print path
+        print ld_library_path
+        print kepler
+
+        line_empty = '\n'
+        line_export_path = 'export PATH='+path+':$PATH\n'
+        line_export_ld_library_path = 'export LD_LIBRARY_PATH='+ld_library_path+':$LD_LIBRARY_PATH\n'
+        line_run = "python "+kepler+"/../Analysis.py -b "+board+" -r "+PA+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
+        
+        with open('clusterRun.sh','w') as text_file :
+            text_file.write(line_export_path)
+            text_file.write(line_empty)
+            text_file.write(line_export_ld_library_path)
+            text_file.write(line_empty)
+            text_file.write(line_run)
+            text_file.closed
+        command = 'chmod +x clusterRun.sh'
+        print '>', command
+        subprocess.call(command,shell=True,cwd='.')
+        # !!!
+
+        command = "bsub -q 8nm clusterRun.sh"
         print command
-        # subprocess.call(command,shell=True)
+        subprocess.call(command,shell=True)
+        
         # Use python directly 
         # command = "python Analysis.py --board "+board+" --PA "+PA+" --DUTRun "+str(DUTRun)+" --ped "+str(ped)+" --filenameNoPathPhys "+filenameNoPathPhys+" --filenameNoPathPed "+filenameNoPathPed
         command = "python Analysis.py -b "+board+" -r "+PA+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
         print command
-        subprocess.call(command,shell=True)
+        # subprocess.call(command,shell=True)
 
     else :
         # Select runs for the loop.
