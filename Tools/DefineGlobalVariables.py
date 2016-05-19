@@ -17,4 +17,4 @@ PADict['M1'] = ['FanIn','FanUp']
 PADict['M3'] = ['FanIn','FanUp']
 PADict['M4'] = ['FanIn','FanUp']
 
-MAMBA = '/afs/cern.ch/user/f/flionett/eos/lhcb/testbeam/ut/TemporaryData/May2016/MAMBA/'
+MAMBA = '/afs/cern.ch/user/c/cbetanco/eos/lhcb/testbeam/ut/TemporaryData/May2016/MAMBA/'
