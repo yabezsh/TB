@@ -1,3 +1,7 @@
+"""
+python Analysis.py -b M1 -r FanIn -s Run_Bias_Scan-M1-FanIn-7-15008.dat -p Pedestal-M1-FanIn-8.dat
+"""
+
 import os,sys,getopt, subprocess
 
 telescopePath = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/May2016/TimePix/RootFiles"
@@ -32,6 +36,8 @@ if PA!="FanIn" and PA!="FanUp":
 	sys.exit("Wrong PA option! Choose FanIn or FanUp!") 
 if boardName!="M1" and boardName!="M2" and boardName!="M3" and boardName!="M4":
         sys.exit("Choose the right board: M1, M2, M3, M4")
+
+print 'sigFile:', sigFile[:-4]
 
 inputFilePedestal = inputPathPedestal+"/"+boardName+"/"+PA+"/"+pedFile
 inputFileSignal = inputPathSignal+"/"+boardName+"/"+PA+"/"+sigFile
