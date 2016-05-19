@@ -9,6 +9,8 @@ How to run it:
     Include it in other python scripts.
 """
 
+import os
+
 boardList = ['M1','M3','M4']
 PAList = ['FanIn','FanUp']
 
@@ -17,4 +19,8 @@ PADict['M1'] = ['FanIn','FanUp']
 PADict['M3'] = ['FanIn','FanUp']
 PADict['M4'] = ['FanIn','FanUp']
 
-MAMBA = '/afs/cern.ch/user/f/flionett/eos/lhcb/testbeam/ut/TemporaryData/May2016/MAMBA/'
+user = os.environ['USER']
+userFirst = user[0]
+
+# MAMBA = '/afs/cern.ch/user/f/flionett/eos/lhcb/testbeam/ut/TemporaryData/May2016/MAMBA/'
+MAMBA = '/afs/cern.ch/user/'+userFirst+'/'+user+'/eos/lhcb/testbeam/ut/TemporaryData/May2016/MAMBA/'
