@@ -1,10 +1,9 @@
 *.pyc
 *.d
 *.so
+*.swp
 
 run_k.sh
-
-*.swp
 
 TbUT/options/TbUTPedestal.py
 TbUT/options/TbUTRun.py
