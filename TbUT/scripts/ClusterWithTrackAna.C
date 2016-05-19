@@ -956,7 +956,7 @@ void ClusterWithTrackAna::Loop()
    h3b->GetXaxis()->SetRangeUser(-5,5);
    h3b->GetYaxis()->SetRangeUser(-5,5);
 
-   TCanvas *c_align = new TCanvas("c_align", "alignment plots", 15000,1000);
+   TCanvas *c_align = new TCanvas("c_align", "alignment plots", 1500,1000);
    c_align->Divide(4,2);
    c_align->cd(1)->SetLeftMargin(0.13);
    addGraphics(h2, 1, "X_{trk} [mm]", "X_{DUT} [mm]");
