@@ -2,11 +2,17 @@
 //#include "ClusterWithTrackAna_Inputs.h"
 #include "ClusterWithTrackAna.h"
 #include <TH2.h>
+#include <TH3.h>
 #include <TStyle.h>
 #include <TLatex.h>
 #include <TCanvas.h>
 #include <iostream>
 #include <fstream>
+#include <TProfile2D.h>
+#include <cstring>
+#include <iostream>
+#include <string>
+
 
 Double_t langaufun(Double_t *x, Double_t *par) {
 
@@ -216,6 +222,12 @@ Int_t langaupro(Double_t *params, Double_t &maxx, Double_t &FWHM) {
 }
 
 void langaus(TH1F *hSNR) {
+
+  TString m_board2 = m_board;
+   m_board2 = m_board2.ReplaceAll("_All","");
+   m_board2 = m_board2.ReplaceAll("_Full","");
+   m_board2 = m_board2.ReplaceAll("_v7","");
+   std::ofstream MPVvalue(("MPV_"+ m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".txt").Data());
    // Fill Histogram
   
    // Fitting SNR histo
@@ -253,11 +265,15 @@ void langaus(TH1F *hSNR) {
    gStyle->SetStatFontSize(0.1);
    //gStyle->SetOptFit()
      //hSNR->GetXaxis()->SetRange(0,70);
-   hSNR->GetXaxis()->SetTitle("Cluster charge [ADC]");
-   hSNR->GetYaxis()->SetTitle("Entries");
+   hSNR->GetXaxis()->SetTitle("SNR");
+   //hSNR->GetYaxis()->SetTitle("Entries");
    hSNR->SetMaximum(1.5*hSNR->GetMaximum());
    hSNR->Draw();
    fitsnr->Draw("lsame");
+
+   MPVvalue << "SNR"<< "," << "error" << endl;
+   MPVvalue << fitsnr->GetParameter(1) << "," << fitsnr->GetParameter(0) << endl;
+   
 }
 
 
@@ -388,11 +404,11 @@ void ClusterWithTrackAna::Loop()
    TH1F* h1z = new TH1F("h1z","#DeltaX, low Charge",800,-2.0,2.0);
    TH1F* h1w = new TH1F("h1w","#DeltaX",20000,-100.0,100.0);
    TH1F* h1wY = new TH1F("h1wY","#DeltaX",20000,-100.0,100.0);
-   TH2F* h2 = new TH2F("h2","X_{DUT} vs X_{trk}",100,-8.0,8.0,100,-8,8);
+   TH2F* h2 = new TH2F("h2","X_{DUT} vs X_{trk}",100,-3,3,100,-3,3);
    TH2F* h3 = new TH2F("h3","Y_{trk} vs X_{trk}, with cluster",640,-8,8.0,640,-8,8);
-   TH2F* h311 = new TH2F("h311","Y_{trk} vs X_{trk}",64,-8,8.0,64,-8,8);
-   TH2F* h311a = new TH2F("h311a","Y_{trk} vs X_{trk}, with cluster",64,-8,8.0,64,-8,8);
-   TH2F* h311b = new TH2F("h311b","Y_{trk} vs X_{trk}",64,-8,8.0,64,-8,8);
+   TH2F* h311 = new TH2F("h311","Y_{trk} vs X_{trk}",100,-5,5,100,-6,6);
+   TH2F* h311a = new TH2F("h311a","Y_{trk} vs X_{trk}, with cluster",100,-5,5,100,-6,6);
+   TH2F* h311b = new TH2F("h311b","Y_{trk} vs X_{trk}",100,-5,5,100,-6,6);
    // TH2F* h3a = new TH2F("h3a","Y_{trk} vs X_{trk} in fiducial",640,-8,8.0,640,-8,8);
    // TH2F* h3b = new TH2F("h3b","Y_{trk} vs X_{trk}, with missed cluster",640,-8,8.0,640,-8,8);
    // TH2F* h3c = new TH2F("h3c","Y_{trk} vs X_{trk}, with found cluster",640,-8,8.0,640,-8,8);
@@ -413,9 +429,10 @@ void ClusterWithTrackAna::Loop()
    TH1F* h6b = new TH1F("h6b","Y position of matched cluster",400,-10.0,10.0);
    TH1F* h6d = new TH1F("h6d","Y position of matched cluster",400,-10.0,10.0);
 
-   TProfile *h8 = new TProfile("h8","#DeltaX vs #theta_{trk}",100,-5,5,-1.0,1.0);
-   TProfile *h9 = new TProfile("h9","#DeltaX vs Y_{trk} at DUT",1600,-8,8,-1.0,1.0);
-   TProfile *h9a = new TProfile("h9a","#DeltaX vs X_{trk} at DUT",20,-5,5,-1.0,1.0);
+   TProfile *h8 = new TProfile("h8","#DeltaX vs #theta_{trk}",50,-5,5,-1.0,1.0);
+   TProfile *h8b = new TProfile("h8","#DeltaX vs #theta_{trk}",50,-5,5,-1.0,1.0);
+   TProfile *h9 = new TProfile("h9","#DeltaX vs Y_{trk} at DUT",25,-6,6,-1.0,1.0);
+   TProfile *h9a = new TProfile("h9a","#DeltaX vs X_{trk} at DUT",25,-6,6,-1.0,1.0);
 
    TProfile *h10a = new TProfile("h10a","<ADC> vs strip",512,0,512,0.0,1000.0);
    TProfile *h10b = new TProfile("h10b","<ADC> vs strip",512,0,512,0.0,1000.0);
@@ -431,7 +448,7 @@ void ClusterWithTrackAna::Loop()
    TH1F* h122 = new TH1F("h122","Y position of matched cluster",15,-7.0,7.0); h12->Sumw2();
    TH1F* h123 = new TH1F("h123","y position of matched cluster",15,-7.0,7.0); h12->Sumw2();
    TH1F* h12c = new TH1F("h12c","X position of matched cluster",400,-10.0,10.0);h12c->Sumw2();
-   TH1F* h12a = new TH1F("h12a","Y position of track",25,-5.0,5.0); h12a->Sumw2();
+   TH1F* h12a = new TH1F("h12a","Y position of track",25,-6.0,6.0); h12a->Sumw2();
    TH1F* h12b = new TH1F("h12b","Y position of track",1600,-10.0,10.0); h12b->Sumw2();
 
    TH1F* h12dn = new TH1F("h12dn","X position of track",200,-10.0,10.0); h12dn->Sumw2();
@@ -540,6 +557,8 @@ void ClusterWithTrackAna::Loop()
    TH1F *hnoise = new TH1F("hnoise","Noise in connected channels",100,-200,200);
    TH1F *hnoiseChan = new TH1F("hnoiseChan","Noise in connected channels",200,0,200);
    TH1F *hnoisePerChannel = new TH1F("hnoisePerChannel","Noise",512,0,512);
+   TH3F *hSNR = new TH3F("hSNR","SNR",100,-6,6,100,-5,5,500,0,1000);
+   TH1F *hSNR_1 = new TH1F("hSNR_1","SNR",500,0,100);
 
    TH1F* h35 = new TH1F("h35","No. clusters / event",50,0.0,50.0);
    
@@ -698,10 +717,13 @@ void ClusterWithTrackAna::Loop()
             h15d->Fill(clustersTDC);          
             if(goodTime) h15e->Fill(clustersTDC);          
           }
-
-	 
-	  if(goodTrack && goodTime && awayFromCutout)
+	  int ichan_1 = clustersSeedPosition[j];
+	  Double_t snr = polarity*clustersCharge[j]/noise[ichan_1];
+	  if(goodTrack && goodTime && awayFromCutout) {
 	    h311->Fill(x_trk,y_trk);
+	    hSNR->Fill(y_trk,x_trk,snr);
+	    hSNR_1->Fill(snr);
+	  }
 
 	  if(goodTrack && goodTime && fabs(dx)<dxWin && awayFromCutout){
             h311a->Fill(x_trk,y_trk);
@@ -713,6 +735,7 @@ void ClusterWithTrackAna::Loop()
           }
           
           if(goodTrack && inFiducial && goodTime && fabs(dx)<dxWin) foundHitNoFid = true;
+
 
 
           if(goodTrack && inFiducial && goodTime && awayFromCutout) {
@@ -762,7 +785,8 @@ void ClusterWithTrackAna::Loop()
                 h17a->Fill(fracStrip,rc);
                 h17b->Fill(fracStrip,rc);
               }
-              h8->Fill(1000*vec_trk_tx->at(k),dx);    
+              h8->Fill(1000*vec_trk_tx->at(k),dx);
+	      h8b->Fill(1000*vec_trk_ty->at(k),dx);
               h9->Fill(y_trk,dx);
               h9a->Fill(x_trk,dx);
               h5b->Fill(x_trk);
@@ -773,6 +797,9 @@ void ClusterWithTrackAna::Loop()
 
               h11n->Fill(detStrip);
               hcTrk->Fill(polarity*clustersCharge[j]);
+	      //Double_t snr = polarity*clustersCharge[j]/noise[ichan];
+	      //hSNR->Fill(y_trk,x_trk,snr);
+	      //hSNR->
               if(clustersSize[j]==1) hcTrkCorr->Fill(polarity*clustersCharge[j]);
               if(clustersSize[j]==2 && iPeak==1) hcTrkCorr->Fill(polarity*clustersCharge[j]*(1.0-chargeCorrSlopeOdd));
               if(clustersSize[j]==2 && iPeak==0) hcTrkCorr->Fill(polarity*clustersCharge[j]*(1.0-chargeCorrSlopeEven));
@@ -929,24 +956,26 @@ void ClusterWithTrackAna::Loop()
    h3b->GetXaxis()->SetRangeUser(-5,5);
    h3b->GetYaxis()->SetRangeUser(-5,5);
 
-   TCanvas *c = new TCanvas("c","Residuals",1500,1000);
-   c->Divide(4,3);
-   c->cd(1)->SetLeftMargin(0.13);
+   TCanvas *c_align = new TCanvas("c_align", "alignment plots", 15000,1000);
+   c_align->Divide(4,2);
+   c_align->cd(1)->SetLeftMargin(0.13);
    addGraphics(h2, 1, "X_{trk} [mm]", "X_{DUT} [mm]");
    double dM = yMax;
    if(xMax>dM) dM = xMax;
    h2->GetXaxis()->SetRangeUser(-1.0*dM-1,dM+1);
    h2->GetYaxis()->SetRangeUser(-1.0*dM-1,dM+1);
    h2->SetMinimum(1);
+   h2->SetTitle(0);
    h2->Draw("colz");
 
-   c->cd(2)->SetLeftMargin(0.13);;
+   c_align->cd(2)->SetLeftMargin(0.13);;
    addGraphics(h1, 1, "#DeltaX [mm]", "");
    addGraphics(h1z, 2, "#DeltaX [mm]", "");
    addGraphics(h1a, 3, "#DeltaX [mm]", "");
    addGraphics(h1b, 6, "#DeltaX [mm]", "");
    h1->GetXaxis()->SetRangeUser(-0.3,0.3);
    if(m_board.Contains("A1")) h1->GetXaxis()->SetRangeUser(-1.5,1.5);
+   h1->SetTitle(0);
    h1->SetMaximum(1.2*h1->GetMaximum());
    h1->Draw();   
    //h1z->Draw("same");
@@ -959,8 +988,7 @@ void ClusterWithTrackAna::Loop()
    l1->SetLineColor(kRed); l2->SetLineColor(kRed);
    l1a->SetLineColor(kBlue); l2a->SetLineColor(kBlue); l1a->SetLineWidth(2); l2a->SetLineWidth(2);
    l1->Draw(); l2->Draw();
-   //l1a->Draw(); l2a->Draw();
-
+   
    TLegend* legend3 = new TLegend(0.15,0.70,0.40,0.89);
    legend3->SetFillStyle(0);
    legend3->SetBorderSize(0);
@@ -968,61 +996,44 @@ void ClusterWithTrackAna::Loop()
    legend3->SetTextSize(0.045);
    
    legend3->AddEntry(h1,"All","L"); 
-   //legend3->AddEntry(h1z,"ADC < 250","L"); 
    legend3->AddEntry(h1a,"1-strip","L"); 
    legend3->AddEntry(h1b,"2-strip","L"); 
    legend3->Draw();
-   
-   c->cd(3)->SetLeftMargin(0.13);;
-   addGraphics(h8, 1, "#theta_{X}^{trk} [mrad]", "#DeltaX [mm]");
-   h8->GetXaxis()->SetRangeUser(txMin-0.1,txMax+0.1);   
-   h8->GetYaxis()->SetRangeUser(-0.1,0.1);   
-   h8->Draw();
-   c->cd(4)->SetLeftMargin(0.13);;
-   addGraphics(h9, 1, "Y^{trk} [mm]", "#DeltaX [mm]");
-   h9->GetXaxis()->SetRangeUser(yMin-1,yMax+1);   
-   h9->GetYaxis()->SetRangeUser(-0.1,0.1);   
-   h9->Draw();
-   c->cd(5)->SetLeftMargin(0.13);;
+  
+   c_align->cd(3)->SetLeftMargin(0.13);;
    addGraphics(h9a, 1, "X^{trk} [mm]", "#DeltaX [mm]");
    h9a->GetXaxis()->SetRangeUser(-4,4);   
-   h9a->GetYaxis()->SetRangeUser(-0.1,0.1);   
+   h9a->GetYaxis()->SetRangeUser(-0.1,0.1);
+   h9a->SetTitle(0);
    h9a->Draw();
+ 
+   c_align->cd(4)->SetLeftMargin(0.13);;
+   addGraphics(h9, 1, "Y^{trk} [mm]", "#DeltaX [mm]");
+   h9->GetXaxis()->SetRangeUser(yMin-1,yMax+1);   
+   h9->GetYaxis()->SetRangeUser(-0.1,0.1);
+   h9->SetTitle(0);
+   h9->Draw();
+  
+   c_align->cd(5)->SetLeftMargin(0.13);;
+   addGraphics(h8, 1, "#theta_{X}^{trk} [mrad]", "#DeltaX [mm]");
+   h8->GetXaxis()->SetRangeUser(txMin-0.1,txMax+0.1);   
+   h8->GetYaxis()->SetRangeUser(-0.1,0.1);  
+   h8->SetTitle(0);
+   h8->Draw();
 
-   //c->cd(6)->SetLeftMargin(0.13);;
-   //h3c->Divide(h3a);
-   //h122->Divide(h123);
-   //h311a->Divide(h311);
-   //addGraphics(h3c, 1, "X_{trk} [mm]", "Y_{trk} [mm]");
-   //h3c->GetXaxis()->SetRangeUser(xMin-1,xMax+1);   
-   //h3c->GetYaxis()->SetRangeUser(yMin-1,yMax+1);
-   //h3c->GetZaxis()->SetRangeUser(0,1);
-   //h3c->SetTitle("efficiency");   
-   //h3c->Draw("colz");
-
-   //h3c->GetXaxis()->SetRangeUser(xMin-1,xMax+1);   
-   //h3c->GetYaxis()->SetRangeUser(yMin-1,yMax+1);
-   //h3c->GetZaxis()->SetRangeUser(0,1);
-   //h3c->SetTitle("Efficiency");   
-   //h3c->Draw("colz");
-   // if(holeQuadPar[0]!=0) funchole->Draw("same");
-   // if(fabs(xLeftHole)<900 && fabs(xRightHole)<900){
-   //   TBox *b1 = new TBox(xMin,yMin,xLeftHole,yMax);
-   //   TBox *b2 = new TBox(xRightHole,yMin,xMax,yMax);
-   //   b1->SetLineColor(kBlue); b1->SetLineWidth(2);b1->SetFillStyle(0);   
-   //   b1->Draw();
-   //   b2->SetLineColor(kBlue); b2->SetLineWidth(2);b2->SetFillStyle(0);   
-   //   b2->Draw();
-   // }else{   
-   //   TBox *b = new TBox(xMin,yMin,xMax,yMax);
-   //   b->SetLineColor(kBlue); b->SetLineWidth(2);b->SetFillStyle(0);   
-   //   b->Draw();
-   // }
+   c_align->cd(6)->SetLeftMargin(0.13);;
+   addGraphics(h8b, 1, "#theta_{Y}^{trk} [mrad]", "#DeltaX [mm]");
+   h8b->GetXaxis()->SetRangeUser(tyMin-0.1,tyMax+0.1);   
+   h8b->GetYaxis()->SetRangeUser(-0.1,0.1);   
+   h8b->SetTitle(0);
+   h8b->Draw();
    
+   //h11a->Draw("same")
 
-   c->cd(7)->SetLeftMargin(0.13);;
+   c_align->cd(7)->SetLeftMargin(0.13);;
    addGraphics(h5, 1, "#theta_{X}^{trk} [mrad]", "");
    h5->GetXaxis()->SetRangeUser(txMin-0.1,txMax+0.1);   
+   h5->SetTitle(0);
    h5->Draw();
    h5c->SetLineColor(2); h5c->Draw("same");
    TLine *l1b = new TLine(txMin,0,txMin,h5->GetMaximum());
@@ -1030,85 +1041,79 @@ void ClusterWithTrackAna::Loop()
    l1b->SetLineColor(kBlue); l2b->SetLineColor(kBlue); l1b->SetLineWidth(2); l2b->SetLineWidth(2);
    l1b->Draw(); l2b->Draw();
 
-   c->cd(8)->SetLeftMargin(0.13);
+   c_align->cd(8)->SetLeftMargin(0.13);
    addGraphics(h6, 1, "#theta_{Y}^{trk} [mrad]", "");
    h6->GetXaxis()->SetRangeUser(tyMin-0.1,tyMax+0.1);   
+   h6->SetTitle(0);
    h6->Draw();
    h6c->SetLineColor(2); h6c->Draw("same");
    TLine *l1c = new TLine(tyMin,0,tyMin,h6->GetMaximum());
    TLine *l2c = new TLine(tyMax,0,tyMax,h6->GetMaximum());
    l1c->SetLineColor(kBlue); l2c->SetLineColor(kBlue); l1c->SetLineWidth(2); l2c->SetLineWidth(2);   
    l1c->Draw(); l2c->Draw();
-   
-   c->cd(6)->SetLeftMargin(0.13);;
-   h311a->Divide(h311);
-   addGraphics(h311a,1, "X_{trk} [mm]","Y_{trk} [mm]");
-   h311a->SetTitle("Efficiency");
-   //addGraphics(h4, 1, "Strip # with cluster", "");
-   //addGraphics(h4a, 2, "Strip # with cluster", "");
-   h311a->GetXaxis()->SetRangeUser(-5,5);
-   h311a->GetYaxis()->SetRangeUser(-5,5);
-   h311a->GetZaxis()->SetRangeUser(0,1);
-   h311a->Draw("colz");
-   if(holeQuadPar[0]!=0) funchole->Draw("same");
-   if(fabs(xLeftHole)<900 && fabs(xRightHole)<900){
-     TBox *b1 = new TBox(xMin,yMin,xLeftHole,yMax);
-     TBox *b2 = new TBox(xRightHole,yMin,xMax,yMax);
-     b1->SetLineColor(kBlue); b1->SetLineWidth(2);b1->SetFillStyle(0);   
-     b1->Draw();
-     b2->SetLineColor(kBlue); b2->SetLineWidth(2);b2->SetFillStyle(0);   
-     b2->Draw();
-   }else{   
-     TBox *b = new TBox(xMin,yMin,xMax,yMax);
-     b->SetLineColor(kBlue); b->SetLineWidth(2);b->SetFillStyle(0);   
-     b->Draw();
-   }
-   //h11a->Draw("same");
-   //l1d->Draw(); l2d->Draw();
-   
-   //TLegend* legend4 = new TLegend(0.15,0.70,0.94,0.89);
-   //legend4->SetFillStyle(0);
-   //legend4->SetBorderSize(0);
-   //legend4->SetFillStyle(0);
-   //legend4->SetTextSize(0.045);
-   //
-   //legend4->AddEntry(h4,"Sensor strip ch #","L"); 
-   //legend4->AddEntry(h4a,"Electr. ch #","L");
-   //
-   //legend4->Draw();
 
+   c_align->Print("Plots/AlignPlot_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
+   c_align->Print("Plots/AlignPlot_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");
 
-   c->cd(9)->SetLeftMargin(0.13);;
-   addGraphics(hcAll, 1, "Cluster charge [ADC]", "Entries");
-   addGraphics(hcTrk1, 3, "Cluster charge [ADC]", "");
-   addGraphics(hcTrk2, 6, "Cluster charge [ADC]", "");
+   TCanvas *c_perform = new TCanvas("c_perform","Performance",1500,1000);
+   c_perform->Divide(3,2);
+
+    c_perform->cd(1);
+   addGraphics(hnoisePerChannel,1,"noise per channel");
+   hnoisePerChannel->Draw();
+
+   //c_perform->cd(1)->SetLeftMargin(0.13);;
+   //addGraphics(h12cc, 1, "Cluster Size", "");   
+   //h12cc->GetYaxis()->SetTitleOffset(1.2);
+   //h12cc->Draw();
+
+   c_perform->cd(2)->SetLeftMargin(0.13);
+   hcAll->GetXaxis()->SetTitle("SNR");
+   addGraphics(hcAll, 1, "SNR", "Entries");
+
+   //addGraphics(hcTrk1, 3, "Cluster charge [ADC]", "");
+   //addGraphics(hcTrk2, 6, "Cluster charge [ADC]", "");
    //gStyle->SetOptStat(11111);
    //gStyle->SetOptFit(111);
-   langaus(hcTrk);
+   langaus(hSNR_1);
    //hcAll->SetMaximum(1.25*hcAll->GetMaximum());
    //hcAll->Draw("same");
-   hcTrk->SetLineColor(kBlue); hcTrk->SetLineWidth(2);
-   //hcTrk->Draw("same"); 
+   hSNR_1->SetLineColor(kBlue); //hSNR_1->SetLineWidth(2);
+   //hcTrk->Draw("same");
+   hSNR_1->Draw("same");
    //langaus(hcTrk);
-   hcTrk1->Draw("same"); 
-   hcTrk2->Draw("same"); 
+   //hcTrk1->Draw("same"); 
+   //hcTrk2->Draw("same"); 
   
-   TLegend* legend2 = new TLegend(0.15,0.70,0.94,0.89);
-   legend2->SetFillStyle(0);
-   legend2->SetBorderSize(0);
-   legend2->SetFillStyle(0);
-   legend2->SetTextSize(0.045);
+   //TLegend* legend2 = new TLegend(0.15,0.70,0.94,0.89);
+   //legend2->SetFillStyle(0);
+   //legend2->SetBorderSize(0);
+   //legend2->SetFillStyle(0);
+   //legend2->SetTextSize(0.045);
    
    //legend2->AddEntry(hcAll,"All clusters, trk in Fid","L"); 
-   legend2->AddEntry(hcTrk,"Clusters w/ tracks","L");
+   //legend2->AddEntry(hcTrk,"Clusters w/ tracks","L");
    //legend2->AddEntry(hcAll,"All clusters","L");
-    legend2->AddEntry(hcTrk1,"1-strip Clusters","L");
-   legend2->AddEntry(hcTrk2,"2-strip Clusters","L");
+   //legend2->AddEntry(hcTrk1,"1-strip Clusters","L");
+   //legend2->AddEntry(hcTrk2,"2-strip Clusters","L");
 
-   legend2->Draw();
+   //legend2->Draw();
+   
+   //c_perform->cd(3)->SetLeftMargin(0.13);;
+   //addGraphics(h12cc, 1, "Cluster Size", "Entries");   
+   //h12cc->GetYaxis()->SetTitleOffset(1.2);
+   //h12cc->Draw();
 
-    c->cd(10)->SetLeftMargin(0.13);;
-gStyle->SetOptStat(0);    
+   c_perform->cd(3)->SetLeftMargin(0.13);;
+   addGraphics(h2p, 1, "TDC time / 2.5 ns", "<ADC>");
+   h2p->Draw();
+   TLine *l1e = new TLine(tdcLo,0,tdcLo,h2p->GetMaximum());
+   TLine *l2e = new TLine(tdcHi,0,tdcHi,h2p->GetMaximum());
+   l1e->SetLineColor(kBlue); l2e->SetLineColor(kBlue); l1e->SetLineWidth(2); l2e->SetLineWidth(2);   
+   l1e->Draw(); l2e->Draw();
+
+   c_perform->cd(4)->SetLeftMargin(0.13);;
+   gStyle->SetOptStat(0);    
     //h311a->Divide(h311);
 //addGraphics(h311b,1, "X_{trk} [mm]","Y_{trk} [mm]");
    h311b->SetTitle("All Tracks");
@@ -1116,8 +1121,8 @@ gStyle->SetOptStat(0);
    h311b->GetYaxis()->SetTitle("Y_{trk} [mm]");
    //addGraphics(h4, 1, "Strip # with cluster", "");
    //addGraphics(h4a, 2, "Strip # with cluster", "");
-   h311b->GetXaxis()->SetRangeUser(-5,5);
-   h311b->GetYaxis()->SetRangeUser(-5,5);
+   //h311b->GetXaxis()->SetRangeUser(-4,4);
+   //h311b->GetYaxis()->SetRangeUser(-4,4);
    //h311->GetZaxis()->SetRangeUser(0,1);
    h311b->Draw("colz");
    if(holeQuadPar[0]!=0) funchole->Draw("same");
@@ -1134,48 +1139,295 @@ gStyle->SetOptStat(0);
      b->Draw();
    }
 
-   c->cd(11)->SetLeftMargin(0.13);;
-   //addGraphics(h10a, 1, "Strip #", "<ADC>");
-   //addGraphics(h10b, 2, "Strip #", "<ADC>");
-   //addGraphics(h10c, 4, "Strip #", "<ADC>");
-   //int ixl = iLo;
-   //int ixh = iHi;
-   //int yh = hcTrk->GetMean()-50;
-   //h10a->GetXaxis()->SetRangeUser(ixl-2,ixh+2);   
-   //h10a->GetYaxis()->SetRangeUser(yh-200,yh+300);
-   /*
-   h10a->Draw();
-   h10b->SetLineColor(2);h10b->SetMarkerColor(2);
-   h10b->Draw("same");
-   h10c->SetLineColor(4);h10c->SetMarkerColor(4);
-   h10c->Draw("same");
+   c_perform->cd(5)->SetLeftMargin(0.13);;
+   h311a->Divide(h311);
+   addGraphics(h311a,1, "X_{trk} [mm]","Y_{trk} [mm]");
+   h311a->SetTitle("Efficiency");
+   //addGraphics(h4, 1, "Strip # with cluster", "");
+   //addGraphics(h4a, 2, "Strip # with cluster", "");
+   h311a->GetXaxis()->SetRangeUser(-5,5);
+   h311a->GetYaxis()->SetRangeUser(-6,6);
+   h311a->GetZaxis()->SetRangeUser(0,1);
+   h311a->Draw("colz");
+   if(holeQuadPar[0]!=0) funchole->Draw("same");
+   if(fabs(xLeftHole)<900 && fabs(xRightHole)<900){
+     TBox *b1 = new TBox(xMin,yMin,xLeftHole,yMax);
+     TBox *b2 = new TBox(xRightHole,yMin,xMax,yMax);
+     b1->SetLineColor(kBlue); b1->SetLineWidth(2);b1->SetFillStyle(0);   
+     b1->Draw();
+     b2->SetLineColor(kBlue); b2->SetLineWidth(2);b2->SetFillStyle(0);   
+     b2->Draw();
+   }else{   
+     TBox *b = new TBox(xMin,yMin,xMax,yMax);
+     b->SetLineColor(kBlue); b->SetLineWidth(2);b->SetFillStyle(0);   
+     b->Draw();
+   }
 
-   TLegend* legend1 = new TLegend(0.25,0.75,0.94,0.89);
-   legend1->SetFillStyle(0);
-   legend1->SetBorderSize(0);
-   legend1->SetFillStyle(0);
-   legend1->SetTextSize(0.045);
    
-   legend1->AddEntry(h10a,"Top half in Y","LEP"); 
-   legend1->AddEntry(h10b,"Bottom half in Y","LEP"); 
-   legend1->AddEntry(h10c,"Top 2 mm in Y","LEP"); 
-   legend1->Draw();
-   */
-   addGraphics(h12cc, 1, "Cluster Size", "Entries");   
-   h12cc->GetYaxis()->SetTitleOffset(1.2);
-   h12cc->Draw();
-
-   c->cd(12)->SetLeftMargin(0.13);;
-   addGraphics(h2p, 1, "TDC time / 2.5 ns", "<ADC>");
-   h2p->Draw();
-   TLine *l1e = new TLine(tdcLo,0,tdcLo,h2p->GetMaximum());
-   TLine *l2e = new TLine(tdcHi,0,tdcHi,h2p->GetMaximum());
-   l1e->SetLineColor(kBlue); l2e->SetLineColor(kBlue); l1e->SetLineWidth(2); l2e->SetLineWidth(2);   
-   l1e->Draw(); l2e->Draw();
    // c->cd(12)->Print("testing.root");
+   
+   
 
-  c->Print("Plots/plot_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
-  c->Print("Plots/plot_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");
+   c_perform->cd(6);
+   hSNR->GetXaxis()->SetTitle("X_{trk} [mm]");
+   hSNR->GetYaxis()->SetTitle("Y_{trk} [mm]");
+   addGraphics(hSNR,1, "X_{trk} [mm]","Y_{trk} [mm]");
+   
+   hSNR->GetZaxis()->SetRangeUser(0,60);
+   hSNR->Project3DProfile("xy")->Draw("colz");
+
+   
+
+   c_perform->Print("Plots/PerformancePlot_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
+   c_perform->Print("Plots/PerformancePlot_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");
+
+   //TCanvas *c = new TCanvas("c","Residuals",1500,1000);
+   //c->Divide(4,3);
+   //c->cd(1)->SetLeftMargin(0.13);
+   //addGraphics(h2, 1, "X_{trk} [mm]", "X_{DUT} [mm]");
+   //double dM = yMax;
+   //if(xMax>dM) dM = xMax;
+   //h2->GetXaxis()->SetRangeUser(-1.0*dM-1,dM+1);
+   //h2->GetYaxis()->SetRangeUser(-1.0*dM-1,dM+1);
+   //h2->SetMinimum(1);
+   //h2->Draw("colz");
+   //
+   //c->cd(2)->SetLeftMargin(0.13);;
+   //addGraphics(h1, 1, "#DeltaX [mm]", "");
+   //addGraphics(h1z, 2, "#DeltaX [mm]", "");
+   //addGraphics(h1a, 3, "#DeltaX [mm]", "");
+   //addGraphics(h1b, 6, "#DeltaX [mm]", "");
+   //h1->GetXaxis()->SetRangeUser(-0.3,0.3);
+   //if(m_board.Contains("A1")) h1->GetXaxis()->SetRangeUser(-1.5,1.5);
+   //h1->SetMaximum(1.2*h1->GetMaximum());
+   //h1->Draw();   
+   ////h1z->Draw("same");
+   //h1a->Draw("same");
+   //h1b->Draw("same");
+   //TLine *l1 = new TLine(-stripPitch/2.,0,-stripPitch/2.,0.5*h1->GetMaximum());
+   //TLine *l2 = new TLine(stripPitch/2,0,stripPitch/2,0.5*h1->GetMaximum());
+   //TLine *l1a = new TLine(-dxWin,0,-dxWin,0.5*h1->GetMaximum());
+   //TLine *l2a = new TLine(dxWin,0,dxWin,0.5*h1->GetMaximum());
+   //l1->SetLineColor(kRed); l2->SetLineColor(kRed);
+   //l1a->SetLineColor(kBlue); l2a->SetLineColor(kBlue); l1a->SetLineWidth(2); l2a->SetLineWidth(2);
+   //l1->Draw(); l2->Draw();
+   ////l1a->Draw(); l2a->Draw();
+   //
+   //TLegend* legend3 = new TLegend(0.15,0.70,0.40,0.89);
+   //legend3->SetFillStyle(0);
+   //legend3->SetBorderSize(0);
+   //legend3->SetFillStyle(0);
+   //legend3->SetTextSize(0.045);
+   //
+   //legend3->AddEntry(h1,"All","L"); 
+   ////legend3->AddEntry(h1z,"ADC < 250","L"); 
+   //legend3->AddEntry(h1a,"1-strip","L"); 
+   //legend3->AddEntry(h1b,"2-strip","L"); 
+   //legend3->Draw();
+   //
+   //c->cd(3)->SetLeftMargin(0.13);;
+   //addGraphics(h8, 1, "#theta_{X}^{trk} [mrad]", "#DeltaX [mm]");
+   //h8->GetXaxis()->SetRangeUser(txMin-0.1,txMax+0.1);   
+   //h8->GetYaxis()->SetRangeUser(-0.1,0.1);   
+   //h8->Draw();
+   //c->cd(4)->SetLeftMargin(0.13);;
+   //addGraphics(h9, 1, "Y^{trk} [mm]", "#DeltaX [mm]");
+   //h9->GetXaxis()->SetRangeUser(yMin-1,yMax+1);   
+   //h9->GetYaxis()->SetRangeUser(-0.1,0.1);   
+   //h9->Draw();
+   //c->cd(5)->SetLeftMargin(0.13);;
+   //addGraphics(h9a, 1, "X^{trk} [mm]", "#DeltaX [mm]");
+   //h9a->GetXaxis()->SetRangeUser(-4,4);   
+   //h9a->GetYaxis()->SetRangeUser(-0.1,0.1);   
+   //h9a->Draw();
+   //
+   ////c->cd(6)->SetLeftMargin(0.13);;
+   ////h3c->Divide(h3a);
+   ////h122->Divide(h123);
+   ////h311a->Divide(h311);
+   ////addGraphics(h3c, 1, "X_{trk} [mm]", "Y_{trk} [mm]");
+   ////h3c->GetXaxis()->SetRangeUser(xMin-1,xMax+1);   
+   ////h3c->GetYaxis()->SetRangeUser(yMin-1,yMax+1);
+   ////h3c->GetZaxis()->SetRangeUser(0,1);
+   ////h3c->SetTitle("efficiency");   
+   ////h3c->Draw("colz");
+   //
+   ////h3c->GetXaxis()->SetRangeUser(xMin-1,xMax+1);   
+   ////h3c->GetYaxis()->SetRangeUser(yMin-1,yMax+1);
+   ////h3c->GetZaxis()->SetRangeUser(0,1);
+   ////h3c->SetTitle("Efficiency");   
+   ////h3c->Draw("colz");
+   //// if(holeQuadPar[0]!=0) funchole->Draw("same");
+   //// if(fabs(xLeftHole)<900 && fabs(xRightHole)<900){
+   ////   TBox *b1 = new TBox(xMin,yMin,xLeftHole,yMax);
+   ////   TBox *b2 = new TBox(xRightHole,yMin,xMax,yMax);
+   ////   b1->SetLineColor(kBlue); b1->SetLineWidth(2);b1->SetFillStyle(0);   
+   ////   b1->Draw();
+   ////   b2->SetLineColor(kBlue); b2->SetLineWidth(2);b2->SetFillStyle(0);   
+   ////   b2->Draw();
+   //// }else{   
+   ////   TBox *b = new TBox(xMin,yMin,xMax,yMax);
+   ////   b->SetLineColor(kBlue); b->SetLineWidth(2);b->SetFillStyle(0);   
+   ////   b->Draw();
+   //// }
+   //
+   //
+   //c->cd(7)->SetLeftMargin(0.13);;
+   //addGraphics(h5, 1, "#theta_{X}^{trk} [mrad]", "");
+   //h5->GetXaxis()->SetRangeUser(txMin-0.1,txMax+0.1);   
+   //h5->Draw();
+   //h5c->SetLineColor(2); h5c->Draw("same");
+   //TLine *l1b = new TLine(txMin,0,txMin,h5->GetMaximum());
+   //TLine *l2b = new TLine(txMax,0,txMax,h5->GetMaximum());
+   //l1b->SetLineColor(kBlue); l2b->SetLineColor(kBlue); l1b->SetLineWidth(2); l2b->SetLineWidth(2);
+   //l1b->Draw(); l2b->Draw();
+   //
+   //c->cd(8)->SetLeftMargin(0.13);
+   //addGraphics(h6, 1, "#theta_{Y}^{trk} [mrad]", "");
+   //h6->GetXaxis()->SetRangeUser(tyMin-0.1,tyMax+0.1);   
+   //h6->Draw();
+   //h6c->SetLineColor(2); h6c->Draw("same");
+   //TLine *l1c = new TLine(tyMin,0,tyMin,h6->GetMaximum());
+   //TLine *l2c = new TLine(tyMax,0,tyMax,h6->GetMaximum());
+   //l1c->SetLineColor(kBlue); l2c->SetLineColor(kBlue); l1c->SetLineWidth(2); l2c->SetLineWidth(2);   
+   //l1c->Draw(); l2c->Draw();
+   //
+   //c->cd(6)->SetLeftMargin(0.13);;
+   //h311a->Divide(h311);
+   //addGraphics(h311a,1, "X_{trk} [mm]","Y_{trk} [mm]");
+   //h311a->SetTitle("Efficiency");
+   ////addGraphics(h4, 1, "Strip # with cluster", "");
+   ////addGraphics(h4a, 2, "Strip # with cluster", "");
+   //h311a->GetXaxis()->SetRangeUser(-5,5);
+   //h311a->GetYaxis()->SetRangeUser(-5,5);
+   //h311a->GetZaxis()->SetRangeUser(0,1);
+   //h311a->Draw("colz");
+   //if(holeQuadPar[0]!=0) funchole->Draw("same");
+   //if(fabs(xLeftHole)<900 && fabs(xRightHole)<900){
+   //  TBox *b1 = new TBox(xMin,yMin,xLeftHole,yMax);
+   //  TBox *b2 = new TBox(xRightHole,yMin,xMax,yMax);
+   //  b1->SetLineColor(kBlue); b1->SetLineWidth(2);b1->SetFillStyle(0);   
+   //  b1->Draw();
+   //  b2->SetLineColor(kBlue); b2->SetLineWidth(2);b2->SetFillStyle(0);   
+   //  b2->Draw();
+   //}else{   
+   //  TBox *b = new TBox(xMin,yMin,xMax,yMax);
+   //  b->SetLineColor(kBlue); b->SetLineWidth(2);b->SetFillStyle(0);   
+   //  b->Draw();
+   //}
+   ////h11a->Draw("same");
+   ////l1d->Draw(); l2d->Draw();
+   //
+   ////TLegend* legend4 = new TLegend(0.15,0.70,0.94,0.89);
+   ////legend4->SetFillStyle(0);
+   ////legend4->SetBorderSize(0);
+   ////legend4->SetFillStyle(0);
+   ////legend4->SetTextSize(0.045);
+   ////
+   ////legend4->AddEntry(h4,"Sensor strip ch #","L"); 
+   ////legend4->AddEntry(h4a,"Electr. ch #","L");
+   ////
+   ////legend4->Draw();
+   //
+   //
+   //c->cd(9)->SetLeftMargin(0.13);;
+   //addGraphics(hcAll, 1, "Cluster charge [ADC]", "Entries");
+   //addGraphics(hcTrk1, 3, "Cluster charge [ADC]", "");
+   //addGraphics(hcTrk2, 6, "Cluster charge [ADC]", "");
+   ////gStyle->SetOptStat(11111);
+   ////gStyle->SetOptFit(111);
+   //langaus(hcTrk);
+   ////hcAll->SetMaximum(1.25*hcAll->GetMaximum());
+   ////hcAll->Draw("same");
+   //hcTrk->SetLineColor(kBlue); hcTrk->SetLineWidth(2);
+   ////hcTrk->Draw("same"); 
+   ////langaus(hcTrk);
+   //hcTrk1->Draw("same"); 
+   //hcTrk2->Draw("same"); 
+   //
+   //TLegend* legend2 = new TLegend(0.15,0.70,0.94,0.89);
+   //legend2->SetFillStyle(0);
+   //legend2->SetBorderSize(0);
+   //legend2->SetFillStyle(0);
+   //legend2->SetTextSize(0.045);
+   //
+   ////legend2->AddEntry(hcAll,"All clusters, trk in Fid","L"); 
+   //legend2->AddEntry(hcTrk,"Clusters w/ tracks","L");
+   ////legend2->AddEntry(hcAll,"All clusters","L");
+   // legend2->AddEntry(hcTrk1,"1-strip Clusters","L");
+   //legend2->AddEntry(hcTrk2,"2-strip Clusters","L");
+   //
+   //legend2->Draw();
+   //
+   // c->cd(10)->SetLeftMargin(0.13);;
+   //gStyle->SetOptStat(0);    
+   // //h311a->Divide(h311);
+//a//ddGraphics(h311b,1, "X_{trk} [mm]","Y_{trk} [mm]");
+   //h311b->SetTitle("All Tracks");
+   //h311b->GetXaxis()->SetTitle("X_{trk} [mm]");
+   //h311b->GetYaxis()->SetTitle("Y_{trk} [mm]");
+   ////addGraphics(h4, 1, "Strip # with cluster", "");
+   ////addGraphics(h4a, 2, "Strip # with cluster", "");
+   //h311b->GetXaxis()->SetRangeUser(-5,5);
+   //h311b->GetYaxis()->SetRangeUser(-5,5);
+   ////h311->GetZaxis()->SetRangeUser(0,1);
+   //h311b->Draw("colz");
+   //if(holeQuadPar[0]!=0) funchole->Draw("same");
+   //if(fabs(xLeftHole)<900 && fabs(xRightHole)<900){
+   //  TBox *b1 = new TBox(xMin,yMin,xLeftHole,yMax);
+   //  TBox *b2 = new TBox(xRightHole,yMin,xMax,yMax);
+   //  b1->SetLineColor(kBlue); b1->SetLineWidth(2);b1->SetFillStyle(0);   
+   //  b1->Draw();
+   //  b2->SetLineColor(kBlue); b2->SetLineWidth(2);b2->SetFillStyle(0);   
+   //  b2->Draw();
+   //}else{   
+   //  TBox *b = new TBox(xMin,yMin,xMax,yMax);
+   //  b->SetLineColor(kBlue); b->SetLineWidth(2);b->SetFillStyle(0);   
+   //  b->Draw();
+   //}
+   //
+   //c->cd(11)->SetLeftMargin(0.13);;
+   ////addGraphics(h10a, 1, "Strip #", "<ADC>");
+   ////addGraphics(h10b, 2, "Strip #", "<ADC>");
+   ////addGraphics(h10c, 4, "Strip #", "<ADC>");
+   ////int ixl = iLo;
+   ////int ixh = iHi;
+   ////int yh = hcTrk->GetMean()-50;
+   ////h10a->GetXaxis()->SetRangeUser(ixl-2,ixh+2);   
+   ////h10a->GetYaxis()->SetRangeUser(yh-200,yh+300);
+   ///*
+   //h10a->Draw();
+   //h10b->SetLineColor(2);h10b->SetMarkerColor(2);
+   //h10b->Draw("same");
+   //h10c->SetLineColor(4);h10c->SetMarkerColor(4);
+   //h10c->Draw("same");
+   //
+   //TLegend* legend1 = new TLegend(0.25,0.75,0.94,0.89);
+   //legend1->SetFillStyle(0);
+   //legend1->SetBorderSize(0);
+   //legend1->SetFillStyle(0);
+   //legend1->SetTextSize(0.045);
+   //
+   //legend1->AddEntry(h10a,"Top half in Y","LEP"); 
+   //legend1->AddEntry(h10b,"Bottom half in Y","LEP"); 
+   //legend1->AddEntry(h10c,"Top 2 mm in Y","LEP"); 
+   //legend1->Draw();
+   //*/
+   //addGraphics(h12cc, 1, "Cluster Size", "Entries");   
+   //h12cc->GetYaxis()->SetTitleOffset(1.2);
+   //h12cc->Draw();
+   //
+   //c->cd(12)->SetLeftMargin(0.13);;
+   //addGraphics(h2p, 1, "TDC time / 2.5 ns", "<ADC>");
+   //h2p->Draw();
+   //TLine *l1e = new TLine(tdcLo,0,tdcLo,h2p->GetMaximum());
+   //TLine *l2e = new TLine(tdcHi,0,tdcHi,h2p->GetMaximum());
+   //l1e->SetLineColor(kBlue); l2e->SetLineColor(kBlue); l1e->SetLineWidth(2); l2e->SetLineWidth(2);   
+   //l1e->Draw(); l2e->Draw();
+   //// c->cd(12)->Print("testing.root");
+
+  //c->Print("Plots/plot_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
+  //c->Print("Plots/plot_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");
 
    //return;
  TCanvas *c44 = new TCanvas("c44","Plot 4",800,600);
@@ -1486,10 +1738,10 @@ gStyle->SetOptStat(0);
    c3->Print("Plots/plot3_"+m_board+"_s"+m_sector+"_vb"+m_bias+".png");
    */
 
-   addGraphics(h12m,1,"Interstrip Pos","<ADC>");
-   addGraphics(h12n,1,"Interstrip Pos","<Cluster Size>");
+   addGraphics(h12m,1,"Interstrip Pos","ADC");
+   addGraphics(h12n,1,"Interstrip Pos","Cluster Size");
    TCanvas *c6 = new TCanvas("c6","Plot 6",1200,400);
-   c6->Divide(3,1);
+   c6->Divide(4,1);
    c6->cd(1);
    hepas1->SetMaximum(1.2);
    hepas1->SetMinimum(0.5);
@@ -1503,8 +1755,13 @@ gStyle->SetOptStat(0);
    h12n->SetMaximum(2.0);
    h12n->Draw();
    
-   c6->Print("Plots/plot6_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
-c6->Print("Plots/plot6_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");
+   c6->cd(4)->SetLeftMargin(0.13);;
+   addGraphics(h12cc, 1, "Cluster Size", "");   
+   h12cc->GetYaxis()->SetTitleOffset(1.2);
+   h12cc->Draw();
+   
+   c6->Print("Plots/CrossTalk_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
+c6->Print("Plots/CrossTalk_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");
 
 
    fout->Write();

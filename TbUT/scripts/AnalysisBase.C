@@ -317,7 +317,7 @@ void AnalysisBase::getBeamLoc(){
   TH1F* ha = new TH1F("ha","Strip # of cluster with track",512,0.0,512);
   //TH1F* hb = new TH1F("hb","Strip # of cluster with track",512,0.0,512);
   Long64_t nentries = fChain->GetEntriesFast();
-  cout << "nentries " << nentries << endl;
+  //cout << "nentries " << nentries << endl;
   float lo = 0, hi = 0;
 
   Long64_t nbytes = 0, nb = 0;
@@ -331,8 +331,8 @@ void AnalysisBase::getBeamLoc(){
     //cout << clusterNumberPerEvent << endl;
     
     for(int j=0; j<min((int)clusterNumberPerEvent,10); j++){
-      std::cout << clustersPosition[j] << std::endl;
-      cout << polarity << " " << polarity*clustersCharge[j] << endl;
+      //std::cout << clustersPosition[j] << std::endl;
+      //cout << polarity << " " << polarity*clustersCharge[j] << endl;
       if(polarity*clustersCharge[j] < kClusterChargeMin) continue;
       int iChan = clustersSeedPosition[j];
       //if(j<500) cout << "iChan = " << iChan << clustersCharge[j] << " " << 5*noise[iChan] << endl;
@@ -344,7 +344,7 @@ void AnalysisBase::getBeamLoc(){
      
   int num = ha->GetEntries();
   for(int i=0; i<1000; i++){
-    cout << "num is " << num << endl;
+    //cout << "num is " << num << endl;
     if(num < 1000) continue;
     break;
   }
