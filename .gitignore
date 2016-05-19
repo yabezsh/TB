@@ -1,3 +1,7 @@
 *.pyc
+*.d
+*.so
+
+run_k.sh
 
 LogRunAnalysis.dat

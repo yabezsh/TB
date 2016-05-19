@@ -22,8 +22,10 @@ How to run it:
     Then, type
 
     python -u RunAnalysis.py | tee LogRunAnalysis.dat
-
+    
     to loop over all the data of the test beam.
+    For example:
+    python -u RunAnalysis.py --board M1 --PA FanIn --DUTRun 7 | tee LogRunAnalysis.dat
 """
 
 import argparse
@@ -144,9 +146,9 @@ def RunAnalysis(board,PA,DUTRun) :
         # subprocess.call(command,shell=True)
         # Use python directly 
         # command = "python Analysis.py --board "+board+" --PA "+PA+" --DUTRun "+str(DUTRun)+" --ped "+str(ped)+" --filenameNoPathPhys "+filenameNoPathPhys+" --filenameNoPathPed "+filenameNoPathPed
-        command = "python Analysis.py --board "+board+" --PA "+PA+" --signal "+filenameNoPathPhys+" --pedestal "+filenameNoPathPed
+        command = "python Analysis.py -b "+board+" -r "+PA+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
         print command
-        # subprocess.call(command,shell=True)
+        subprocess.call(command,shell=True)
 
     else :
         # Select runs for the loop.
@@ -186,9 +188,9 @@ def RunAnalysis(board,PA,DUTRun) :
             # subprocess.call(command,shell=True)
             # Use python directly 
             # command = "python run.py --board "+board+" --PA "+PA+" --DUTRun "+str(DUTRun)+" --ped "+str(ped)+" --filenameNoPathPhys "+filenameNoPathPhys+    " --filenameNoPathPed "+filenameNoPathPed
-            command = "python Analysis.py --board "+board+" --PA "+PA+" --signal "+filenameNoPathPhys+" --pedestal "+filenameNoPathPed
+            command = "python Analysis.py -b "+board+" -r "+PA+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
             print command
-            # subprocess.call(command,shell=True)
+            subprocess.call(command,shell=True)
 
     return
 
