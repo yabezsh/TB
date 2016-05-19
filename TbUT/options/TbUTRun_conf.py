@@ -23,8 +23,7 @@ if __name__=="__main__":
         fileS.write("app.isAType=False\n")
         fileS.write("app.sensorType = 'NType'\n")
 	fileS.write("app.eventMax = 100000\n")
-	fileS.write('app.pedestalInputData = "'+outputPath+'/'+os.environ["BOARD"]+'-'+os.environ["RUNPLACE"]+'-'+os.environ["PEDESTALNUMBER"]+'.dat"\n')
+	fileS.write('app.pedestalInputData = "'+outputPath+'/Pedestal-'+os.environ["BOARD"]+'-'+os.environ["RUNPLACE"]+'-'+os.environ["PEDESTALNUMBER"]+'.dat"\n')
 	fileS.write('app.eventNumberDisplay = 100\n')
 	fileS.write('app.runClusterization()\n')
         fileS.close()
-
