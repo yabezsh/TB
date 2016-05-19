@@ -113,7 +113,7 @@ def RunAnalysis(board,PA,DUTRun) :
     logbook_df_san = logbook_df_san.replace('AngleScan','Angle scan')
     logbook_df_san = logbook_df_san.replace('Angle Scan','Angle scan')
     # Delete rows without DUT run.
-    logbook_df_san = logbook_df_san.drop(logbook_df_san[logbook_df_san['DUT run'] == '-'].index)
+    logbook_df_san = logbook_df_san.drop(logbook_df_san[logbook_df_san['DUT run'].astype(str) == '-'].index)
     # Delete rows with bad online or offline flag. 
     logbook_df_san = logbook_df_san.drop(logbook_df_san[logbook_df_san['Online flag'] == 'Bad'].index)
     logbook_df_san = logbook_df_san.drop(logbook_df_san[logbook_df_san['Offline flag'] == 'Bad'].index)
@@ -169,6 +169,7 @@ def RunAnalysis(board,PA,DUTRun) :
             text_file.write(line_empty)
             text_file.write(line_run)
             text_file.closed
+        
         command = 'chmod +x clusterRun.sh'
         print '>', command
         subprocess.call(command,shell=True,cwd='.')
@@ -178,8 +179,8 @@ def RunAnalysis(board,PA,DUTRun) :
         subprocess.call(command,shell=True)
         
         # Use python directly 
-        # command = "python Analysis.py -b "+board+" -r "+PA+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
-        # print command
+        command = "python Analysis.py -b "+board+" -r "+PA+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
+        print command
         # subprocess.call(command,shell=True)
 
     else :
@@ -225,6 +226,7 @@ def RunAnalysis(board,PA,DUTRun) :
                 text_file.write(line_empty)
                 text_file.write(line_run)
                 text_file.closed
+            
             command = 'chmod +x clusterRun.sh'
             print '>', command
             subprocess.call(command,shell=True,cwd='.')
@@ -234,8 +236,8 @@ def RunAnalysis(board,PA,DUTRun) :
             subprocess.call(command,shell=True)
             
             # Use python directly 
-            # command = "python Analysis.py -b "+board+" -r "+PA+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
-            # print command
+            command = "python Analysis.py -b "+board+" -r "+PA+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
+            print command
             # subprocess.call(command,shell=True)
 
     return
