@@ -15,6 +15,8 @@ boardList = ['M1','M3','M4']
 PAList = ['FanIn','FanUp']
 BSList = ['Top','Back']
 
+modeList = ['local','batch']
+
 PADict = {}
 PADict['M1'] = ['FanIn','FanUp']
 PADict['M3'] = ['FanIn','FanUp']
