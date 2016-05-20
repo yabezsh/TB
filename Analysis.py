@@ -53,17 +53,19 @@ os.environ['RUNNUMBER'] = sigFile.split('-')[3]
 os.environ['SCANTYPE'] = sigFile.split('-')[0].split('_')[1]
 os.environ['DEFRUN'] = sigFile.split('-')[4][:-4]
 os.environ['PEDESTALNUMBER'] = pedFile.split('-')[3][:-4]
+os.environ['OUTPUTPATH'] = outputPath
 
-shFile = open(os.environ["KEPLERROOT"]+"/../run_k.sh","w")
+shFile = open(os.environ["KEPLERROOT"]+"/../run_"+os.environ["RUNNUMBER"]+".sh","w")
 shFile.write('#!/bin/bash\n')
 shFile.write('cd $KEPLERROOT/../TbUT\n')
 shFile.write('python options/TbUTPedestal_conf.py -f '+inputFilePedestal+" -p "+outputPath+'/'+boardName+'/'+PA+'/output_'+os.environ["RUNNUMBER"]+"\n")
 shFile.write('python options/TbUTRun_conf.py -f '+inputFileSignal+" -p "+outputPath+'/'+boardName+'/'+PA+'/output_'+os.environ["RUNNUMBER"]+"\n")
 shFile.write('mkdir -p '+outputPath+'/'+boardName+'/'+PA+'/output_'+os.environ["RUNNUMBER"]+'\n')
+shFile.write("cp $KEPLERROOT/../TbUT/options/UT/noise_Mamba.dat "+ os.environ['OUTPUTPATH']+'/'+os.environ['BOARD']+'/'+os.environ['RUNPLACE']+'/output_'+os.environ["RUNNUMBER"]+"/noise_Mamba.dat\n")
 shFile.write('cd '+outputPath+'/'+boardName+'/'+PA+'/output_'+os.environ["RUNNUMBER"]+'\n')
-shFile.write('gaudirun.py $KEPLERROOT/../TbUT/options/TbUTPedestal.py\n')
-shFile.write('gaudirun.py $KEPLERROOT/../TbUT/options/TbUTRun.py\n')
-shFile.write('gaudirun.py $KEPLERROOT/../TbUT/options/TbUTRun.py\n')
+shFile.write('gaudirun.py $KEPLERROOT/../TbUT/options/TbUTPedestal_'+os.environ["RUNNUMBER"]+'.py\n')
+shFile.write('gaudirun.py $KEPLERROOT/../TbUT/options/TbUTRun_'+os.environ["RUNNUMBER"]+'.py\n')
+shFile.write('gaudirun.py $KEPLERROOT/../TbUT/options/TbUTRun_'+os.environ["RUNNUMBER"]+'.py\n')
 shFile.write('. LbLogin.sh -c x86_64-slc6-gcc48-opt\n')
 shFile.write('. SetupProject.sh LHCb v36r2\n')
 shFile.write('cd '+os.environ["KEPLERROOT"]+'/../TbUT/scripts/AddTrigTracks\n')
@@ -73,5 +75,5 @@ shFile.write(os.environ["KEPLERROOT"]+'/../TbUT/scripts/AddTrigTracks/combDUTwit
 shFile.write('\nmkdir -p '+outputPath+'/'+boardName+'/'+PA+'/output_'+os.environ["RUNNUMBER"]+'/Plots')
 shFile.write('\nroot -b -q '+os.environ["KEPLERROOT"]+'/../TbUT/scripts/runClusterWithTrackAna.C')
 shFile.close()
-subprocess.call("chmod +x "+os.environ["KEPLERROOT"]+"/../run_k.sh",shell=True)
-os.system('/$KEPLERROOT/../run_k.sh')
+subprocess.call("chmod +x "+os.environ["KEPLERROOT"]+"/../run_"+os.environ["RUNNUMBER"]+".sh",shell=True)
+os.system('/$KEPLERROOT/../run_'+os.environ["RUNNUMBER"]+'.sh')

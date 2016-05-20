@@ -1437,7 +1437,7 @@ void ClusterWithTrackAna::Loop()
    TLine *l2e2 = new TLine(tdcHi,0,tdcHi,h2p->GetMaximum());
    l1e2->SetLineColor(kBlue); l2e2->SetLineColor(kBlue); l1e2->SetLineWidth(2); l2e2->SetLineWidth(2);   
    l1e2->Draw("same"); l2e2->Draw("same");
-   c44->SaveAs("testing.root");
+   //c44->SaveAs("testing.root");
 
    TCanvas *c4 = new TCanvas("c4","Plot 4",800,600);
    c4->Divide(2,2);

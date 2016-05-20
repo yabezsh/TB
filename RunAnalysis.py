@@ -162,7 +162,7 @@ def RunAnalysis(board,PA,DUTRun) :
         # command = "qsub -l cput=" + cput + " -v board="+board+",PA="+PA+",DUTRun="+str(DUTRun)+",ped="+str(ped)+",filenameNoPathPhys="+filenameNoPathPhys+",filenameNoPathPed="+filenameNoPathPed+" SubmitAnalysis.pbs" # No spaces after ','.
         line_run = "python "+kepler+"/../Analysis.py -b "+board+" -r "+PA+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
         
-        with open('clusterRun.sh','w') as text_file :
+        with open('clusterRun_'+filenameNoPathPhys.split('-')[3]+'.sh','w') as text_file :
             text_file.write(line_export_path)
             text_file.write(line_empty)
             text_file.write(line_export_ld_library_path)
@@ -170,11 +170,11 @@ def RunAnalysis(board,PA,DUTRun) :
             text_file.write(line_run)
             text_file.closed
         
-        command = 'chmod +x clusterRun.sh'
+        command = 'chmod +x clusterRun_'+filenameNoPathPhys.split('-')[3]+'.sh'
         print '>', command
         subprocess.call(command,shell=True,cwd='.')
 
-        command = "bsub -q 8nm clusterRun.sh"
+        command = 'bsub -q 8nm clusterRun_'+filenameNoPathPhys.split('-')[3]+'.sh'
         print command
         subprocess.call(command,shell=True)
         
@@ -219,7 +219,7 @@ def RunAnalysis(board,PA,DUTRun) :
             #command = "qsub -l cput=" + cput + " -v board="+board+",PA="+PA+",DUTRun="+str(DUTRun)+",ped="+str(ped)+",filenameNoPathPhys="+filenameNoPathPhys+    ",filenameNoPathPed="+filenameNoPathPed+" SubmitAnalysis.pbs" # No spaces after ','.
             line_run = "python "+kepler+"/../Analysis.py -b "+board+" -r "+PA+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
         
-            with open('clusterRun.sh','w') as text_file :
+            with open('clusterRun_'+filenameNoPathPhys.split('-')[3]+'.sh','w') as text_file :
                 text_file.write(line_export_path)
                 text_file.write(line_empty)
                 text_file.write(line_export_ld_library_path)
@@ -227,11 +227,11 @@ def RunAnalysis(board,PA,DUTRun) :
                 text_file.write(line_run)
                 text_file.closed
             
-            command = 'chmod +x clusterRun.sh'
+            command = 'chmod +x clusterRun_'+filenameNoPathPhys.split('-')[3]+'.sh'
             print '>', command
             subprocess.call(command,shell=True,cwd='.')
             
-            command = "bsub -q 8nm clusterRun.sh"
+            command = "bsub -q 1nh clusterRun_"+filenameNoPathPhys.split('-')[3]+".sh"
             print command
             subprocess.call(command,shell=True)
             
