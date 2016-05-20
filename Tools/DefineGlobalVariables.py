@@ -13,6 +13,7 @@ import os
 
 boardList = ['M1','M3','M4']
 PAList = ['FanIn','FanUp']
+BSList = ['Top','Back']
 
 PADict = {}
 PADict['M1'] = ['FanIn','FanUp']
