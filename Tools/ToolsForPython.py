@@ -9,6 +9,8 @@ How to run it:
     Include it in other python scripts.
 """
 
+import pandas as pd
+
 def GetDUTRun(df,DUTRun) :
     """
     Given a pandas dataframe and a DUT run, select and return the corresponding row in the pandas dataframe.
