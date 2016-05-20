@@ -103,9 +103,9 @@ class TbUTClusterizator:
         pedestalSubtractor().treningEntry=1
         pedestalMonitor().displayEventNumber=self.eventNumberDisplay
         CMS().ChannelMaskInputLocation= "$KEPLERROOT/../TbUT/options/UT/Masks_DTypeSensor.dat"
-        CMS().NoiseOutputFile="$KEPLERROOT/../TbUT/options/UT/noise_Mamba.dat"
+        CMS().NoiseOutputFile= os.environ['OUTPUTPATH']+'/'+os.environ['BOARD']+'/'+os.environ['RUNPLACE']+'/output_'+os.environ["RUNNUMBER"]+"/noise_Mamba.dat"
         CMSMonitor().displayEventNumber=self.eventNumberDisplay
-        ClusterCreator().NoiseInputFile="$KEPLERROOT/../TbUT/options/UT/noise_Mamba.dat"
+        ClusterCreator().NoiseInputFile=os.environ['OUTPUTPATH']+'/'+os.environ['BOARD']+'/'+os.environ['RUNPLACE']+'/output_'+os.environ["RUNNUMBER"]+"/noise_Mamba.dat"
         ClusterCreator().LowThreshold=2.5
         ClusterCreator().HighThreshold=3
         ClusterCreator().sensorType=self.sensorType
