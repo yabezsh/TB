@@ -448,8 +448,8 @@ void ClusterWithTrackAna::Loop()
    TH1F* h122 = new TH1F("h122","Y position of matched cluster",15,-7.0,7.0); h12->Sumw2();
    TH1F* h123 = new TH1F("h123","y position of matched cluster",15,-7.0,7.0); h12->Sumw2();
    TH1F* h12c = new TH1F("h12c","X position of matched cluster",400,-10.0,10.0);h12c->Sumw2();
-   TH1F* h12a = new TH1F("h12a","Y position of track",25,-6.0,6.0); h12a->Sumw2();
-   TH1F* h12b = new TH1F("h12b","Y position of track",1600,-10.0,10.0); h12b->Sumw2();
+   TH1F* h12a = new TH1F("h12a","Y position of track",1000,-6.0,6.0); h12a->Sumw2();
+   TH1F* h12b = new TH1F("h12b","Y position of track",1000,-6.0,6.0); h12b->Sumw2();
 
    TH1F* h12dn = new TH1F("h12dn","X position of track",200,-10.0,10.0); h12dn->Sumw2();
    TH1F* h12en = new TH1F("h12en","X position of track",200,-10.0,10.0);h12en->Sumw2();
@@ -676,7 +676,7 @@ void ClusterWithTrackAna::Loop()
 
         if(goodTrack && goodTime && inFiducial && awayFromCutout) {
           h3a->Fill(x_trk,y_trk);
-          //h12a->Fill(y_trk);
+          h12a->Fill(y_trk);
           h12dd->Fill(x_trk);
           if(y_trk>yInt1[0]&&y_trk<yInt1[1]) h12ed->Fill(x_trk);
           if(y_trk>yInt2[0]&&y_trk<yInt2[1]) h12fd->Fill(x_trk);
@@ -1562,7 +1562,7 @@ void ClusterWithTrackAna::Loop()
    TH1F *he = (TH1F*)h12b->Clone("he");
    he->Divide(h12b,h12a,1.0,1.0,"B");
    float bw = 1000*h12b->GetBinWidth(1);
-   TString yt = Form("(#Good DUT hit / # Track) / %3.0f #mum",bw);
+   TString yt = Form("(#Good DUT hit / # Track)" ,bw);
    addGraphics(he, 1, "Y_{trk} [mm]", yt);
    he->SetTitle("DUT Efficiency vs Y_{trk}");
    he->GetXaxis()->SetRangeUser(yMin-0.5,yMax+0.5);
