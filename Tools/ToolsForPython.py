@@ -72,3 +72,58 @@ def AssociatePed(df,DUTRun) :
     print '=========================='
 
     return rowPed,rowPed_i
+
+
+
+def GetInfoFromLogbook(logbook) :    
+    """
+    Given the location of the logbook, create the corresponding pandas dataframe and sanitise it.
+    """
+    # Create pandas dataframe.
+    logbook_df = pd.read_csv(logbook,sep=',',header=0,names=['Sector','Purpose','Biasing scheme','DUT run','Telescope run','x (mm)','y (mm)','Rotation (deg)','Bias voltage (V)','Current (uA)','Temperature (C)','RH (%)','Online flag','Offline flag','Comments'],skiprows=1,na_values=['\n'],usecols=['Sector','Purpose','Biasing scheme','DUT run','Telescope run','x (mm)','y (mm)','Rotation (deg)','Bias voltage (V)','Current (uA)','Temperature (C)','RH (%)','Online flag','Offline flag','Comments'],skip_blank_lines=True)
+
+    print '================'
+    print 'Original logbook'
+    print '================'
+    print logbook_df.head()
+    print logbook_df.shape
+    print '================'
+
+    # Drop NaN rows (empty rows).
+    logbook_df_clean = logbook_df.dropna(axis=0,how='all')
+
+    print '================================='
+    print 'Logbook after dropping empty rows'
+    print '================================='
+    print logbook_df_clean.head()
+    print logbook_df_clean.shape
+    print '================'
+
+    # Sanitise input.
+    # bad,good -> Bad,Good
+    # empty -> -
+    # AngleScan -> Angle scan
+    # Angle Scan -> Angle scan
+    # BiasScan -> Bias scan
+    # Bias Scan -> Bias scan
+    logbook_df_san = logbook_df_clean.fillna('-')
+    logbook_df_san = logbook_df_san.replace('bad','Bad')
+    logbook_df_san = logbook_df_san.replace('good','Good')
+    logbook_df_san = logbook_df_san.replace('BiasScan','Bias scan')
+    logbook_df_san = logbook_df_san.replace('Bias Scan','Bias scan')
+    logbook_df_san = logbook_df_san.replace('AngleScan','Angle scan')
+    logbook_df_san = logbook_df_san.replace('Angle Scan','Angle scan')
+    # Delete rows without DUT run.
+    logbook_df_san = logbook_df_san.drop(logbook_df_san[logbook_df_san['DUT run'].astype(str) == '-'].index)
+    # Delete rows with bad online or offline flag. 
+    logbook_df_san = logbook_df_san.drop(logbook_df_san[logbook_df_san['Online flag'] == 'Bad'].index)
+    logbook_df_san = logbook_df_san.drop(logbook_df_san[logbook_df_san['Offline flag'] == 'Bad'].index)
+
+    print '=============================='
+    print 'Logbook after sanitising input'
+    print '=============================='
+    print logbook_df_san.head()
+    print logbook_df_san.shape
+    print '================'
+
+    return logbook_df_san
