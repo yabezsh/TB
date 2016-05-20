@@ -127,16 +127,30 @@ def SNRvsAngle(board,PA,BS) :
     # gSNRvsAngle.GetXaxis().SetLimits(-0.05,1.05)
 
     # Fit.
+    # SNR(theta) = SNR(theta=0) / cos(theta)
     minFit = min(langle);
     maxFit = max(langle);
-    fpol2 = ROOT.TF1('fpol2','pol2',minFit,maxFit)
-    gSNRvsAngle.Fit('fpol2','R')
-    anglePeak = -1*(fpol2.GetParameter(1))/(2*fpol2.GetParameter(2));
-    SNRPeak = fpol2.Eval(anglePeak);
+    fSNRvsAngle = ROOT.TF1('fSNRvsAngle','[0]/cos(x*3.14159/180.)',minFit,maxFit)
+    fSNRvsAngle.SetParameter(0,0.)
+    fSNRvsAngle.SetParLimits(0,0.,50.)
+    gSNRvsAngle.Fit('fSNRvsAngle','R')
+    anglePeak = fSNRvsAngle.GetParameter(0);
+    SNRPeak = fSNRvsAngle.Eval(anglePeak);
     print 'Angle at the peak:', anglePeak
     print 'Signal at the peak:', SNRPeak
 
+    # fpol2 = ROOT.TF1('fpol2','pol2',minFit,maxFit)
+    # gSNRvsAngle.Fit('fpol2','R')
+    # anglePeak = -1*(fpol2.GetParameter(1))/(2*fpol2.GetParameter(2));
+    # SNRPeak = fpol2.Eval(anglePeak);
+    # print 'Angle at the peak:', anglePeak
+    # print 'Signal at the peak:', SNRPeak
+
     DrawObj(cSNRvsAngle,gSNRvsAngle,None,'AP',pathToFigures)
+   
+    # Create a TGraph with the fraction of 1-strip clusters as a function of the angle.
+    # Create a TGraph with the fraction of 2-strip clusters as a function of the angle.
+    # Create a TGraph with the resolution of 2-strip clusters as a function of the angle (fit with a Gaussian of the DeltaX).
     
     outFileROOT.cd()
     outFileROOT.Close()
