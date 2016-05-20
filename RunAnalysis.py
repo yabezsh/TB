@@ -11,8 +11,8 @@ Description:
     The following arguments can/have to be provided:
     - board (str): the board one wants to analyse (M1, M3, or M4);
     - PA (str): the pitch adapter region one wants to analyse (FanIn or FanUp);
-    - DUTRun (str): optional, the physics run one wants to process (mostly for debugging).
-    - mode (str): how to run the script (local or batch)
+    - DUTRun (str): optional, the physics run one wants to process (mostly for debugging);
+    - mode (str): how to run the script (local or batch).
 
 How to run it:
     First of all, type
