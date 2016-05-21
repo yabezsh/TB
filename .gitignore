@@ -13,6 +13,4 @@ TbUT/options/UT/noise_Mamba.dat
 
 Kepler/eos
 
-LogRunAnalysis.dat
-LogGetFailedJobs.dat
-LogSNRvsAngle.dat
+Log*.dat
