@@ -212,16 +212,17 @@ def SNRvsAngle(board,PA,BS) :
     gSNRvsAngle.GetXaxis().SetLimits(-12.,22.)
 
     # Fit.
-    # SNR(theta) = SNR(theta=0) / cos(theta)
+    # SNR(theta) = SNR(alpha) / cos(theta-alpha)
     minFit = min(langle)
     maxFit = max(langle)
-    fSNRvsAngle = ROOT.TF1('fSNRvsAngle','[0]/cos(x*3.14159/180.)',minFit,maxFit)
+    fSNRvsAngle = ROOT.TF1('fSNRvsAngle','[0]/cos((x-[1])*3.14159/180.)',minFit,maxFit)
     fSNRvsAngle.SetParameter(0,0.)
     fSNRvsAngle.SetParLimits(0,0.,50.)
     gSNRvsAngle.Fit('fSNRvsAngle','R')
-    SNRAnglePeak = fSNRvsAngle.GetParameter(0)
+    SNRAnglePeak = fSNRvsAngle.GetParameter(1)
+    SNRAnglePeakU = fSNRvsAngle.GetParError(1)
     SNRPeak = fSNRvsAngle.Eval(SNRAnglePeak)
-    print 'Angle at the peak:', SNRAnglePeak
+    print 'Angle at the peak:', SNRAnglePeak, '+/-', SNRAnglePeakU 
     print 'Signal at the peak:', SNRPeak
     DrawObj(cSNRvsAngle,gSNRvsAngle,None,'AP',pathToFigures)
    
