@@ -26,7 +26,7 @@ How to run it:
     to set the environment.
     Then, type
     
-    python -u SNRvsAngle.py --board M3 --PA FanUp --BS Back | tee LogSNRvsAngle.dat
+    python -u SNRvsAngle.py --board M3 --PA FanUp --BS Back | tee LogSNRvsAngle-M3-FanUp-Back.dat
 """
 
 import argparse

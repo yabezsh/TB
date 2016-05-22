@@ -2,13 +2,13 @@ BOARD M4,FANUP,,DUT Run #,Kepler Run #,Stage,Stage,Stage,Bias,Current,Temp,RH,On
 Sector,Purpose,Bias,Run #,Run #,X (mm),Y (mm),Rot (deg),(V),(uA),( C ),(%),(Good/Bad),(Good/Bad),
 Central,Bias Scan,Top,453,15289,38,10,0,50,23,-2.5,,Good,,500K events for bias scan runs
 Central,Pedestal,Top,454,-,38,10,0,50,23,-2.5,,Good,,
-Central,Bias Scan,Top,455,15290,38,10,0,100,23,-2.5,,Bad,,current goes in cmpliance
-PA,Bias Scan,Top,456,15291,38,2,0,100,30,-2.5,,Bad,,current goes in cmpliance
+Central,Bias Scan,Top,455,15290,38,10,0,100,23,-2.5,,Bad,Bad,current goes in cmpliance
+PA,Bias Scan,Top,456,15291,38,2,0,100,30,-2.5,,Bad,Bad,current goes in cmpliance
 PA,Bias Scan,Top,457,15292,38,2,0,100,30,-2.2,,Good,,
 PA,Pedestal,Top,458,-,38,2,0,100,30,-2.2,,Good,,
 PA,Bias Scan,Top,459,15293,38,2,0,150,32,-2.2,,Good,,
 PA,Pedestal,Top,460,-,38,2,0,150,32,-2.2,,Good,,
-PA,Bias Scan,Top,461,15294,38,2,0,200,33,-2.2,,Good,,Run stopped after about 400K events. Telescope voltage between 90V and 100V
+PA,Bias Scan,Top,461,15294,38,2,0,200,33,-2.2,,Good,Bad,Run stopped after about 400K events. Telescope voltage between 90V and 100V
 PA,Pedestal,Top,462,-,38,2,0,200,33,-2.2,,Good,,
 PA,Bias Scan,Top,463,15295,38,2,0,200,33,-2.2,,Good,,Beetle have been reconfigured between RUNs 462/463
 PA,Pedestal,Top,464,-,38,2,0,200,33,-2.2,,Good,,
