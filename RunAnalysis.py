@@ -12,8 +12,9 @@ Description:
     - board (str): the board one wants to analyse (M1, M3, or M4);
     - PA (str): the pitch adapter region one wants to analyse (FanIn or FanUp);
     - DUTRun (str): optional, the physics run one wants to process (mostly for debugging);
-    - mode (str): how to run the script (local or batch).
-
+    - mode (str): how to run the script (local or batch);
+    - evts (int): the number of events to run over (if not provided, run over all events).
+    
 How to run it:
     First of all, type
     
@@ -28,10 +29,12 @@ How to run it:
     For example:
 
     python -u RunAnalysis.py --board M1 --PA FanIn --DUTRun 7 --mode local(batch) | tee LogRunAnalysis.dat
+    python -u RunAnalysis.py --board M1 --PA FanIn --DUTRun 7 --mode local(batch) --evts 1000 | tee LogRunAnalysis.dat
     
     to analyse one physics run, or
 
     python -u RunAnalysis.py --board M1 --PA FanIn --mode local(batch) | tee LogRunAnalysis.dat
+    python -u RunAnalysis.py --board M1 --PA FanIn --mode local(batch) --evts 1000 | tee LogRunAnalysis.dat
     
     to analyse all of them.
 """
@@ -57,7 +60,7 @@ from ToolsForPython import *
 
     
 
-def RunAnalysis(board,PA,DUTRun,mode) :
+def RunAnalysis(board,PA,DUTRun,mode,evts) :
     # Check that the specified PA exists for the specified board (it can be that M1 has FanIn only, and so on).
     # print PADict[board]
     if PA not in PADict[board] :
@@ -138,7 +141,7 @@ def RunAnalysis(board,PA,DUTRun,mode) :
         if (mode == 'batch') :
             # Use qsub
             #command = "qsub -l cput=" + cput + " -v board="+board+",PA="+PA+",DUTRun="+str(DUTRun)+",ped="+str(ped)+",filenameNoPathPhys="+filenameNoPathPhys+    ",filenameNoPathPed="+filenameNoPathPed+" SubmitAnalysis.pbs" # No spaces after ','.
-            line_run = "python "+kepler+"/../Analysis.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
+            line_run = "python "+kepler+"/../Analysis.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -e "+str(evts)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
         
             with open('clusterRun_'+filenameNoPathPhys.split('-')[3]+'.sh','w') as text_file :
                 text_file.write(line_export_path)
@@ -158,7 +161,7 @@ def RunAnalysis(board,PA,DUTRun,mode) :
             
         elif (mode == 'local') :
             # Use python directly 
-            command = "python Analysis.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
+            command = "python Analysis.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -e "+str(evts)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
             print command
             subprocess.call(command,shell=True)
 
@@ -179,7 +182,8 @@ if __name__ == "__main__" :
     parser.add_argument('--PA',required=True,choices=PAList,help='PA')
     parser.add_argument('--DUTRun',type=int,required=False,help='DUT run (for debugging, to process one DUT run only)')
     parser.add_argument('--mode',required=True,choices=modeList,help='mode')
-
+    parser.add_argument('--evts',required=False,type=int,help='evts')
+    
     args = parser.parse_args()
 
     # Parameters and configuration.
@@ -187,5 +191,9 @@ if __name__ == "__main__" :
     PA = args.PA
     DUTRun = args.DUTRun
     mode = args.mode
+    if args.evts is None :
+        evts = -1
+    else :
+        evts = args.evts
 
-    RunAnalysis(board,PA,DUTRun,mode)
+    RunAnalysis(board,PA,DUTRun,mode,evts)
