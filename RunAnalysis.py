@@ -138,7 +138,7 @@ def RunAnalysis(board,PA,DUTRun,mode) :
         if (mode == 'batch') :
             # Use qsub
             #command = "qsub -l cput=" + cput + " -v board="+board+",PA="+PA+",DUTRun="+str(DUTRun)+",ped="+str(ped)+",filenameNoPathPhys="+filenameNoPathPhys+    ",filenameNoPathPed="+filenameNoPathPed+" SubmitAnalysis.pbs" # No spaces after ','.
-            line_run = "python "+kepler+"/../Analysis.py -b "+board+" -r "+PA+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
+            line_run = "python "+kepler+"/../Analysis.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
         
             with open('clusterRun_'+filenameNoPathPhys.split('-')[3]+'.sh','w') as text_file :
                 text_file.write(line_export_path)
@@ -158,7 +158,7 @@ def RunAnalysis(board,PA,DUTRun,mode) :
             
         elif (mode == 'local') :
             # Use python directly 
-            command = "python Analysis.py -b "+board+" -r "+PA+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
+            command = "python Analysis.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
             print command
             subprocess.call(command,shell=True)
 

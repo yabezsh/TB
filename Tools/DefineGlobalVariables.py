@@ -17,10 +17,17 @@ BSList = ['Top','Back']
 
 modeList = ['local','batch']
 
+# Pitch adapter region: fan-in or fan-up.
 PADict = {}
 PADict['M1'] = ['FanIn','FanUp']
 PADict['M3'] = ['FanIn','FanUp']
 PADict['M4'] = ['FanIn','FanUp']
+
+# Type of sensor: p-in-n or n-in-p.
+typeDict = {}
+typeDict['M1'] = 'pn'
+typeDict['M3'] = 'pn'
+typeDict['M4'] = 'pn'
 
 user = os.environ['USER']
 userFirst = user[0]

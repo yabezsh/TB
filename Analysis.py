@@ -1,5 +1,5 @@
 """
-python Analysis.py -b M1 -r FanIn -s Run_Bias_Scan-M1-FanIn-7-15008.dat -p Pedestal-M1-FanIn-8.dat
+python Analysis.py -b M1 -r FanIn -t pn -s Run_Bias_Scan-M1-FanIn-7-15008.dat -p Pedestal-M1-FanIn-8.dat
 """
 
 import os,sys,getopt, subprocess
