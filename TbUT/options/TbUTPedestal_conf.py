@@ -20,7 +20,6 @@ if __name__=="__main__":
 	fileP.write("from TbUTPedestalRunner import TbUTPedestalRunner\n")
 	fileP.write("app=TbUTPedestalRunner()\n")
         fileP.write("app.inputData="+'"'+str(fileName)+'"'+"\n")
-	fileP.write("app.isAType=False\n")
 	fileP.write("app.eventMax=-1\n")
 	fileP.write("app.pedestalOutputData ='"+outputPath+"/"+os.path.basename(fileName)+"'\n")
 	fileP.write("app.runPedestals()\n")

@@ -154,7 +154,7 @@ parser.add_argument('-n','--nevmax',type=int,required=False,default=nevdef,
 parser.add_argument('-f','--force',required=False,action='store_true',
                     help="Force overwrite of any output files existing")
 parser.add_argument('-t','--senstype',type=str,required=False,default='PType',
-                    help="Sensor type ('PType' or 'NType')")
+                    help="Sensor type ('PType' or 'NType' or for callibration 'Both')")
 parser.add_argument('-e','--eosmount',type=str,required=False,default=eosmount,
                     help="Eos mount point")
 parser.add_argument('-i','--indir',type=str,required=False,default=indir,
@@ -197,12 +197,11 @@ if(args.force or not os.path.isfile("{}/Fast-Pedestal-Board{}-{}.dat".format( pe
                "app=TbUTPedestalRunner()\n"
                "# set parameter\n"
                "app.inputData= '{}/{}/Board{}/RawData/Pedestal-B{}-{}-{}-.dat'\n"
-               "app.isAType={}\n"
                "# have to be more than 4k (~10k)\n"
                "app.eventMax={}\n"
                "#  keep the pedestals files in $KEPLERROOT/../TbUT/options/UT/ directory !!!!!\n"
                "app.pedestalOutputData ='{}/Fast-Pedestal-Board{}-{}.dat'\n"
-               "app.runPedestals()\n").format(args.eosmount,args.indir, args.board, args.board[1:], args.board[:1],args.pednum, (args.board[:1]=='A'), args.nevmax, pedestaldir, args.board,args.pednum)
+               "app.runPedestals()\n").format(args.eosmount,args.indir, args.board, args.board[1:], args.board[:1],args.pednum, args.nevmax, pedestaldir, args.board,args.pednum)
 
 
     with open('myTempPedRun.py','w') as ftarget:
@@ -244,12 +243,11 @@ if( args.runnum != 0):
                    "app = TbUTClusterizator()\n"
                    "# set parameters\n"
                    "app.inputData = '{}'\n"
-                   "app.isAType = {}\n"
                    "app.sensorType = '{}'\n"
                    "app.eventMax = {}\n"
                    "app.pedestalInputData = '{}/Fast-Pedestal-Board{}-{}.dat'\n"
                    "app.eventNumberDisplay = 1000\n"
-                   "app.runClusterization()\n").format(inpath,(args.board[:1]=='A'),args.senstype,args.nevmax,pedestaldir,args.board,args.pednum)
+                   "app.runClusterization()\n").format(inpath,args.senstype,args.nevmax,pedestaldir,args.board,args.pednum)
 
 
 

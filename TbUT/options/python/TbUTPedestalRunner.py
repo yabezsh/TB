@@ -12,7 +12,7 @@ from Timer import timer
 
 class TbUTPedestalRunner:
     def __init__(self):
-        pass
+        self._isAType=False
 
     @property
     def inputData(self):
@@ -37,13 +37,6 @@ class TbUTPedestalRunner:
     @eventMax.setter
     def eventMax(self,value):
         self.eventMax=value
-
-    @property
-    def isAType(self):
-        return self._isAType
-    @isAType.setter
-    def isAType(self,value):
-        self._isAType=value
 
     @timer
     def runPedestals(self):

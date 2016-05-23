@@ -18,7 +18,7 @@ from Timer import timer
 
 class TbUTClusterizator:
     def __init__(self):
-        self.isAType=True
+        self.isAType=False
 
     @property
     def eventNumberDisplay(self):
@@ -39,14 +39,6 @@ class TbUTClusterizator:
     @eventMax.setter
     def eventMax(self,value):
         self.eventMax=value
-
-    @property
-    def isAType(self):
-        return self.isAType
-    @isAType.setter
-    def isAType(self, value):
-        self.isAType=value
-
     @property
     def sensorType(self):
         return self.sensorType

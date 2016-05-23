@@ -20,7 +20,6 @@ if __name__=="__main__":
 	fileS.write("from TbUTClusterizator import TbUTClusterizator\n")
 	fileS.write("app=TbUTClusterizator()\n")
 	fileS.write("app.inputData="+'"'+str(fileName)+'"'+"\n")
-        fileS.write("app.isAType=False\n")
         fileS.write("app.sensorType = 'NType'\n")
 	fileS.write("app.eventMax = -1\n")
 	fileS.write('app.pedestalInputData = "'+outputPath+'/Pedestal-'+os.environ["BOARD"]+'-'+os.environ["RUNPLACE"]+'-'+os.environ["PEDESTALNUMBER"]+'.dat"\n')
