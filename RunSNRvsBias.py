@@ -37,4 +37,3 @@ if __name__ == "__main__" :
                 command = 'python -u SNRvsBias.py --board '+board+' --PA '+PA+' --BS '+BS+' | tee LogSNRvsBias-'+board+'-'+PA+'-'+BS+'.dat'
                 print command
                 subprocess.call(command,shell=True)
-

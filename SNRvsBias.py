@@ -16,7 +16,7 @@ Description:
     The following arguments can/have to be provided:
     - board (str): the board one wants to analyse (M1, M3, or M4);
     - PA (str): the pitch adapter region one wants to analyse (FanIn or FanUp);
-    - BS (str): the biasing scheme (Top or Back).
+    - BS (str): the biasing scheme (Top, Back, or Both). The 'Both' biasing scheme refers to the situation in which the sensor should have been biased from the back, but the jumpers were not set properly, so it has been actually biased both from the top and from the back. This should be treated as a 'Back' biasing scheme. 
     
 How to run it:
     First of all, type
@@ -60,6 +60,11 @@ def SNRvsBias(board,PA,BS) :
     
     funName = 'SNRvsBias'
 
+    if BS == 'Both' :
+        BSInLogbook = 'Back+Top'
+    else :
+        BSInLogbook = BS
+
     # Mount EOS
     command = '/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select -b fuse mount ~/eos'
     print '>', command
@@ -72,8 +77,14 @@ def SNRvsBias(board,PA,BS) :
 
     logbook_df_san = GetInfoFromLogbook(logbook)
     
-    logbook_df_subset = logbook_df_san.loc[(logbook_df_san['Purpose'] == 'Bias scan') & (logbook_df_san['Biasing scheme'] == BS)].copy(deep=True)
-    
+    logbook_df_subset = logbook_df_san.loc[(logbook_df_san['Purpose'] == 'Bias scan') & (logbook_df_san['Biasing scheme'] == BSInLogbook)].copy(deep=True)
+    if logbook_df_subset.empty :
+        print 'ERROR! No logbook subset found.'
+        return
+
+    print '=============='
+    print 'Logbook subset'
+    print '=============='
     print logbook_df_subset.head()
     print logbook_df_subset.shape
     

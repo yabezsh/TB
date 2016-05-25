@@ -13,7 +13,7 @@ import os
 
 boardList = ['M1','M3','M4']
 PAList = ['FanIn','FanUp']
-BSList = ['Top','Back']
+BSList = ['Top','Back','Both']
 
 modeList = ['local','batch']
 
@@ -33,6 +33,6 @@ user = os.environ['USER']
 userFirst = user[0]
 
 # MAMBA = '/afs/cern.ch/user/f/flionett/eos/lhcb/testbeam/ut/TemporaryData/May2016/MAMBA/'
-MAMBA = '/afs/cern.ch/user/'+userFirst+'/'+user+'/eos/lhcb/testbeam/ut/TemporaryData/May2016/MAMBA/'
+MAMBA = '/afs/cern.ch/user/'+userFirst+'/'+user+'/eos/lhcb/testbeam/ut/OfficialData/May2016/MAMBA/'
 DQM = '/afs/cern.ch/user/'+userFirst+'/'+user+'/eos/lhcb/testbeam/ut/TemporaryData/May2016/DQM/'
 # DQM = '/afs/cern.ch/user/'+userFirst+'/'+user+'/eos/lhcb/testbeam/ut/TemporaryData/May2016/DQMTest/'

@@ -6,18 +6,18 @@ Central, Custom,Back+Top,6,15007,70,10,0,150,-,10,-,Good,Good,
 "
 ",,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,
-Central,Bias Scan,Back+Top,7,15008,70,10,0,25,-,10,-,Good,,
-Central,Pedestal,Back+Top,8,-,70,10,0,25,-,10,-,Good,,
-Central,Bias Scan,Back+Top,9,15009,70,10,0,50,-,10,-,Good,,
-Central,Pedestal,Back+Top,10,-,70,10,0,50,-,10,-,Good,,
-Central,Bias Scan,Back+Top,11,15010,70,10,0,75,-,10,-,Good,,
-Central,Pedestal,Back+Top,12,-,70,10,0,75,-,10,-,Good,,
-Central,Bias Scan,Back+Top,13,15011,70,10,0,100,-,10,-,Good,,
-Central,Pedestal,Back+Top,14,-,70,10,0,100,-,10,-,Good,,
-Central,Bias Scan,Back+Top,15,15012,70,10,0,125,-,10,-,Good,,
-Central,Pedestal,Back+Top,16,-,70,10,0,125,-,10,-,Good,,
-Central,Bias Scan,Back+Top,17,15013,70,10,0,150,-,10,-,Good,,
-Central,Pedestal,Back+Top,18,-,70,10,0,150,-,10,-,Good,,
+Central,Bias Scan,Back+Top,7,15008,70,10,0,25,-,10,-,Good,Bad,"Red jumper not removed  "
+Central,Pedestal,Back+Top,8,-,70,10,0,25,-,10,-,Good,Bad,"Red jumper not removed  "
+Central,Bias Scan,Back+Top,9,15009,70,10,0,50,-,10,-,Good,Bad,"Red jumper not removed  "
+Central,Pedestal,Back+Top,10,-,70,10,0,50,-,10,-,Good,Bad,"Red jumper not removed  "
+Central,Bias Scan,Back+Top,11,15010,70,10,0,75,-,10,-,Good,Bad,"Red jumper not removed  "
+Central,Pedestal,Back+Top,12,-,70,10,0,75,-,10,-,Good,Bad,"Red jumper not removed  "
+Central,Bias Scan,Back+Top,13,15011,70,10,0,100,-,10,-,Good,Bad,"Red jumper not removed  "
+Central,Pedestal,Back+Top,14,-,70,10,0,100,-,10,-,Good,Bad,"Red jumper not removed  "
+Central,Bias Scan,Back+Top,15,15012,70,10,0,125,-,10,-,Good,Bad,"Red jumper not removed  "
+Central,Pedestal,Back+Top,16,-,70,10,0,125,-,10,-,Good,Bad,"Red jumper not removed  "
+Central,Bias Scan,Back+Top,17,15013,70,10,0,150,-,10,-,Good,Bad,"Red jumper not removed  "
+Central,Pedestal,Back+Top,18,-,70,10,0,150,-,10,-,Good,Bad,"Red jumper not removed  "
 Central,Custom,Back+Top,19,-,70,10,0,150,-,10,-,Good,,"Pipeline delay =4, phase Beetle=0ns, ADC phase shift 11ns  "
 Central,Pedestal,Back+Top,20,-,70,10,0,150,-,10,-,Good,,"Pipeline delay =4, phase Beetle=0ns, ADC phase shift 11ns  "
 Central,Custom,Back+Top,21,-,70,10,0,150,-,10,-,Good,,"Pipeline delay =5, phase Beetle=0ns, ADC phase shift 11ns  "
