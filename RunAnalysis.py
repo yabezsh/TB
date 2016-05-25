@@ -13,7 +13,8 @@ Description:
     - PA (str): the pitch adapter region one wants to analyse (FanIn or FanUp);
     - DUTRun (str): optional, the physics run one wants to process (mostly for debugging);
     - mode (str): how to run the script (local or batch);
-    - evts (int): the number of events to run over (if not provided, run over all events).
+    - evts (int): the number of events to run over (if not provided, run over all events);
+    - mask (int): status of the masking channel procedure, 0 for off and 1 for off (if not provided, do not mask anything).
     
 How to run it:
     First of all, type
@@ -30,11 +31,13 @@ How to run it:
 
     python -u RunAnalysis.py --board M1 --PA FanIn --DUTRun 7 --mode local(batch) | tee LogRunAnalysis.dat
     python -u RunAnalysis.py --board M1 --PA FanIn --DUTRun 7 --mode local(batch) --evts 1000 | tee LogRunAnalysis.dat
+    python -u RunAnalysis.py --board M1 --PA FanIn --DUTRun 7 --mode local(batch) --mask 1 | tee LogRunAnalysis.dat
     
     to analyse one physics run, or
 
     python -u RunAnalysis.py --board M1 --PA FanIn --mode local(batch) | tee LogRunAnalysis.dat
     python -u RunAnalysis.py --board M1 --PA FanIn --mode local(batch) --evts 1000 | tee LogRunAnalysis.dat
+    python -u RunAnalysis.py --board M1 --PA FanIn --mode local(batch) --mask 1 | tee LogRunAnalysis.dat
     
     to analyse all of them.
 """
@@ -54,13 +57,7 @@ from ToolsForPython import *
 
 
 
-# cput = '23:59:59'
-# cput = '1439:59:59'
-# cput = '143:59:59'
-
-    
-
-def RunAnalysis(board,PA,DUTRun,mode,evts) :
+def RunAnalysis(board,PA,DUTRun,mode,evts,mask) :
     # Check that the specified PA exists for the specified board (it can be that M1 has FanIn only, and so on).
     # print PADict[board]
     if PA not in PADict[board] :
@@ -141,7 +138,7 @@ def RunAnalysis(board,PA,DUTRun,mode,evts) :
         if (mode == 'batch') :
             # Use qsub
             #command = "qsub -l cput=" + cput + " -v board="+board+",PA="+PA+",DUTRun="+str(DUTRun)+",ped="+str(ped)+",filenameNoPathPhys="+filenameNoPathPhys+    ",filenameNoPathPed="+filenameNoPathPed+" SubmitAnalysis.pbs" # No spaces after ','.
-            line_run = "python "+kepler+"/../Analysis.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -e "+str(evts)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
+            line_run = "python "+kepler+"/../Analysis.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
         
             with open('clusterRun_'+filenameNoPathPhys.split('-')[3]+'.sh','w') as text_file :
                 text_file.write(line_export_path)
@@ -157,13 +154,13 @@ def RunAnalysis(board,PA,DUTRun,mode,evts) :
             
             command = "bsub -q 8nh clusterRun_"+filenameNoPathPhys.split('-')[3]+".sh"
             print command
-            subprocess.call(command,shell=True)
+            # subprocess.call(command,shell=True)
             
         elif (mode == 'local') :
             # Use python directly 
-            command = "python Analysis.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -e "+str(evts)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
+            command = "python Analysis.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
             print command
-            subprocess.call(command,shell=True)
+            # subprocess.call(command,shell=True)
 
     return
 
@@ -183,6 +180,7 @@ if __name__ == "__main__" :
     parser.add_argument('--DUTRun',type=int,required=False,help='DUT run (for debugging, to process one DUT run only)')
     parser.add_argument('--mode',required=True,choices=modeList,help='mode')
     parser.add_argument('--evts',required=False,type=int,help='evts')
+    parser.add_argument('--mask',required=False,type=int,choices=[0,1],help='mask')
     
     args = parser.parse_args()
 
@@ -195,5 +193,9 @@ if __name__ == "__main__" :
         evts = -1
     else :
         evts = args.evts
+    if args.mask is None :
+        mask = 0
+    else :
+        mask = args.mask
 
-    RunAnalysis(board,PA,DUTRun,mode,evts)
+    RunAnalysis(board,PA,DUTRun,mode,evts,mask)
