@@ -77,7 +77,7 @@ def RunAnalysis(board,PA,DUTRun,mode,evts,mask) :
     print 'Path to input: ', pathToInput
 
     # CSV file to be used as input.
-    logbook = 'Logbook/RunLogMay2016Board'+board+PA+'.csv'
+    logbook = 'Logbook/RunLog'+testbeam+'Board'+board+PA+'.csv'
     print 'Logbook: ', logbook
 
     logbook_df_san = GetInfoFromLogbook(logbook)
@@ -173,7 +173,7 @@ def RunAnalysis(board,PA,DUTRun,mode,evts,mask) :
 
 if __name__ == "__main__" :
 
-    parser = argparse.ArgumentParser(description='Run the analysis of the May 2016 test beam data.')
+    parser = argparse.ArgumentParser(description='Run the analysis of the May 2016 or late May 2016 test beam data.')
 
     parser.add_argument('--board',required=True,choices=boardList,help='board')
     parser.add_argument('--PA',required=True,choices=PAList,help='PA')

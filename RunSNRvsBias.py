@@ -32,7 +32,7 @@ from DefineGlobalVariables import *
 if __name__ == "__main__" :
 
     for board in boardList :
-        for PA in PAList :
+        for PA in PADict[board] :
             for BS in BSList :
                 command = 'python -u SNRvsBias.py --board '+board+' --PA '+PA+' --BS '+BS+' | tee LogSNRvsBias-'+board+'-'+PA+'-'+BS+'.dat'
                 print command

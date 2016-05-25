@@ -72,7 +72,7 @@ def SNRvsBias(board,PA,BS) :
     
     # Open the logbook and get the subset corresponding to the desired bias voltage scan.
     # CSV file to be used as input.
-    logbook = 'Logbook/RunLogMay2016Board'+board+PA+'.csv'
+    logbook = 'Logbook/RunLog'+testbeam+'Board'+board+PA+'.csv'
     print 'Logbook: ', logbook
 
     logbook_df_san = GetInfoFromLogbook(logbook)
@@ -269,7 +269,7 @@ def SNRvsBias(board,PA,BS) :
 
 if __name__ == "__main__" :
 
-    parser = argparse.ArgumentParser(description='Study the SNR as a function of the bias voltage for the May 2016 test beam data.')
+    parser = argparse.ArgumentParser(description='Study the SNR as a function of the bias voltage for the May 2016 or late May 2016 test beam data.')
 
     parser.add_argument('--board',required=True,choices=boardList,help='board')
     parser.add_argument('--PA',required=True,choices=PAList,help='PA')
