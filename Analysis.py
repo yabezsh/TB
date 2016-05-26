@@ -7,7 +7,7 @@ import os,sys,getopt, subprocess
 telescopePath = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/May2016/TimePix/RootFiles"
 inputPathPedestal = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/May2016/MAMBA"
 inputPathSignal = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/May2016/MAMBA"
-outputPath = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/May2016/DQM"
+outputPath = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/May2016/DQMTest"
 
 boardName = "M1"
 PA = "FanIn"
@@ -17,7 +17,7 @@ sigFile = "Run_Bias_Scan-M1-FanIn-50-15027.dat"
 
 if __name__=="__main__":
         try:
-                opts,args = getopt.getopt(sys.argv[1:],"p:s:b:r:",["pedestal","signal","board","PA"])
+                opts,args = getopt.getopt(sys.argv[1:],"p:s:b:r:t:",["pedestal","signal","board","PA","sensorType"])
         except getopt.GetoptError as err:
                 print str(err)
                 usage()
@@ -31,7 +31,10 @@ if __name__=="__main__":
                         boardName = str(a)
 		if o in ('-r','--PA'):
                         PA = str(a)
-
+		if o in ('-t','--sensorType'):
+			if str(a)=="np": os.environ['sensorType'] = 'PType'
+                        if str(a)=="pn": os.environ['sensorType'] = 'NType'  	
+			print 'Iaro  ',os.environ['sensorType']
 if PA!="FanIn" and PA!="FanUp":
 	sys.exit("Wrong PA option! Choose FanIn or FanUp!") 
 if boardName!="M1" and boardName!="M2" and boardName!="M3" and boardName!="M4":
