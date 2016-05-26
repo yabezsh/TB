@@ -94,7 +94,7 @@ def RunAnalysis(board,PA,DUTRun,mode,evts,mask) :
     line_export_ld_library_path = 'export LD_LIBRARY_PATH='+ld_library_path+':$LD_LIBRARY_PATH\n'
     
     if DUTRun is not None :
-        # !!! Run the analysis for this run only.
+        # Run the analysis for this run only.
         # Check this is not a pedestal or calibration run.
         rowDUTRun, rowDUTRun_i = GetDUTRun(logbook_df_san,DUTRun)
         if rowDUTRun.get_value(rowDUTRun_i,'Purpose') == 'Pedestal' or rowDUTRun.get_value(rowDUTRun_i,'Purpose') == 'Calibration' :
