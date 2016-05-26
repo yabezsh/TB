@@ -11,13 +11,15 @@ outputPath = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/May2016/DQMTest"
 
 boardName = "M1"
 PA = "FanIn"
+NEvents = "-1"
+
 
 pedFile = "Pedestal-M1-FanIn-51.dat"
 sigFile = "Run_Bias_Scan-M1-FanIn-50-15027.dat"
 
 if __name__=="__main__":
         try:
-                opts,args = getopt.getopt(sys.argv[1:],"p:s:b:r:t:",["pedestal","signal","board","PA","sensorType"])
+                opts,args = getopt.getopt(sys.argv[1:],"p:s:b:r:t:e:",["pedestal","signal","board","PA","sensorType","events"])
         except getopt.GetoptError as err:
                 print str(err)
                 usage()
@@ -35,6 +37,8 @@ if __name__=="__main__":
 			if str(a)=="np": os.environ['sensorType'] = 'PType'
                         if str(a)=="pn": os.environ['sensorType'] = 'NType'  	
 			print 'Iaro  ',os.environ['sensorType']
+		if o in ('-e','--events'):
+			NEvents = str(a)  
 if PA!="FanIn" and PA!="FanUp":
 	sys.exit("Wrong PA option! Choose FanIn or FanUp!") 
 if boardName!="M1" and boardName!="M2" and boardName!="M3" and boardName!="M4":
@@ -57,6 +61,7 @@ os.environ['SCANTYPE'] = sigFile.split('-')[0].split('_')[1]
 os.environ['DEFRUN'] = sigFile.split('-')[4][:-4]
 os.environ['PEDESTALNUMBER'] = pedFile.split('-')[3][:-4]
 os.environ['OUTPUTPATH'] = outputPath
+os.environ['EVENTSNUMBER'] = NEvents
 
 shFile = open(os.environ["KEPLERROOT"]+"/../run_"+os.environ["RUNNUMBER"]+".sh","w")
 shFile.write('#!/bin/bash\n')
