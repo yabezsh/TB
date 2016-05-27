@@ -12,14 +12,14 @@ outputPath = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/May2016/DQMTest"
 boardName = "M1"
 PA = "FanIn"
 NEvents = "-1"
-
+mask = 0
 
 pedFile = "Pedestal-M1-FanIn-51.dat"
 sigFile = "Run_Bias_Scan-M1-FanIn-50-15027.dat"
 
 if __name__=="__main__":
         try:
-                opts,args = getopt.getopt(sys.argv[1:],"p:s:b:r:t:e:",["pedestal","signal","board","PA","sensorType","events"])
+                opts,args = getopt.getopt(sys.argv[1:],"p:s:b:r:t:e:m:",["pedestal","signal","board","PA","sensorType","events","mask"])
         except getopt.GetoptError as err:
                 print str(err)
                 usage()
@@ -38,7 +38,10 @@ if __name__=="__main__":
                         if str(a)=="pn": os.environ['sensorType'] = 'NType'  	
 			print 'Iaro  ',os.environ['sensorType']
 		if o in ('-e','--events'):
-			NEvents = str(a)  
+			NEvents = str(a)
+		if o in('-m','--mask'):
+			if int(a)==0 or int(a)==1: mask = a
+			else: sys.exit("choose right masking option: 0 or 1")
 if PA!="FanIn" and PA!="FanUp":
 	sys.exit("Wrong PA option! Choose FanIn or FanUp!") 
 if boardName!="M1" and boardName!="M2" and boardName!="M3" and boardName!="M4":
@@ -62,6 +65,11 @@ os.environ['DEFRUN'] = sigFile.split('-')[4][:-4]
 os.environ['PEDESTALNUMBER'] = pedFile.split('-')[3][:-4]
 os.environ['OUTPUTPATH'] = outputPath
 os.environ['EVENTSNUMBER'] = NEvents
+if mask == 0: os.environ['MAMBAMASK'] = 'No'
+else: os.environ['MAMBAMASK'] = os.environ['BOARD']
+
+
+print "Iaroslava ", os.environ['MAMBAMASK']
 
 shFile = open(os.environ["KEPLERROOT"]+"/../run_"+os.environ["RUNNUMBER"]+".sh","w")
 shFile.write('#!/bin/bash\n')

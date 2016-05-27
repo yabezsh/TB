@@ -72,7 +72,7 @@ class TbUTPedestalRunner:
         seq_UT_data_processing=GaudiSequencer("UTPedestal")
         rawDataReader().isAType=self.isAType
         rawDataReader().inputData= self.inputData
-        pedestalSubtractor().ChannelMaskInputLocation= "$KEPLERROOT/../TbUT/options/UT/MambaMasks.dat"
+        pedestalSubtractor().ChannelMaskInputLocation= "$KEPLERROOT/../TbUT/options/UT/MambaMasks_$MAMBAMASK.dat"
         pedestalSubtractor().PedestalOutputFile=self.pedestalOutputData
         pedestalSubtractor().treningEntry=15000
 
