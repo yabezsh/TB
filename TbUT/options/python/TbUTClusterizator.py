@@ -97,12 +97,12 @@ class TbUTClusterizator:
         rawDataReader().inputData=self.inputData
         rawDataReader().isAType=self.isAType
         rawDataMonitor().displayEventNumber=self.eventNumberDisplay
-        pedestalSubtractor().ChannelMaskInputLocation= "$KEPLERROOT/../TbUT/options/UT/Masks_DTypeSensor.dat"
+        pedestalSubtractor().ChannelMaskInputLocation= "$KEPLERROOT/../TbUT/options/UT/MambaMasks_$MAMBAMASK.dat"
         pedestalSubtractor().PedestalInputFile=self.pedestalInputData
         pedestalSubtractor().FollowingOption='file'
         pedestalSubtractor().treningEntry=1
         pedestalMonitor().displayEventNumber=self.eventNumberDisplay
-        CMS().ChannelMaskInputLocation= "$KEPLERROOT/../TbUT/options/UT/Masks_DTypeSensor.dat"
+        CMS().ChannelMaskInputLocation= "$KEPLERROOT/../TbUT/options/UT/MambaMasks_$MAMBAMASK.dat"
         CMS().NoiseOutputFile= os.environ['OUTPUTPATH']+'/'+os.environ['BOARD']+'/'+os.environ['RUNPLACE']+'/output_'+os.environ["RUNNUMBER"]+"/noise_Mamba.dat"
         CMSMonitor().displayEventNumber=self.eventNumberDisplay
         ClusterCreator().NoiseInputFile=os.environ['OUTPUTPATH']+'/'+os.environ['BOARD']+'/'+os.environ['RUNPLACE']+'/output_'+os.environ["RUNNUMBER"]+"/noise_Mamba.dat"
