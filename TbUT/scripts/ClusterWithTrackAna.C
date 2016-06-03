@@ -13,6 +13,76 @@
 #include <iostream>
 #include <string>
 
+#include <TH1D.h>
+#include <TMath.h>
+#include <TGraph.h>
+#include <TF1.h>
+#include <TGraphErrors.h>
+#include <TChain.h>
+
+#include <RooHist.h>
+#include <RooRealVar.h>
+#include <RooDataHist.h>
+#include <RooLandau.h>
+#include <RooExponential.h>
+#include <RooGaussian.h>
+#include <RooAddPdf.h>
+#include <RooPlot.h>
+#include <RooFFTConvPdf.h>
+#include <RooNumConvPdf.h>
+#include <TPaveStats.h> 
+#include "RooPlot.h"
+
+
+struct RetVal{
+        Double_t MPV;
+        Double_t width;
+        Double_t sigma;
+};
+
+RetVal PrintLandau(TH1F* h,double Center,int MinAdc,int MaxAdc,TString string){
+
+// --- Observable ---
+RooRealVar mes("mes","ADC",0,500) ;
+
+// --- Build Landau  PDF ---
+RooRealVar l_mean("MPV","Landau MPV",Center,0,500) ;
+RooRealVar l_width("Width","Landau width",30,-1000,1000.) ;
+RooLandau landau("landau","landau PDF",mes,l_mean,l_width) ;
+
+// Construct gauss(t,mg,sg) convolution
+RooRealVar mg("mg","Gmean",0) ;
+RooRealVar sg("SigmaG","Gsigma",3,0.001,200) ;
+RooGaussian gauss("gauss","gauss",mes,mg,sg) ;
+
+mes.setBins(10000,"cache") ;
+RooFFTConvPdf lxg("lxg","landau (X) gauss",mes,landau,gauss) ;
+RooDataHist *data =  new RooDataHist("data","dataset with x",mes,h) ;
+// --- Perform extended ML fit of composite PDF to toy data ---
+lxg.fitTo(*data,RooFit::Range(MinAdc,MaxAdc)) ;
+// --- Plot toy data and composite PDF overlaid ---
+RooPlot* mesframe = mes.frame(RooFit::Title(string)) ;
+data->plotOn(mesframe,RooFit::Name("data")) ;
+lxg.plotOn(mesframe,RooFit::Name("pdf"),RooFit::LineColor(kRed)) ;
+lxg.paramOn(mesframe,RooFit::Layout(0.58));
+// DRAW
+mesframe->Draw("lsame");
+RooFitResult* r = lxg.fitTo(*data,RooFit::Range(MinAdc,MaxAdc),"r") ;
+//cout<<endl<<"chi2 = "<<mesframe->chiSquare("pdf","data")<<endl;
+std::ofstream MPVvalue(("MPV_"+ m_board + "_" + runplace + "_" + consR +"_"+m_runNumb+"_roofit.txt").Data());
+MPVvalue << "SNR"<< "," << "error" << endl;
+MPVvalue <<l_mean.getVal()<<" "<< l_width.getVal()<<" "<< endl;
+RetVal langaus = {l_mean.getVal(),l_width.getVal(),sg.getVal()};
+
+return langaus;
+
+}
+
+RetVal lFit(TH1F* h,bool MPVreturn = 0,float left=0.45,float right=4.0,TString string = "SNR"){
+RetVal MPV = PrintLandau(h,h->GetBinCenter(h->GetMaximumBin()),h->GetBinCenter(h->GetMaximumBin())*left,h->GetBinCenter(h->GetMaximumBin())*right,string);
+if (MPVreturn==1){return MPV;}
+else{return {0,0,0};}
+}
 
 Double_t langaufun(Double_t *x, Double_t *par) {
 
@@ -250,14 +320,20 @@ void langaus(TH1F *hSNR) {
    Int_t    ndf;
    TF1 *fitsnr = langaufit(hSNR,fr,sv,pllo,plhi,fp,fpe,&chisqr,&ndf);
 
+//   TPaveStats* st = (TPaveStats*)hSNR->GetListOfFunctions()->FindObject("stats");
+//   st->SetOptStat(1111);
+   
+   
    Double_t SNRPeak, SNRFWHM;
    langaupro(fp,SNRPeak,SNRFWHM);
 
    printf("Fitting done\nPlotting results...\n");
 
    // Global style settings
-   gStyle->SetOptStat(111);
-   gStyle->SetOptFit(111);
+  //gStyle->SetOptStat(111);
+  gStyle->SetOptStat(0);
+  // gStyle->SetOptFit(111);
+   gStyle->SetOptFit(0);
    gStyle->SetLabelSize(0.03,"x");
    gStyle->SetLabelSize(0.03,"y");
    gStyle->SetTitleStyle(0); 
@@ -1075,12 +1151,13 @@ void ClusterWithTrackAna::Loop()
    //addGraphics(hcTrk2, 6, "Cluster charge [ADC]", "");
    //gStyle->SetOptStat(11111);
    //gStyle->SetOptFit(111);
-   langaus(hSNR_1);
+  // langaus(hSNR_1);
+   lFit(hSNR_1);
    //hcAll->SetMaximum(1.25*hcAll->GetMaximum());
    //hcAll->Draw("same");
    hSNR_1->SetLineColor(kBlue); //hSNR_1->SetLineWidth(2);
    //hcTrk->Draw("same");
-   hSNR_1->Draw("same");
+   //hSNR_1->Draw("same");
    //langaus(hcTrk);
    //hcTrk1->Draw("same"); 
    //hcTrk2->Draw("same"); 
