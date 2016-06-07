@@ -640,7 +640,8 @@ void ClusterWithTrackAna::Loop()
    TH1F *hnoise = new TH1F("hnoise","Noise in connected channels",100,-200,200);
    TH1F *hnoiseChan = new TH1F("hnoiseChan","Noise in connected channels",200,0,200);
    TH1F *hnoisePerChannel = new TH1F("hnoisePerChannel","Noise",512,0,512);
-   TH3F *hSNR = new TH3F("hSNR","SNR",100,-6,6,100,-5,5,500,0,1000);
+   TH3F *hSNR = new TH3F("hSNR","SNR",100,-6,6,100,-5,5,50,0,100);
+   TH2F *hSNR2D =  new TH2F("hSNR2D","SNR2D",100,-6,6,100,-5,5);
    TH1F *hSNR_1 = new TH1F("hSNR_1","SNR",500,0,100);
 
    TH1F* h35 = new TH1F("h35","No. clusters / event",50,0.0,50.0);
@@ -1257,8 +1258,22 @@ void ClusterWithTrackAna::Loop()
    hSNR->GetYaxis()->SetTitle("Y_{trk} [mm]");
    addGraphics(hSNR,1, "X_{trk} [mm]","Y_{trk} [mm]");
    
-   hSNR->GetZaxis()->SetRangeUser(0,60);
-   hSNR->Project3DProfile("xy")->Draw("colz");
+   hSNR->GetZaxis()->SetRangeUser(0,100);
+   RetVal value;
+   for(int i=0; i< hSNR->GetNbinsX(); i++) {
+     
+     for(int j=0; j<hSNR->GetNBinsY(); i++) {
+       
+       value = lfit(hSNR->ProjectionZ(i,i+1,j,j+1),1);
+       
+       hSNR2D->SetBinContent(i,j,value.MPV);
+       hSNR2D->SetBinError(i,j,value.width);
+     }
+     
+   }
+   
+   hSNR2D->Draw("colz");
+   //hSNR->Project3DProfile("xy")->Draw("colz");
 
    
 
