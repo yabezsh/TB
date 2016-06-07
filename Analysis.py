@@ -5,9 +5,14 @@ python Analysis.py -b M1 -r FanIn -t pn -s Run_Bias_Scan-M1-FanIn-7-15008.dat -p
 import os,sys,getopt, subprocess
 
 telescopePath = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/May2016/TimePix/RootFiles"
-inputPathPedestal = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/May2016/MAMBA"
-inputPathSignal = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/May2016/MAMBA"
-outputPath = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/May2016/DQMTest"
+#inputPathPedestal = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/May2016/MAMBA"
+#inputPathSignal = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/May2016/MAMBA"
+outputPath = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/May2016/DQM"
+
+inputPathPedestal = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/LateMay2016/MAMBA"
+inputPathSignal = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/LateMay2016/MAMBA"
+
+
 
 boardName = "M1"
 PA = "FanIn"
@@ -44,8 +49,8 @@ if __name__=="__main__":
 			else: sys.exit("choose right masking option: 0 or 1")
 if PA!="FanIn" and PA!="FanUp":
 	sys.exit("Wrong PA option! Choose FanIn or FanUp!") 
-if boardName!="M1" and boardName!="M2" and boardName!="M3" and boardName!="M4":
-        sys.exit("Choose the right board: M1, M2, M3, M4")
+if boardName!="M1" and boardName!="M2" and boardName!="M3" and boardName!="M4" and boardName!="F1" and boardName!="F3":
+        sys.exit("Choose the right board: M1, M2, M3, M4, F1, F3")
 
 print 'sigFile:', sigFile[:-4]
 
@@ -70,6 +75,9 @@ else: os.environ['MAMBAMASK'] = os.environ['BOARD']
 
 
 print "Iaroslava ", os.environ['MAMBAMASK']
+
+print "LateMay test "
+os.system("echo $KEPLERROOT/../TbUT/options/UT/MambaMasks_$MAMBAMASK.dat")
 
 shFile = open(os.environ["KEPLERROOT"]+"/../run_"+os.environ["RUNNUMBER"]+".sh","w")
 shFile.write('#!/bin/bash\n')
