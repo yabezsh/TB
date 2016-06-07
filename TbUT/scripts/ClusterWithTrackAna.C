@@ -40,48 +40,55 @@ struct RetVal{
         Double_t sigma;
 };
 
-RetVal PrintLandau(TH1F* h,double Center,int MinAdc,int MaxAdc,TString string){
+RetVal PrintLandau(TH1F* h,double Center,int MinAdc,int MaxAdc,TString string,bool writeToFile){
 
-// --- Observable ---
-RooRealVar mes("mes","ADC",0,500) ;
+    // --- Observable ---
+    RooRealVar mes("mes","ADC",0,500) ;
 
-// --- Build Landau  PDF ---
-RooRealVar l_mean("MPV","Landau MPV",Center,0,500) ;
-RooRealVar l_width("Width","Landau width",30,-1000,1000.) ;
-RooLandau landau("landau","landau PDF",mes,l_mean,l_width) ;
+    // --- Build Landau  PDF ---
+    RooRealVar l_mean("MPV","Landau MPV",Center,0,500) ;
+    RooRealVar l_width("Width","Landau width",30,-1000,1000.) ;
+    RooLandau landau("landau","landau PDF",mes,l_mean,l_width) ;
 
-// Construct gauss(t,mg,sg) convolution
-RooRealVar mg("mg","Gmean",0) ;
-RooRealVar sg("SigmaG","Gsigma",3,0.001,200) ;
-RooGaussian gauss("gauss","gauss",mes,mg,sg) ;
+    // Construct gauss(t,mg,sg) convolution
+    RooRealVar mg("mg","Gmean",0) ;
+    RooRealVar sg("SigmaG","Gsigma",3,0.001,200) ;
+    RooGaussian gauss("gauss","gauss",mes,mg,sg) ;
 
-mes.setBins(10000,"cache") ;
-RooFFTConvPdf lxg("lxg","landau (X) gauss",mes,landau,gauss) ;
-RooDataHist *data =  new RooDataHist("data","dataset with x",mes,h) ;
-// --- Perform extended ML fit of composite PDF to toy data ---
-lxg.fitTo(*data,RooFit::Range(MinAdc,MaxAdc)) ;
-// --- Plot toy data and composite PDF overlaid ---
-RooPlot* mesframe = mes.frame(RooFit::Title(string)) ;
-data->plotOn(mesframe,RooFit::Name("data")) ;
-lxg.plotOn(mesframe,RooFit::Name("pdf"),RooFit::LineColor(kRed)) ;
-lxg.paramOn(mesframe,RooFit::Layout(0.58));
-// DRAW
-mesframe->Draw("lsame");
-RooFitResult* r = lxg.fitTo(*data,RooFit::Range(MinAdc,MaxAdc),"r") ;
-//cout<<endl<<"chi2 = "<<mesframe->chiSquare("pdf","data")<<endl;
-std::ofstream MPVvalue(("MPV_"+ m_board + "_" + runplace + "_" + consR +"_"+m_runNumb+"_roofit.txt").Data());
-MPVvalue << "SNR"<< "," << "error" << endl;
-MPVvalue <<l_mean.getVal()<<" "<< l_width.getVal()<<" "<< endl;
-RetVal langaus = {l_mean.getVal(),l_width.getVal(),sg.getVal()};
+    mes.setBins(10000,"cache") ;
+    RooFFTConvPdf lxg("lxg","landau (X) gauss",mes,landau,gauss) ;
+    RooDataHist *data =  new RooDataHist("data","dataset with x",mes,h) ;
+    // --- Perform extended ML fit of composite PDF to toy data ---
+    lxg.fitTo(*data,RooFit::Range(MinAdc,MaxAdc)) ;
+    // --- Plot toy data and composite PDF overlaid ---
+    RooPlot* mesframe = mes.frame(RooFit::Title(string)) ;
+    data->plotOn(mesframe,RooFit::Name("data")) ;
+    lxg.plotOn(mesframe,RooFit::Name("pdf"),RooFit::LineColor(kRed)) ;
+    lxg.paramOn(mesframe,RooFit::Layout(0.58));
+    // DRAW
+    mesframe->Draw("lsame");
+    RooFitResult* r = lxg.fitTo(*data,RooFit::Range(MinAdc,MaxAdc),"r") ;
+    //cout<<endl<<"chi2 = "<<mesframe->chiSquare("pdf","data")<<endl;
 
-return langaus;
+    if(!writeToFile){
+      std::ofstream MPVvalue(("MPV_"+ m_board + "_" + runplace + "_" + consR +"_"+m_runNumb+"_roofit.txt").Data());
+      MPVvalue << "SNR"<< "," << "error" << endl;
+      MPVvalue <<l_mean.getVal()<<" "<< l_width.getVal()<<" "<< endl;
+    }
+    RetVal langaus = {l_mean.getVal(),l_width.getVal(),sg.getVal()};
+
+    return langaus;
 
 }
 
 RetVal lFit(TH1F* h,bool MPVreturn = 0,float left=0.45,float right=4.0,TString string = "SNR"){
-RetVal MPV = PrintLandau(h,h->GetBinCenter(h->GetMaximumBin()),h->GetBinCenter(h->GetMaximumBin())*left,h->GetBinCenter(h->GetMaximumBin())*right,string);
-if (MPVreturn==1){return MPV;}
-else{return {0,0,0};}
+  if (MPVreturn==1){
+    RetVal MPV = PrintLandau(h,h->GetBinCenter(h->GetMaximumBin()),h->GetBinCenter(h->GetMaximumBin())*left,h->GetBinCenter(h->GetMaximumBin())*right,string,1);
+    return MPV;  
+  }else{ 
+      PrintLandau(h,h->GetBinCenter(h->GetMaximumBin()),h->GetBinCenter(h->GetMaximumBin())*left,h->GetBinCenter(h->GetMaximumBin())*right,string,0);
+      return {0,0,0};
+  }
 }
 
 Double_t langaufun(Double_t *x, Double_t *par) {
