@@ -40,7 +40,7 @@ struct RetVal{
         Double_t sigma;
 };
 
-RetVal PrintLandau(TH1F* h,double Center,int MinAdc,int MaxAdc,TString string,bool writeToFile){
+RetVal PrintLandau(TH1D* h,double Center,int MinAdc,int MaxAdc,TString string,bool writeToFile){
 
     // --- Observable ---
     RooRealVar mes("mes","ADC",0,500) ;
@@ -64,7 +64,7 @@ RetVal PrintLandau(TH1F* h,double Center,int MinAdc,int MaxAdc,TString string,bo
     RooPlot* mesframe = mes.frame(RooFit::Title(string)) ;
     data->plotOn(mesframe,RooFit::Name("data")) ;
     lxg.plotOn(mesframe,RooFit::Name("pdf"),RooFit::LineColor(kRed)) ;
-    lxg.paramOn(mesframe,RooFit::Layout(0.58));
+    //lxg.paramOn(mesframe,RooFit::Layout(0.58));
     // DRAW
     mesframe->Draw("lsame");
     RooFitResult* r = lxg.fitTo(*data,RooFit::Range(MinAdc,MaxAdc),"r") ;
@@ -81,7 +81,7 @@ RetVal PrintLandau(TH1F* h,double Center,int MinAdc,int MaxAdc,TString string,bo
 
 }
 
-RetVal lFit(TH1F* h,bool MPVreturn = 0,float left=0.45,float right=4.0,TString string = "SNR"){
+RetVal lFit(TH1D* h,bool MPVreturn = 0,float left=0.45,float right=4.0,TString string = "SNR"){
   if (MPVreturn==1){
     RetVal MPV = PrintLandau(h,h->GetBinCenter(h->GetMaximumBin()),h->GetBinCenter(h->GetMaximumBin())*left,h->GetBinCenter(h->GetMaximumBin())*right,string,1);
     return MPV;  
@@ -642,7 +642,7 @@ void ClusterWithTrackAna::Loop()
    TH1F *hnoisePerChannel = new TH1F("hnoisePerChannel","Noise",512,0,512);
    TH3F *hSNR = new TH3F("hSNR","SNR",100,-6,6,100,-5,5,50,0,100);
    TH2F *hSNR2D =  new TH2F("hSNR2D","SNR2D",100,-6,6,100,-5,5);
-   TH1F *hSNR_1 = new TH1F("hSNR_1","SNR",500,0,100);
+   TH1D *hSNR_1 = new TH1D("hSNR_1","SNR",500,0,100);
 
    TH1F* h35 = new TH1F("h35","No. clusters / event",50,0.0,50.0);
    
@@ -1262,9 +1262,9 @@ void ClusterWithTrackAna::Loop()
    RetVal value;
    for(int i=0; i< hSNR->GetNbinsX(); i++) {
      
-     for(int j=0; j<hSNR->GetNBinsY(); i++) {
+     for(int j=0; j<hSNR->GetNbinsY(); j++) {
        
-       value = lfit(hSNR->ProjectionZ(i,i+1,j,j+1),1);
+       value = lFit(hSNR->ProjectionZ("testH",i,i+1,j,j+1),1);
        
        hSNR2D->SetBinContent(i,j,value.MPV);
        hSNR2D->SetBinError(i,j,value.width);
