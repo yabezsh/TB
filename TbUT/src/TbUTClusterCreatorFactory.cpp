@@ -7,6 +7,8 @@
 
 #include "TbUTClusterCreatorFactory.h"
 #include "TbUTClusterCreator.h"
+#include "TbUTClusterCreatorSingleStrip.h"
+#include "TbUTClusterCreatorFiveStrips.h"
 
 using namespace TbUT;
 
@@ -21,6 +23,10 @@ ClusterCreatorFactory::ClusterCreatorPtr ClusterCreatorFactory::createClusterCre
 {
 	if(p_clusterCreatorType == TbUT::ClusterCreatorType::defaultCreator)
 		return ClusterCreatorPtr(new ClusterCreator(m_sensorType,m_thresholdPrivder));
+	else if(p_clusterCreatorType == TbUT::ClusterCreatorType::singleStripCreator)
+		return ClusterCreatorPtr(new ClusterCreatorSingleStrip(m_sensorType,m_thresholdPrivder));
+	else if(p_clusterCreatorType == TbUT::ClusterCreatorType::fiveStripCreator)
+		return ClusterCreatorPtr(new ClusterCreatorFiveStrips(m_sensorType,m_thresholdPrivder));
 	else
 		throw NoSuchState(p_clusterCreatorType);
 }

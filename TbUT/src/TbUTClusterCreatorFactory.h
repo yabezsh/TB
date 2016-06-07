@@ -18,6 +18,9 @@ namespace TbUT
 namespace ClusterCreatorType
 {
 static const std::string& defaultCreator = "default";
+static const std::string& singleStripCreator = "singleStripCreator";
+static const std::string& fiveStripCreator = "fiveStripCreator";
+
 }
 
 class ClusterCreatorFactory

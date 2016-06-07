@@ -105,9 +105,10 @@ class TbUTClusterizator:
         CMS().ChannelMaskInputLocation= "$KEPLERROOT/../TbUT/options/UT/MambaMasks_$MAMBAMASK.dat"
         CMS().NoiseOutputFile= os.environ['OUTPUTPATH']+'/'+os.environ['BOARD']+'/'+os.environ['RUNPLACE']+'/output_'+os.environ["RUNNUMBER"]+"/noise_Mamba.dat"
         CMSMonitor().displayEventNumber=self.eventNumberDisplay
+        ClusterCreator().ClusterCreatorOption = "fiveStripCreator"
         ClusterCreator().NoiseInputFile=os.environ['OUTPUTPATH']+'/'+os.environ['BOARD']+'/'+os.environ['RUNPLACE']+'/output_'+os.environ["RUNNUMBER"]+"/noise_Mamba.dat"
-        ClusterCreator().LowThreshold=2.5
-        ClusterCreator().HighThreshold=3
+        ClusterCreator().LowThreshold=3.5
+        ClusterCreator().HighThreshold=5
         ClusterCreator().sensorType=self.sensorType
         ClusterCreatorMonitor().displayEventNumber=self.eventNumberDisplay
         ClusterCreatorMonitor().sensorType=self.sensorType
