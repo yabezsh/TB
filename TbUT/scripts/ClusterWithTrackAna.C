@@ -67,7 +67,7 @@ RetVal PrintLandau(TH1D* h,double Center,int MinAdc,int MaxAdc,TString string,bo
     //lxg.paramOn(mesframe,RooFit::Layout(0.58));
     // DRAW
     mesframe->Draw("lsame");
-    RooFitResult* r = lxg.fitTo(*data,RooFit::Range(MinAdc,MaxAdc),"r") ;
+    // RooFitResult* r = lxg.fitTo(*data,RooFit::Range(MinAdc,MaxAdc),"r") ;
     //cout<<endl<<"chi2 = "<<mesframe->chiSquare("pdf","data")<<endl;
 
     if(!writeToFile){

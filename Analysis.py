@@ -1,16 +1,16 @@
 """
-python Analysis.py -b M1 -r FanIn -t pn -s Run_Bias_Scan-M1-FanIn-7-15008.dat -p Pedestal-M1-FanIn-8.dat
+python Analysis.py -b M1 -r FanIn -t pn -s Run_Bias_Scan-M1-FanIn-7-15008.dat -p Pedestal-M1-FanIn-8.dat -m 0 -e 100
 """
 
 import os,sys,getopt, subprocess
 
 telescopePath = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/May2016/TimePix/RootFiles"
-#inputPathPedestal = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/May2016/MAMBA"
-#inputPathSignal = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/May2016/MAMBA"
+inputPathPedestal = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/May2016/MAMBA"
+inputPathSignal = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/May2016/MAMBA"
 outputPath = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/May2016/DQM"
 
-inputPathPedestal = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/LateMay2016/MAMBA"
-inputPathSignal = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/LateMay2016/MAMBA"
+# inputPathPedestal = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/LateMay2016/MAMBA"
+# inputPathSignal = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/LateMay2016/MAMBA"
 
 
 
@@ -41,7 +41,6 @@ if __name__=="__main__":
 		if o in ('-t','--sensorType'):
 			if str(a)=="np": os.environ['sensorType'] = 'PType'
                         if str(a)=="pn": os.environ['sensorType'] = 'NType'  	
-			print 'Iaro  ',os.environ['sensorType']
 		if o in ('-e','--events'):
 			NEvents = str(a)
 		if o in('-m','--mask'):
@@ -72,12 +71,6 @@ os.environ['OUTPUTPATH'] = outputPath
 os.environ['EVENTSNUMBER'] = NEvents
 if mask == 0: os.environ['MAMBAMASK'] = 'No'
 else: os.environ['MAMBAMASK'] = os.environ['BOARD']
-
-
-print "Iaroslava ", os.environ['MAMBAMASK']
-
-print "LateMay test "
-os.system("echo $KEPLERROOT/../TbUT/options/UT/MambaMasks_$MAMBAMASK.dat")
 
 shFile = open(os.environ["KEPLERROOT"]+"/../run_"+os.environ["RUNNUMBER"]+".sh","w")
 shFile.write('#!/bin/bash\n')
