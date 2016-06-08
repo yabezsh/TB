@@ -36,4 +36,4 @@ if __name__ == "__main__" :
         for PA in PADict[board] :
             command = 'python -u CheckZRot.py --board '+board+' --PA '+PA+' | tee LogCheckZRot-'+board+'-'+PA+'.dat'
             print command
-            # subprocess.call(command,shell=True)
+            subprocess.call(command,shell=True)

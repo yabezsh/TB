@@ -116,34 +116,42 @@ def CheckZRot(board,PA) :
         if os.path.exists(filename) : 
             inFileROOT = ROOT.TFile(filename,'READ')
             h9 = inFileROOT.Get('h9') 
-            
-            f = ROOT.TF1('f','pol1')
-            # f.SetParameter(0,0.)
-            # f.SetParLimits(0,0.,50.)
-            # f.SetParameter(1,0.)
-            # f.SetParLimits(1,0.,50.)
-            h9.Fit(f)
-            a0 = f.GetParameter(0)
-            a0_u = f.GetParError(0)
-            a1 = f.GetParameter(1)
-            a1_u = f.GetParError(1)
+            entries = h9.GetEntries()
+            print 'Entries:', entries
+            if entries == 0 :
+                print 'ERROR! Found histogram with zero entries.'
+            else : 
+                f = ROOT.TF1('f','pol1')
+                # f.SetParameter(0,0.)
+                # f.SetParLimits(0,0.,50.)
+                # f.SetParameter(1,0.)
+                # f.SetParLimits(1,0.,50.)
+                h9.Fit(f)
+                a0 = f.GetParameter(0)
+                a0_u = f.GetParError(0)
+                a1 = f.GetParameter(1)
+                a1_u = f.GetParError(1)
 
-            print 'a0:', a0, '+/-', a0_u
-            print 'a1:', a1, '+/-', a1_u
-    
-            la0.append(a0)
-            la0_u.append(a0_u)
-            la1.append(a1)
-            la1_u.append(a1_u)
+                print 'a0:', a0, '+/-', a0_u
+                print 'a1:', a1, '+/-', a1_u
+   
+                # If the fit results are not compatible with a horizontal straight line (possible rotation around z), print a warning.
+                if (a1/a1_u > 3.) :
+                    print 'WARNING! Possible rotation around z.'
+
+                la0.append(a0)
+                la0_u.append(a0_u)
+                la1.append(a1)
+                la1_u.append(a1_u)
             
             inFileROOT.Close()
 
     outFileROOT.cd()
 
-    print la0
-    print la0_u
-    print la1
-    print la1_u
+    print 'List of a0:', la0
+    print 'List of a0 uncertainty:', la0_u
+    print 'List of a1:', la1
+    print 'List of a1 uncertainty:', la1_u
 
     # Fit.
     mina0 = min(la0)
@@ -151,10 +159,10 @@ def CheckZRot(board,PA) :
     mina1 = min(la1)
     maxa1 = max(la1)
 
-    print mina0
-    print maxa0
-    print mina1
-    print maxa1
+    # print mina0
+    # print maxa0
+    # print mina1
+    # print maxa1
 
     # ha0 = ROOT.TH1F('ha0','ha0',100,mina0,maxa0)
     # ha1 = ROOT.TH1F('ha1','ha1',100,mina1,maxa1)
@@ -181,6 +189,8 @@ def CheckZRot(board,PA) :
     DrawObj(ca1,ha1,None,'E',pathToFigures)
     
     outFileROOT.Close()
+
+    print 'Done.'
 
     return
 
