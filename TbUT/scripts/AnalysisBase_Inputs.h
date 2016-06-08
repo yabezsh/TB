@@ -24,7 +24,7 @@
 
 
 #include <sstream>
-const TString m_fileIndir = TString(getenv("KEPLERROOT"))+"/eos/lhcb/testbeam/ut/TemporaryData/May2016/DQM/"+TString(getenv("BOARD"))+"/"+TString(getenv("RUNPLACE"))+"/output_"+TString(getenv("RUNNUMBER"))+"/";
+const TString m_fileIndir = TString(getenv("OUTPUTPATH"))+"/"+TString(getenv("BOARD"))+"/"+TString(getenv("RUNPLACE"))+"/output_"+TString(getenv("RUNNUMBER"))+"/";
 const TString m_board   = TString(getenv("BOARD"));
 
 const TString m_runNumb = TString(getenv("DEFRUN"));
