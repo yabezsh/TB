@@ -133,75 +133,76 @@ def ChargeSharingvsAngle(board,PA,BS) :
 
         filename = pathToInput+'output_'+str(DUTRun)+'/Plots/AnalysisOutput_'+board+'_'+PA+'_'+str(DUTRun)+'_'+str(telescopeRun)+'.root'
         print filename
-        inFileROOT = ROOT.TFile(filename,'READ')
-        hchargeSharing = inFileROOT.Get('h17b') 
-        hchargeSharing.SetName('hchargeSharing'+'_'+board+'_'+PA+'_'+BS+'_'+str(angle))
-        InitGraph(hchargeSharing,'charge sharing','interstrip position','Q_{R}/(Q_{L}+Q_{R})')
-        SetStyleObj(obj=hchargeSharing,lineColor=ROOT.kRed)
-        entries = hchargeSharing.GetEntries()
-        print 'Entries:', entries
-        if entries == 0 :
-            print 'ERROR! Found histogram with zero entries.'
-        else :
-            print hchargeSharing
+        if os.path.exists(filename) :
+            inFileROOT = ROOT.TFile(filename,'READ')
+            hchargeSharing = inFileROOT.Get('h17b') 
+            hchargeSharing.SetName('hchargeSharing'+'_'+board+'_'+PA+'_'+BS+'_'+str(angle))
+            InitGraph(hchargeSharing,'charge sharing','interstrip position','Q_{R}/(Q_{L}+Q_{R})')
+            SetStyleObj(obj=hchargeSharing,lineColor=ROOT.kRed)
+            entries = hchargeSharing.GetEntries()
+            print 'Entries:', entries
+            if entries == 0 :
+                print 'ERROR! Found histogram with zero entries.'
+            else :
+                print hchargeSharing
 
-            # Fit with an error function
-            minFit = -0.5
-            maxFit = 0.5
-            ferr = ROOT.TF1('ferr','[0]*(1.-erf((x-[1])/(sqrt(2.)*[2])))+[3]',minFit,maxFit)
-            ferr.SetParameter(0,0.4)
-            ferr.SetParLimits(0,0.2,0.6)
-            ferr.SetParameter(1,0.)
-            ferr.SetParLimits(1,-0.1,0.1)
-            ferr.SetParameter(2,0.1)
-            ferr.SetParLimits(2,0.,10.)
+                # Fit with an error function
+                minFit = -0.5
+                maxFit = 0.5
+                ferr = ROOT.TF1('ferr','[0]*(1.-erf((x-[1])/(sqrt(2.)*[2])))+[3]',minFit,maxFit)
+                ferr.SetParameter(0,0.4)
+                ferr.SetParLimits(0,0.2,0.6)
+                ferr.SetParameter(1,0.)
+                ferr.SetParLimits(1,-0.1,0.1)
+                ferr.SetParameter(2,0.1)
+                ferr.SetParLimits(2,0.,10.)
         
-            # Set parameter names.
-            ferr.SetParName(0,"a")
-            ferr.SetParName(1,"#mu")
-            ferr.SetParName(2,"#sigma")
-            ferr.SetParName(3,"b")
+                # Set parameter names.
+                ferr.SetParName(0,"a")
+                ferr.SetParName(1,"#mu")
+                ferr.SetParName(2,"#sigma")
+                ferr.SetParName(3,"b")
 
-            hchargeSharing.Fit('ferr','BR')
-            cchargeSharing = ROOT.TCanvas('cchargeSharing'+'_'+board+'_'+PA+'_'+BS+'_'+str(angle),'cchargeSharing'+'_'+board+'_'+PA+'_'+BS+'_'+str(angle),800,600)
-            InitCanvas(cchargeSharing)
-            outFileROOT.cd()
+                hchargeSharing.Fit('ferr','BR')
+                cchargeSharing = ROOT.TCanvas('cchargeSharing'+'_'+board+'_'+PA+'_'+BS+'_'+str(angle),'cchargeSharing'+'_'+board+'_'+PA+'_'+BS+'_'+str(angle),800,600)
+                InitCanvas(cchargeSharing)
+                outFileROOT.cd()
         
-            # Position of the fit results.
-            ROOT.gStyle.SetStatX(0.93)
-            ROOT.gStyle.SetStatY(0.82)
-            ROOT.gStyle.SetStatW(0.2)
-            ROOT.gStyle.SetStatH(0.2)
+                # Position of the fit results.
+                ROOT.gStyle.SetStatX(0.93)
+                ROOT.gStyle.SetStatY(0.82)
+                ROOT.gStyle.SetStatW(0.2)
+                ROOT.gStyle.SetStatH(0.2)
 
-            hchargeSharing.SetMinimum(0.)
-            hchargeSharing.SetMaximum(1.)
+                hchargeSharing.SetMinimum(0.)
+                hchargeSharing.SetMaximum(1.)
 
-            DrawObj(cchargeSharing,hchargeSharing,None,'',pathToFigures)
+                DrawObj(cchargeSharing,hchargeSharing,None,'',pathToFigures)
         
-            # Get parameters and parameter uncertainties.
-            a = ferr.GetParameter(0)
-            mu = ferr.GetParameter(1)
-            sigma = ferr.GetParameter(2)
-            b = ferr.GetParameter(3)
+                # Get parameters and parameter uncertainties.
+                a = ferr.GetParameter(0)
+                mu = ferr.GetParameter(1)
+                sigma = ferr.GetParameter(2)
+                b = ferr.GetParameter(3)
         
-            aU = ferr.GetParError(0)
-            muU = ferr.GetParError(1)
-            sigmaU = ferr.GetParError(2)
-            bU = ferr.GetParError(3)
+                aU = ferr.GetParError(0)
+                muU = ferr.GetParError(1)
+                sigmaU = ferr.GetParError(2)
+                bU = ferr.GetParError(3)
             
-            print 'Mu: %.5f' % mu
-            print 'Mu uncertainty: %.5f' % muU
+                print 'Mu: %.5f' % mu
+                print 'Mu uncertainty: %.5f' % muU
         
-            print 'Sigma: %.5f' % sigma
-            print 'Sigma uncertainty: %.5f' % sigmaU
+                print 'Sigma: %.5f' % sigma
+                print 'Sigma uncertainty: %.5f' % sigmaU
         
-            lmu.append(mu)
-            lmuU.append(muU)
+                lmu.append(mu)
+                lmuU.append(muU)
 
-            lsigma.append(sigma)
-            lsigmaU.append(sigmaU)
+                lsigma.append(sigma)
+                lsigmaU.append(sigmaU)
             
-            langle.append(angle)
+                langle.append(angle)
 
     print lmu
     print lmuU

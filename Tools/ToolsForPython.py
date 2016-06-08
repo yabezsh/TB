@@ -108,6 +108,10 @@ def GetInfoFromLogbook(logbook) :
     # Angle Scan -> Angle scan
     # BiasScan -> Bias scan
     # Bias Scan -> Bias scan
+    # Top side -> Top
+    # Top Side -> Top
+    # Back side -> Back
+    # Back Side -> Back
     logbook_df_san = logbook_df_clean.fillna('-')
     logbook_df_san = logbook_df_san.replace('bad','Bad')
     logbook_df_san = logbook_df_san.replace('good','Good')
@@ -115,6 +119,10 @@ def GetInfoFromLogbook(logbook) :
     logbook_df_san = logbook_df_san.replace('Bias Scan','Bias scan')
     logbook_df_san = logbook_df_san.replace('AngleScan','Angle scan')
     logbook_df_san = logbook_df_san.replace('Angle Scan','Angle scan')
+    logbook_df_san = logbook_df_san.replace('Top side','Top')
+    logbook_df_san = logbook_df_san.replace('Top Side','Top')
+    logbook_df_san = logbook_df_san.replace('Back side','Back')
+    logbook_df_san = logbook_df_san.replace('Back Side','Back')
     # Delete rows without DUT run.
     logbook_df_san = logbook_df_san.drop(logbook_df_san[logbook_df_san['DUT run'].astype(str) == '-'].index)
     # Delete rows with bad online or offline flag. 
