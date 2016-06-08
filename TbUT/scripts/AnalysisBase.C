@@ -288,6 +288,8 @@ void AnalysisBase::getBeamLocation(TH1F *h, float &lo, float& hi){
   for(int  j = 0; j<10; j++){
     std::cout << "====> Finding Beam, iteration " << j+1 << std::endl;
     getRange(h,lo,hi);
+    channel_low= h->FindBin(lo);
+    channel_hi=h->FindBin(hi);
     int dif = hi - lo + 1;
     if(dif < 5){
       int i1 = h->FindBin(lo);

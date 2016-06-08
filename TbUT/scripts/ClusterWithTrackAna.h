@@ -89,9 +89,17 @@ filename = m_fileIndir+scanType+"_Scan-"+m_board+"-"+runplace+"-"+consR+"-"+m_ru
        noise[i] = hn->GetBinContent(i+1);
      }
 
+     //TH2F *hNew = (TH2F*)f->Get("hR_SNR");
      // Get mean noise and width
      hMeanNoise 	= (TH1F*)f->Get("hMeanNoise"); 
      hWidthNoise 	= (TH1F*)f->Get("hWidthNoise"); 
+     hR_SNR = (TH2F*)f->Get("hR_SNR");
+     for(int i=0; i< 512; i++) {
+
+       for(int j=0; j<512; j++) {
+	 alpha[i][j] = hR_SNR->GetBinContent(i,j);
+       }
+     }
      cout << "===> Opening file: " << filename << endl;
 
      TString filename2 = filename.ReplaceAll("_Tracks","");

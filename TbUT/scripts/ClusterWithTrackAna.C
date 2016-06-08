@@ -41,7 +41,10 @@ struct RetVal{
 };
 
 RetVal PrintLandau(TH1D* h,double Center,int MinAdc,int MaxAdc,TString string,bool writeToFile){
-
+  
+   RooMsgService::instance().setGlobalKillBelow(RooFit::FATAL);
+  //RooMsgService::setSilentMode();
+ RooMsgService::instance().setSilentMode(true);
     // --- Observable ---
     RooRealVar mes("mes","ADC",0,500) ;
 
@@ -67,6 +70,7 @@ RetVal PrintLandau(TH1D* h,double Center,int MinAdc,int MaxAdc,TString string,bo
     //lxg.paramOn(mesframe,RooFit::Layout(0.58));
     // DRAW
     mesframe->Draw("lsame");
+    // RooMsgService::instance().setGlobalKillBelow(RooFit::FATAL);
     RooFitResult* r = lxg.fitTo(*data,RooFit::Range(MinAdc,MaxAdc),"r") ;
     //cout<<endl<<"chi2 = "<<mesframe->chiSquare("pdf","data")<<endl;
 
@@ -441,6 +445,8 @@ void ClusterWithTrackAna::Loop()
 
    Int_t nentries = fChain->GetEntriesFast();
 
+   //if(nentries%1000) cout << "entry is " << nentries << endl;
+
    TString m_board2 = m_board;
    m_board2 = m_board2.ReplaceAll("_All","");
    m_board2 = m_board2.ReplaceAll("_Full","");
@@ -462,6 +468,13 @@ void ClusterWithTrackAna::Loop()
 
    // eff vs. x and y
    //   TH2F* h_eff_xy = new TH2F("h_eff_xy","Efficiency vs. position",100,-8,8,100,-8,8);
+
+    // channel range
+    cout << channel_low << endl;
+    cout << channel_hi << endl;
+    int chHi = channel_hi+10;
+    int chLow= channel_low-10;
+    int nbins=chHi-chLow;
 
    TH1F* h0 = new TH1F("h0","#DeltaX between strip hit and track projection (strips)",101,-50.5,50.5);
    TH1F* h1 = new TH1F("h1","#DeltaX",1600,-4.0,4.0);
@@ -554,6 +567,10 @@ void ClusterWithTrackAna::Loop()
 
    TProfile *h12m = new TProfile("h12m","<ADC> vs interstrip pos",50,-0.5,0.5,0.0,1000.0);
    TProfile *h12n = new TProfile("h12n","<ClusterSize> vs interstrip pos",50,-0.5,0.5,0.0,1000.0);
+   TProfile *hClusterStrip = new TProfile("hClusterStrip","Cluster Size per strip",512,0,512,0,2);
+   TH2F* hAlpha = new TH2F("hAlpha","<SNR(i) / SNR(seed)>", 512,0,512,512,0,512);
+   TH2F *hEta = new TH2F("hEta","Eta vs. strip",512,0,512,100,0,1);
+   // hAlpha = hR_SNR->Clone();
    TH1F* h12cc = new TH1F("h12cc","Cluster Size",5,0,5);
    TH1F* h12on = new TH1F("h12on","dist of track to cutout",700,-2.0,5.0);h12on->Sumw2();
    TH1F* h12od = new TH1F("h12od","dist of track to cutout",700,-2.0,5.0);h12od->Sumw2();
@@ -603,6 +620,8 @@ void ClusterWithTrackAna::Loop()
      }
    }
    
+   TH2F *hADCperStrip = new TH2F("hADCperStrip","ADC per Strip",512,0,512,500,0,1000);
+   TH2F *hSNRperStrip = new TH2F("hSNRperStrip","SNR per Strip",512,0,512,50,0,100);
    TH1F *hlandau[512];
    for(int i=0; i<nChan; i++){
      hlandau[i] = new TH1F(Form("hlandau_%d",i),"Cluster charge",100,0.0,1000.0);
@@ -640,8 +659,8 @@ void ClusterWithTrackAna::Loop()
    TH1F *hnoise = new TH1F("hnoise","Noise in connected channels",100,-200,200);
    TH1F *hnoiseChan = new TH1F("hnoiseChan","Noise in connected channels",200,0,200);
    TH1F *hnoisePerChannel = new TH1F("hnoisePerChannel","Noise",512,0,512);
-   TH3F *hSNR = new TH3F("hSNR","SNR",100,-6,6,100,-5,5,50,0,100);
-   TH2F *hSNR2D =  new TH2F("hSNR2D","SNR2D",100,-6,6,100,-5,5);
+   TH3F *hSNR = new TH3F("hSNR","SNR",25,-6,6,25,-5,5,50,0,100);
+   TH2F *hSNR2D =  new TH2F("hSNR2D","SNR2D",25,-6,6,25,-5,5);
    TH1D *hSNR_1 = new TH1D("hSNR_1","SNR",500,0,100);
 
    TH1F* h35 = new TH1F("h35","No. clusters / event",50,0.0,50.0);
@@ -659,6 +678,9 @@ void ClusterWithTrackAna::Loop()
 
    for(int i=0; i<nChan; i++){
      hnoisePerChannel->Fill(i+0.5,noise[i]);
+     for(int j=0;j<nChan;j++){
+       hAlpha->Fill(i,j,alpha[i][j]);
+     }
    }
    
 
@@ -803,7 +825,10 @@ void ClusterWithTrackAna::Loop()
           }
 	  int ichan_1 = clustersSeedPosition[j];
 	  Double_t snr = polarity*clustersCharge[j]/noise[ichan_1];
+	  
 	  if(goodTrack && goodTime && awayFromCutout) {
+	    hADCperStrip->Fill(ichan_1,polarity*clustersCharge[j]);
+	    hSNRperStrip->Fill(ichan_1,snr);
 	    h311->Fill(x_trk,y_trk);
 	    hSNR->Fill(y_trk,x_trk,snr);
 	    hSNR_1->Fill(snr);
@@ -849,6 +874,7 @@ void ClusterWithTrackAna::Loop()
               
               h12m->Fill(fracStrip,polarity*clustersCharge[j]);
               h12n->Fill(fracStrip,clustersSize[j]);
+	      hClusterStrip->Fill(ichan,clustersSize[j]);
 	      h12cc->Fill(clustersSize[j]);
               h1vsx->Fill(x_trk,dx);
               if(y_trk>yMid&&y_trk<yMax) h10a->Fill(clustersPosition[j],polarity*clustersCharge[j]);
@@ -921,7 +947,10 @@ void ClusterWithTrackAna::Loop()
               double chl2 = clustersCharge2StripLeft[j]*polarity;
               double pch = polarity*clustersSeedCharge[j];
               int ic = pch/50.;
+                double eta=(pch-chr)/(pch+chr);
+                hEta->Fill(clustersSeedPosition[j],eta);
               if(ic>=0 && ic<10 && clustersSize[j]<=2 ){
+                  
                 if(iPeak==1) h41[ic]->Fill(chl-chr);
                 if(iPeak==0) h42[ic]->Fill(chl-chr);
                 if(chr2!=0 and chl2!=0){
@@ -1040,11 +1069,210 @@ void ClusterWithTrackAna::Loop()
    h3b->GetXaxis()->SetRangeUser(-5,5);
    h3b->GetYaxis()->SetRangeUser(-5,5);
 
+   TCanvas *c_strip = new TCanvas("c_strip", "",1500,1000);
+   c_strip->Divide(3,2);
+   c_strip->cd(1);
+   addGraphics(hnoisePerChannel,1,"noise per channel");
+   hnoisePerChannel->Draw();
+
+   c_strip->cd(2);
+   addGraphics(hADCperStrip, 1 ,"channel","ADC");
+   hADCperStrip->Draw("colz");
+
+   c_strip->cd(3);
+   addGraphics(hSNRperStrip, 1 ,"channel","SNR");
+   hSNRperStrip->Draw("colz");
+
+   c_strip->cd(4);
+   addGraphics(hClusterStrip, 1, "channel","<Cluster Size>");
+   hClusterStrip->Draw();
+
+   c_strip->cd(5);
+   addGraphics(hEta, 1, "channel", "#eta");
+   hEta->Draw("colz");
+
+   c_strip->cd(6);
+   addGraphics(hAlpha,1,"channel (seed)","channel");
+   hAlpha->Draw("colz");
+
+   c_strip->Print("Plots/StripPlot_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
+   c_strip->Print("Plots/StripPlot_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");   
+
+
+   TCanvas *c_trk = new TCanvas("c_trk", "",1500,1000);
+   c_trk->Divide(3,2);
+    c_trk->cd(1)->SetLeftMargin(0.13);;
+   gStyle->SetOptStat(0);    
+    //h311a->Divide(h311);
+//addGraphics(h311b,1, "X_{trk} [mm]","Y_{trk} [mm]");
+   h311b->SetTitle("All Tracks");
+   h311b->GetXaxis()->SetTitle("X_{trk} [mm]");
+   h311b->GetYaxis()->SetTitle("Y_{trk} [mm]");
+   //addGraphics(h4, 1, "Strip # with cluster", "");
+   //addGraphics(h4a, 2, "Strip # with cluster", "");
+   //h311b->GetXaxis()->SetRangeUser(-4,4);
+   //h311b->GetYaxis()->SetRangeUser(-4,4);
+   //h311->GetZaxis()->SetRangeUser(0,1);
+   h311b->Draw("colz");
+   if(holeQuadPar[0]!=0) funchole->Draw("same");
+   if(fabs(xLeftHole)<900 && fabs(xRightHole)<900){
+     TBox *b1 = new TBox(xMin,yMin,xLeftHole,yMax);
+     TBox *b2 = new TBox(xRightHole,yMin,xMax,yMax);
+     b1->SetLineColor(kBlue); b1->SetLineWidth(2);b1->SetFillStyle(0);   
+     b1->Draw();
+     b2->SetLineColor(kBlue); b2->SetLineWidth(2);b2->SetFillStyle(0);   
+     b2->Draw();
+   }else{   
+     TBox *b = new TBox(xMin,yMin,xMax,yMax);
+     b->SetLineColor(kBlue); b->SetLineWidth(2);b->SetFillStyle(0);   
+     b->Draw();
+   }
+
+  c_trk->cd(2)->SetLeftMargin(0.13);;
+   h311a->Divide(h311);
+   addGraphics(h311a,1, "X_{trk} [mm]","Y_{trk} [mm]");
+   h311a->SetTitle("Efficiency");
+   //addGraphics(h4, 1, "Strip # with cluster", "");
+   //addGraphics(h4a, 2, "Strip # with cluster", "");
+   h311a->GetXaxis()->SetRangeUser(-5,5);
+   h311a->GetYaxis()->SetRangeUser(-6,6);
+   h311a->GetZaxis()->SetRangeUser(0,1);
+   h311a->Draw("colz");
+   if(holeQuadPar[0]!=0) funchole->Draw("same");
+   if(fabs(xLeftHole)<900 && fabs(xRightHole)<900){
+     TBox *b1 = new TBox(xMin,yMin,xLeftHole,yMax);
+     TBox *b2 = new TBox(xRightHole,yMin,xMax,yMax);
+     b1->SetLineColor(kBlue); b1->SetLineWidth(2);b1->SetFillStyle(0);   
+     b1->Draw();
+     b2->SetLineColor(kBlue); b2->SetLineWidth(2);b2->SetFillStyle(0);   
+     b2->Draw();
+   }else{   
+     TBox *b = new TBox(xMin,yMin,xMax,yMax);
+     b->SetLineColor(kBlue); b->SetLineWidth(2);b->SetFillStyle(0);   
+     b->Draw();
+   }
+
+   
+   // c->cd(12)->Print("testing.root")
+   c_trk->cd(3);
+   hSNR2D->GetXaxis()->SetTitle("X_{trk} [mm]");
+   hSNR2D->GetYaxis()->SetTitle("Y_{trk} [mm]");
+   addGraphics(hSNR2D,1, "X_{trk} [mm]","Y_{trk} [mm]");
+
+   hSNR->GetZaxis()->SetRangeUser(0,100);
+   hSNR2D->GetZaxis()->SetRangeUser(0,100);
+   RetVal value;
+   for(int i=0; i< hSNR->GetNbinsX(); i++) {
+     
+     for(int j=0; j<hSNR->GetNbinsY(); j++) {
+       
+       if(((i+1)*(j+1))%500==1) cout << "gone through " << i*j << " bins" << endl;
+       value = lFit(hSNR->ProjectionZ("testH",i,i+1,j,j+1),1);
+       
+       hSNR2D->SetBinContent(i,j,value.MPV);
+       hSNR2D->SetBinError(i,j,value.width);
+     }
+     
+   }
+   
+   hSNR2D->Draw("colz");
+
+   c_trk->cd(4);
+   addGraphics(h12n,1,"Interstrip Pos","Cluster Size");
+   h12n->SetMinimum(0.5);
+   h12n->SetMaximum(2.0);
+   h12n->Draw();
+TH1F *hepas1 = (TH1F*)h12hn->Clone("hepas1");
+ hepas1->Divide(h12hn,h12hd,1.0,1.0,"B");
+   c_trk->cd(5);
+   addGraphics(hepas1, 1, "Rel. Strip Pos.", "#Good DUT hit / # Track ");
+   //c6->cd(1);
+   hepas1->SetMaximum(1.2);
+   hepas1->SetMinimum(0.5);
+   hepas1->Draw();
+
+   c_trk->cd(6);
+   addGraphics(h12m,1,"Interstrip Pos","ADC");
+   h12m->SetMinimum(0);
+   h12m->SetMaximum(1.2*h12m->GetMaximum());
+   h12m->Draw();
+
+   
+   //   c_trk->cd(6);
+   
+
+   c_trk->Print("Plots/TrkPlot_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
+   c_trk->Print("Plots/TrkPlot_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");
+
+   TCanvas *c_perform = new TCanvas("c_perform","Performance",1500,1000);
+   c_perform->Divide(3,2);
+   c_perform->cd(1);
+   
+   //c_perform->cd(3)->SetLeftMargin(0.13);;
+   addGraphics(h2p, 1, "TDC time / 2.5 ns", "<ADC>");
+   h2p->Draw();
+   TLine *l1e = new TLine(tdcLo,0,tdcLo,h2p->GetMaximum());
+   TLine *l2e = new TLine(tdcHi,0,tdcHi,h2p->GetMaximum());
+   l1e->SetLineColor(kBlue); l2e->SetLineColor(kBlue); l1e->SetLineWidth(2); l2e->SetLineWidth(2);   
+   l1e->Draw(); l2e->Draw();
+
+   c_perform->cd(2);
+   hcAll->GetXaxis()->SetTitle("SNR");
+   addGraphics(hcAll, 1, "SNR", "Entries");
+
+   lFit(hSNR_1);
+   
+   hSNR_1->SetLineColor(kBlue);
+   
+   c_perform->cd(3);
+   addGraphics(h12cc, 1, "Cluster Size", "");   
+   h12cc->GetYaxis()->SetTitleOffset(1.2);
+   h12cc->Draw();
+
+   
+
+   c_perform->cd(4);
+   addGraphics(h2, 1, "X_{trk} [mm]", "X_{DUT} [mm]");
+   double dM = yMax;
+   if(xMax>dM) dM = xMax;
+   h2->GetXaxis()->SetRangeUser(-1.0*dM-1,dM+1);
+   h2->GetYaxis()->SetRangeUser(-1.0*dM-1,dM+1);
+   h2->SetMinimum(1);
+   h2->SetTitle(0);
+   h2->Draw("colz");
+  // langaus(hSNR_1);
+   ///lFit(hSNR_1);
+
+   
+   c_perform->cd(5);
+   //c_align->cd(3)->SetLeftMargin(0.13);;
+   addGraphics(h9a, 1, "X^{trk} [mm]", "#DeltaX [mm]");
+   h9a->GetXaxis()->SetRangeUser(-4,4);   
+   h9a->GetYaxis()->SetRangeUser(-0.1,0.1);
+   h9a->SetTitle(0);
+   h9a->Draw();
+ 
+   c_perform->cd(6);
+   //->SetLeftMargin(0.13);;
+   addGraphics(h9, 1, "Y^{trk} [mm]", "#DeltaX [mm]");
+   h9->GetXaxis()->SetRangeUser(yMin-1,yMax+1);   
+   h9->GetYaxis()->SetRangeUser(-0.1,0.1);
+   h9->SetTitle(0);
+   h9->Draw();
+  
+   // c_align->cd(6)->SetLeftMargin(0.13);;
+   //addGraphics(h8b, 1, "#theta_{Y}^{trk} [mrad]", "#DeltaX [mm]");
+   //h8b->GetXaxis()->SetRangeUser(tyMin-0.1,tyMax+0.1);   
+   //h8b->GetYaxis()->SetRangeUser(-0.1,0.1);   
+   //h8b->SetTitle(0);
+   c_perform->Print("Plots/PerformancePlot_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
+   c_perform->Print("Plots/PerformancePlot_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");
+   
    TCanvas *c_align = new TCanvas("c_align", "alignment plots", 1500,1000);
    c_align->Divide(4,2);
    c_align->cd(1)->SetLeftMargin(0.13);
    addGraphics(h2, 1, "X_{trk} [mm]", "X_{DUT} [mm]");
-   double dM = yMax;
+   //double dM = yMax;
    if(xMax>dM) dM = xMax;
    h2->GetXaxis()->SetRangeUser(-1.0*dM-1,dM+1);
    h2->GetYaxis()->SetRangeUser(-1.0*dM-1,dM+1);
@@ -1138,7 +1366,7 @@ void ClusterWithTrackAna::Loop()
 
    c_align->Print("Plots/AlignPlot_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
    c_align->Print("Plots/AlignPlot_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");
-
+   /*
    TCanvas *c_perform = new TCanvas("c_perform","Performance",1500,1000);
    c_perform->Divide(3,2);
 
@@ -1155,34 +1383,10 @@ void ClusterWithTrackAna::Loop()
    hcAll->GetXaxis()->SetTitle("SNR");
    addGraphics(hcAll, 1, "SNR", "Entries");
 
-   //addGraphics(hcTrk1, 3, "Cluster charge [ADC]", "");
-   //addGraphics(hcTrk2, 6, "Cluster charge [ADC]", "");
-   //gStyle->SetOptStat(11111);
-   //gStyle->SetOptFit(111);
   // langaus(hSNR_1);
    lFit(hSNR_1);
-   //hcAll->SetMaximum(1.25*hcAll->GetMaximum());
-   //hcAll->Draw("same");
-   hSNR_1->SetLineColor(kBlue); //hSNR_1->SetLineWidth(2);
-   //hcTrk->Draw("same");
-   //hSNR_1->Draw("same");
-   //langaus(hcTrk);
-   //hcTrk1->Draw("same"); 
-   //hcTrk2->Draw("same"); 
-  
-   //TLegend* legend2 = new TLegend(0.15,0.70,0.94,0.89);
-   //legend2->SetFillStyle(0);
-   //legend2->SetBorderSize(0);
-   //legend2->SetFillStyle(0);
-   //legend2->SetTextSize(0.045);
-   
-   //legend2->AddEntry(hcAll,"All clusters, trk in Fid","L"); 
-   //legend2->AddEntry(hcTrk,"Clusters w/ tracks","L");
-   //legend2->AddEntry(hcAll,"All clusters","L");
-   //legend2->AddEntry(hcTrk1,"1-strip Clusters","L");
-   //legend2->AddEntry(hcTrk2,"2-strip Clusters","L");
 
-   //legend2->Draw();
+   hSNR_1->SetLineColor(kBlue); //hSNR_1->SetLineWidth(2);
    
    //c_perform->cd(3)->SetLeftMargin(0.13);;
    //addGraphics(h12cc, 1, "Cluster Size", "Entries");   
@@ -1254,16 +1458,18 @@ void ClusterWithTrackAna::Loop()
    
 
    c_perform->cd(6);
-   hSNR->GetXaxis()->SetTitle("X_{trk} [mm]");
-   hSNR->GetYaxis()->SetTitle("Y_{trk} [mm]");
-   addGraphics(hSNR,1, "X_{trk} [mm]","Y_{trk} [mm]");
-   
+   hSNR2D->GetXaxis()->SetTitle("X_{trk} [mm]");
+   hSNR2D->GetYaxis()->SetTitle("Y_{trk} [mm]");
+   addGraphics(hSNR2D,1, "X_{trk} [mm]","Y_{trk} [mm]");
+
    hSNR->GetZaxis()->SetRangeUser(0,100);
+   hSNR2D->GetZaxis()->SetRangeUser(0,100);
    RetVal value;
    for(int i=0; i< hSNR->GetNbinsX(); i++) {
      
      for(int j=0; j<hSNR->GetNbinsY(); j++) {
        
+       if(((i+1)*(j+1))%500==1) cout << "gone through " << i*j << " bins" << endl;
        value = lFit(hSNR->ProjectionZ("testH",i,i+1,j,j+1),1);
        
        hSNR2D->SetBinContent(i,j,value.MPV);
@@ -1279,7 +1485,7 @@ void ClusterWithTrackAna::Loop()
 
    c_perform->Print("Plots/PerformancePlot_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
    c_perform->Print("Plots/PerformancePlot_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");
-
+   */
    //TCanvas *c = new TCanvas("c","Residuals",1500,1000);
    //c->Divide(4,3);
    //c->cd(1)->SetLeftMargin(0.13);
@@ -1588,11 +1794,11 @@ void ClusterWithTrackAna::Loop()
    addGraphics(h12jn, 1, "Rel. Strip Pos", "");
    addGraphics(h12kn, 1, "Rel. Strip Pos", "");
 
-   TH1F *hepas1 = (TH1F*)h12hn->Clone("hepas1");
+   //TH1F *hepas1 = (TH1F*)h12hn->Clone("hepas1");
    TH1F *hepas2 = (TH1F*)h12in->Clone("hepas2");
    TH1F *hepas3 = (TH1F*)h12jn->Clone("hepas3");
    TH1F *hepas4 = (TH1F*)h12kn->Clone("hepas4");
-   hepas1->Divide(h12hn,h12hd,1.0,1.0,"B");
+   //hepas1->Divide(h12hn,h12hd,1.0,1.0,"B");
    hepas2->Divide(h12in,h12id,1.0,1.0,"B");
    hepas3->Divide(h12jn,h12jd,1.0,1.0,"B");
    hepas4->Divide(h12kn,h12kd,1.0,1.0,"B");

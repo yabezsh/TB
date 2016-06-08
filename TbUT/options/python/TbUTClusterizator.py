@@ -115,7 +115,7 @@ class TbUTClusterizator:
         nTupleCreator().WriteRaw=False
         nTupleCreator().WriteHeader=True
         nTupleCreator().WritePedestal=False
-        nTupleCreator().WriteCMS=False
+        nTupleCreator().WriteCMS=True
         seq_UT_data_processing.Members = [rawDataReader(), rawDataMonitor() ,pedestalSubtractor(),pedestalMonitor(), CMS(),
                                           CMSMonitor(), ClusterCreator(),ClusterCreatorMonitor(),nTupleCreator()]
         keplerSeq.Members+=[seq_UT_data_processing]

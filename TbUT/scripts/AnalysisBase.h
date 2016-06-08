@@ -89,6 +89,7 @@ class AnalysisBase {
   double xOff;
   
 
+  int channel_low, channel_hi;
   float iLo, iHi;
   float tdcLo, tdcHi;
   float yMin,yMax;
@@ -114,6 +115,7 @@ class AnalysisBase {
 
   TH1F *hMeanNoise; 
   TH1F *hWidthNoise; 
+  TH2F *hR_SNR;
 
   double holeQuadPar[3];
   bool removeTracksInHole;
@@ -125,6 +127,7 @@ class AnalysisBase {
   double chargeCorrSlopeEven;
   
   double noise[512];
+  double alpha[512][512];
 
   double channelOffset;  
 

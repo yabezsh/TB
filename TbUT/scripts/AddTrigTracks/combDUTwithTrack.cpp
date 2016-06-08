@@ -25,6 +25,8 @@
 #include <vector>
 #include <fstream>
 
+#include "TMatrixD.h"     //new
+#include "TMath.h"        //new
 #include "TFile.h"
 #include "TROOT.h"
 #include "TSystem.h"
@@ -337,17 +339,98 @@ break;
   hWidthNoise->Write();
   for(int i=0;i<512;i++){
    px[i]->Write();
- }  
+ }
+ 
+ //************************************************************************
   
+  TTree* t_cms = (TTree*)f_ut->Get("TbUT/CMS");
+  Double_t cmsData[512];
+  //std::vector<double> * cmsData = 0;
+  t_cms->SetBranchAddress("cmsData",&cmsData);
+  TH2D *hR_SNR = new TH2D("hR_SNR","",512,0,512,512,0,512);
+  TTree tSNR("tSNR","events vs SNR");
+  Double_t maxSNR={0};
+  Double_t SNR[512]={0};
+  int maxChannel={0};
+  tSNR.Branch("maxChannel",&maxChannel,"mc/I");
+  tSNR.Branch("maxSNR",&maxSNR,"mS/D");
+  tSNR.Branch("SNR",SNR,"SNR[512]/D");
+  
+  int evNr= t_cms->GetEntries();
+
+  for(int i=0;i < evNr; i++){
+    //cout << "entry = " << i << endl;
+    t_cms->GetEntry(i);
+    for(int j = 0; j<512; j++) {
+      //cout << "channel = " << j << endl;
+      //cout << "cmsData is " << cmsData[j] << endl;
+      if(hWidthNoise->GetBinContent(j)!=0) SNR[j]= cmsData[j] / hWidthNoise->GetBinContent(j);
+      //cout << "cmsData is " << cmsData[j] << endl;
+      //cout << "SNR is " << SNR[j] << endl;
+      if(SNR[j]<0) continue;
+      if(SNR[j]> maxSNR ){
+        //cout << "ABS  max = " << "   <   "<< maxChannel<<"\tSNR[j]: "<<SNR[j]<<"\tchannel: "<<j<<endl;
+        maxSNR =SNR[j];
+        maxChannel=j;
+        }
+      }
+    tSNR.Fill();
+    //cout << "max = " << maxSNR << " \tCh: "<< maxChannel<<"\tentry; "<<i<<endl; 
+    maxSNR=0;
+    maxChannel=0;
+    }
+  tSNR.Write();
+  Double_t MaxSeedChannelVal[512]={0};
+  TMatrixD CTarray(512,512);
+  for(int i=0;i < evNr; i++){
+      //cout << "entry = " << i << endl;
+      //t_cms->GetEntry(i);  
+      tSNR.GetEntry(i);
+      for(int j=0;j < 512; j++){
+        
+        //cout << "Hallo entry = " << i << endl;
+        if(maxSNR!=0 && SNR[j]>0){
+          CTarray[maxChannel][j]=CTarray[maxChannel][j]+SNR[j]/maxSNR;
+          if(MaxSeedChannelVal[maxChannel]<CTarray[maxChannel][j])MaxSeedChannelVal[maxChannel]=CTarray[maxChannel][j];
+          //cout << "MaxSeedChannelVal[maxChannel] = " << MaxSeedChannelVal[maxChannel] << endl;
+          //cout<<"maxSNR: "<<maxSNR<<"   SNR "<<j<<"  :"<<SNR[j]<<"    CTarray[maxChannel][j]: "<<CTarray[maxChannel][j]<<endl;
+          //cout<<"CTarray[maxChannel][j]: "<<CTarray[maxChannel][j]<<endl;
+        }
+       }
+    }
+  //cout << "evNr = " << evNr << endl;
+    TH1F *hseedsig[512];
+    TH1F *hseedchan[512];
+   for(int i=0; i<512; i++){
+     hseedsig[i] = new TH1F(Form("hseedsig_%d",i),"seedchannel vs signal",100,0.0,1.0);
+     hseedchan[i] = new TH1F(Form("hseedchan_%d",i),"seedchannel vs channel",100,0.0,512);
+     for(int j=0; j<512; j++){
+       if(CTarray[i][j]!=0 && MaxSeedChannelVal[i]!=0) {
+         //cout<<"CTarray[i][j]/MaxSeedChannelVal: "<<CTarray[i][j]/MaxSeedChannelVal<<endl;
+         hseedsig[i]->Fill(CTarray[i][j]/MaxSeedChannelVal[i]);
+         hseedchan[i]->Fill(i,CTarray[i][j]);
+         hR_SNR->Fill(i, j,CTarray[i][j]/MaxSeedChannelVal[i]);
+       } 
+       
+     }
+     hseedsig[i]->Write();
+     hseedchan[i]->Write();
+   }
+   hR_SNR->Write(); 
+
+ 
+ 
+ 
+ //*********************************************************************** 
   t_out->AutoSave();
   delete f_ut;
   delete f_noise;  
   delete f_tpix;
-  delete f_out;
+  //delete f_out;
   
   // Write and close ROOT file.
   //f_out->Write();
-  //f_out->Close();
+  f_out->Close();
 
   return 0;
 }
