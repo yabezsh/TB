@@ -11,8 +11,8 @@ How to run it:
 
 import os
 
-# testbeam = 'May2016'
-testbeam = 'LateMay2016'
+testbeam = 'May2016'
+# testbeam = 'LateMay2016'
 testbeamList = ['May2016','LateMay2016']
 
 boardListDict = {}

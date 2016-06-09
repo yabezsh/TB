@@ -14,3 +14,5 @@ TbUT/options/UT/noise_Mamba.dat
 Kepler/eos
 
 Log*.dat
+
+TbUT/scripts/AddTrigTracks/combDUTwithTrack
