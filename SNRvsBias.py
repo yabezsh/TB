@@ -102,9 +102,11 @@ def SNRvsBias(board,PA,BS) :
         os.makedirs(pathToFigures)
 
     # For each physics run:
-    # - read the text file with SNR and corresponding uncertainty.
+    # - read the text file with SNR and corresponding uncertainty and width and corresponding uncertainty.
     lSNR = []
     lSNRU = []
+    lwidth = []
+    lwidthU = []
 
     l1StripCluster = []
     l2StripCluster = []
@@ -137,12 +139,18 @@ def SNRvsBias(board,PA,BS) :
                 values_list = values.split(',')
                 SNR = values_list[0]
                 SNRU = values_list[1]
+                width = values_list[2]
+                widthU = values_list[3]
                 # print values
                 # print values_list
                 print 'SNR:', SNR
                 print 'SNR uncertainty:', SNRU
+                print 'Width:', width
+                print 'Width uncertainty:', widthU
                 lSNR.append(SNR)
                 lSNRU.append(SNRU)
+                lwidth.append(width)
+                lwdithU.append(widthU)
                 lbias.append(bias)
                 text_file.closed
 
@@ -172,6 +180,8 @@ def SNRvsBias(board,PA,BS) :
 
     print lSNR
     print lSNRU
+    print lwidth
+    print lwidthU
     print lbias
     print l1StripCluster
     print l2StripCluster
@@ -188,10 +198,15 @@ def SNRvsBias(board,PA,BS) :
         lf1StripCluster.pop(toDrop)
         lf2StripCluster.pop(toDrop)
         lSNR.pop(toDrop)
+        lSNRU.pop(toDrop)
+        lwidth.pop(toDrop)
+        lwidthU.pop(toDrop)
         lbias.pop(toDrop)
 
     print lSNR
     print lSNRU
+    print lwidth
+    print lwidthU
     print lbias
     print l1StripCluster
     print l2StripCluster
@@ -203,6 +218,9 @@ def SNRvsBias(board,PA,BS) :
     
     aSNR = np.asarray(lSNR,dtype=float) 
     aSNRU = np.asarray(lSNRU,dtype=float)
+
+    awidth = np.asarray(lwidth,dtype=float) 
+    awidthU = np.asarray(lwidthU,dtype=float)
 
     a1StripCluster = np.asarray(l1StripCluster,dtype=float)
     a2StripCluster = np.asarray(l2StripCluster,dtype=float)
@@ -222,6 +240,16 @@ def SNRvsBias(board,PA,BS) :
     gSNRvsBias.SetMaximum(30.)
     gSNRvsBias.GetXaxis().SetLimits(0.,500.)
     DrawObj(cSNRvsBias,gSNRvsBias,None,'AP',pathToFigures)
+   
+    cwidthvsBias = ROOT.TCanvas('cwidthvsBias'+'_'+board+'_'+PA+'_'+BS,'cwidthvsBias'+'_'+board+'_'+PA+'_'+BS,800,600)
+    gwidthvsBias = ROOT.TGraphErrors(len(awidth),abias,awidth,abiasU,awidthU)
+    gwidthvsBias.SetName('Width of Landau distribution vs bias voltage')
+    InitGraph(gwidthvsBias,'Width of Landau distribution vs bias voltage','Bias voltage (V)','Width of Landau distribution')
+    SetStyleObj(obj=gwidthvsBias,lineColor=ROOT.kRed)
+    gwidthvsBias.SetMinimum(0.)
+    gwidthvsBias.SetMaximum(30.)
+    gwidthvsBias.GetXaxis().SetLimits(0.,500.)
+    DrawObj(cwidthvsBias,gwidthvsBias,None,'AP',pathToFigures)
    
     # Create a TGraph with the number of 1-strip clusters as a function of the bias voltage.
     c1StripClustervsBias = ROOT.TCanvas('c1StripClustervsBias'+'_'+board+'_'+PA+'_'+BS,'c1StripClustervsBias'+'_'+board+'_'+PA+'_'+BS,800,600)
