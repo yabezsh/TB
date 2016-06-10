@@ -11,6 +11,8 @@ AnalysisBase::AnalysisBase(TTree *tree) : fChain(0)
 // For Ry: If slope of DX vs X is negative (positive), reduce (increase) Ry
 //
   //these have to be able to change so we have to make sure there is only 1 copy of them, so global scope would be bad news
+  polarity = 1.0;
+  if(isPType) polarity = -1;
 
   minDistFromHole =  m_minDistFromHole;
   holeSector = m_board.Contains("D") && (m_sector=="1" || m_sector=="2" || m_sector == "3");
@@ -108,6 +110,13 @@ AnalysisBase::AnalysisBase(TTree *tree) : fChain(0)
     yInt1[0] = -5.0; yInt1[1] = -2.0;
     yInt2[0] = -2.0; yInt2[1] = 1.0;
     yInt3[0] = 1.0; yInt3[1] = 5.0;
+  }else if( m_board.Contains("M1") || m_board.Contains("M2") || m_board.Contains("M3") || m_board.Contains("M4") ){
+    z_DUT = 343;
+    polarity = 1.0;
+  }else if( m_board.Contains("F1") || m_board.Contains("F2") || m_board.Contains("F3") ||m_board.Contains("F4") ){
+    z_DUT = 343;
+    if(m_board.Contains("F1") || m_board.Contains("F2")) polarity = 1.0;  //p-in-n
+    if(m_board.Contains("F3") || m_board.Contains("F4")) polarity = -1.0;  //n-in-p
   }
 
   // Board A1 alignment is really messed up for a few runs! ADHOC here!
@@ -122,9 +131,6 @@ AnalysisBase::AnalysisBase(TTree *tree) : fChain(0)
   removeTracksInHole = removeTracksInHoleDef;
   // Only look to remove tacks from hole area if D-type and in sectors 1, 2, or 3.
   if(!m_board.Contains("D") || !(m_sector=="1" || m_sector=="2" || m_sector=="3") )  removeTracksInHole = false;
-
-  polarity = 1.0;
-  if(isPType) polarity = -1;
 
 
 }
@@ -287,7 +293,7 @@ void AnalysisBase::getBeamLocation(TH1F *h, float &lo, float& hi){
   //double dif = 10;
   for(int  j = 0; j<10; j++){
     std::cout << "====> Finding Beam, iteration " << j+1 << std::endl;
-    getRange(h,lo,hi);
+    getRange(h,lo,hi,0.1,1);
     channel_low= h->FindBin(lo);
     channel_hi=h->FindBin(hi);
     int dif = hi - lo + 1;
@@ -512,13 +518,14 @@ void AnalysisBase::findBeamRegionAndAlign(int iPass){
     float xlo = 0, xhi=0;
     if(iPass==1) getRange(hw,xlo,xhi,0.1,1);
     if(iPass==2) getRange(hn,xlo,xhi,0.1,1);
-    if(iPass==3) getRange(hnn,xlo,xhi,0.1,1);
+    if(iPass==3) getRange(hn,xlo,xhi,0.1,1);
+    if(iPass>3) getRange(hnn,xlo,xhi,0.2,1);
     double XOFF = (xhi + xlo)/2.0;
     xOff = xOff - XOFF;
     double x_ave = (xMax + xMin)/2.0;
     double y_ave = (yMax + yMin)/2.0;
     xGloOff = xGloOff - x_ave;
-    yGloOff = yGloOff - y_ave;
+    if(iPass<=4) yGloOff = yGloOff - y_ave;
     
     // Check/correct for z rotation
     if(iPass==3 && correctForZRotation){
@@ -839,7 +846,8 @@ void AnalysisBase::PrepareDUT(){
    correctForStripGaps();
 
    //findBeamRegionAndAlign(4);   
-   if(holeSector) findBeamRegionAndAlign(4);
+   findBeamRegionAndAlign(4);
+   findBeamRegionAndAlign(5);
 
    findChipBoundary();
    cout << "====> Hole position: " << xLeftHole << "  " << xRightHole << endl;

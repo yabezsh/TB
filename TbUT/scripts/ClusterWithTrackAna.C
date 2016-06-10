@@ -80,8 +80,8 @@ RetVal PrintLandau(TH1D* h,double Center,int MinAdc,int MaxAdc,TString string,bo
 
     if(!writeToFile){
         std::ofstream MPVvalue(("MPV_"+ m_board + "_" + runplace + "_" + consR +"_"+m_runNumb+"_roofit.txt").Data());
-        MPVvalue << "SNR"<< "," << "error" << endl;
-        MPVvalue <<l_mean.getVal()<<" "<< l_width.getVal()<<" "<< endl;
+        MPVvalue << "SNR"<< "," << "SNR uncertainty" << "," << "Width" << "," << "Width uncertainty" << endl;
+        MPVvalue << l_mean.getVal() << " " << l_mean.getError() << " " << l_width.getVal() << " " << l_width.getError() << endl;
     }
     RetVal langaus = {l_mean.getVal(),l_width.getVal(),sg.getVal()};
 
@@ -481,7 +481,7 @@ void ClusterWithTrackAna::Loop()
     int chLow= channel_low-10;
     int nbins=chHi-chLow;
 
-   TH1F* h0 = new TH1F("h0","#DeltaX between strip hit and track projection (strips)",101,-50.5,50.5);
+   TH1F* h0 = new TH1F("h0","#DeltaX between strip hit and track projection (strips)",80,-20.,20.); // Distribution of the delta x between the position of the cluster and the position of the strip expected based on the track information. Distribution not centered in zero and/or not symmetric if the alignment is not properly done.
    TH1F* h1 = new TH1F("h1","#DeltaX",1600,-4.0,4.0);
    TH2F* h1vsx = new TH2F("h1vsx","#DeltaX vs X",50,-5,5,100,-0.2,0.2);
    TH1F* h1mpa = new TH1F("h1mpa","#DeltaX",400,-20.0,20.0);
