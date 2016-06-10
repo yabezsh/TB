@@ -70,12 +70,12 @@ RetVal PrintLandau(TH1D* h,double Center,int MinAdc,int MaxAdc,TString string,bo
     //lxg.paramOn(mesframe,RooFit::Layout(0.58));
     // DRAW
     mesframe->Draw("lsame");
-<<<<<<< HEAD
+    //<<<<<<< HEAD
     // RooMsgService::instance().setGlobalKillBelow(RooFit::FATAL);
     RooFitResult* r = lxg.fitTo(*data,RooFit::Range(MinAdc,MaxAdc),"r") ;
-=======
+    //=======
     // RooFitResult* r = lxg.fitTo(*data,RooFit::Range(MinAdc,MaxAdc),"r") ;
->>>>>>> e3d55e6d7fd0155af6c98a5ee72ada2c6aced284
+    //>>>>>>> e3d55e6d7fd0155af6c98a5ee72ada2c6aced284
     //cout<<endl<<"chi2 = "<<mesframe->chiSquare("pdf","data")<<endl;
 
     if(!writeToFile){
@@ -422,7 +422,7 @@ void addGraphics(TH2 *h, int iCol = 1, TString XTitle="", TString YTitle="")
 
 void ClusterWithTrackAna::Loop()
 {
-<<<<<<< HEAD
+  //<<<<<<< HEAD
 //   In a ROOT session, you can do:
 //      Root > .L ClusterWithTrackAna.C
 //      Root > ClusterWithTrackAna t
@@ -766,7 +766,7 @@ void ClusterWithTrackAna::Loop()
         bool goodRegion = true;
         for(int id = 0; id<nDeadRegion; id++){
           if(x_trk>=deadRegionLo[id]  && x_trk<=deadRegionHi[id]) goodRegion = false;  
-=======
+	  //=======
     //   In a ROOT session, you can do:
     //      Root > .L ClusterWithTrackAna.C
     //      Root > ClusterWithTrackAna t
@@ -954,7 +954,7 @@ void ClusterWithTrackAna::Loop()
             TString hname = Form("hcTrkXY_%d",iblock+1);     
             TString htitle = Form("Cluster charge, block %d",iblock+1);     
             hcTrkXY[iblock]= new TH1F(hname,htitle,100,0.0,1000.0);
->>>>>>> e3d55e6d7fd0155af6c98a5ee72ada2c6aced284
+	    //>>>>>>> e3d55e6d7fd0155af6c98a5ee72ada2c6aced284
         }
     }
 
@@ -1059,7 +1059,7 @@ void ClusterWithTrackAna::Loop()
                 if(fCMS->cmsData[k]!=0) hnoise->Fill(fCMS->cmsData[k]);
             }      
         }
-<<<<<<< HEAD
+	//<<<<<<< HEAD
         
         bool foundHit = false;
         bool foundHitNoFid = false;
@@ -1224,7 +1224,7 @@ void ClusterWithTrackAna::Loop()
                 if(chr2!=0 and chl2!=0){
                   if(iPeak==1) h43[ic]->Fill(chl2-chr2);
                   if(iPeak==0) h44[ic]->Fill(chl2-chr2);
-=======
+		  //=======
 
         h35->Fill(clusterNumberPerEvent);
         if(clusterNumberPerEvent>10) continue;
@@ -1459,7 +1459,7 @@ void ClusterWithTrackAna::Loop()
                     h4b->Fill(clstrip + channelOffset);
                     h4a->Fill(clustersPosition[j]);
                     h0->Fill(detStrip - clstrip);
->>>>>>> e3d55e6d7fd0155af6c98a5ee72ada2c6aced284
+		    //>>>>>>> e3d55e6d7fd0155af6c98a5ee72ada2c6aced284
                 }
             }
 
@@ -1534,7 +1534,7 @@ void ClusterWithTrackAna::Loop()
                 }
             } 
         }
-<<<<<<< HEAD
+	//<<<<<<< HEAD
         
         if(inFiducial && goodTrack && goodTime && awayFromCutout) {
           h16c->Fill(dtime);
@@ -2395,7 +2395,7 @@ TH1F *hepas1 = (TH1F*)h12hn->Clone("hepas1");
 
   c5->Print("Plots/plot5_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
    c5->Print("Plots/plot5_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");
-=======
+   //=======
     }
     if(writeEventsWithMissinhHitsToFile) myfile.close();
 
@@ -3011,7 +3011,7 @@ TH1F *hepas1 = (TH1F*)h12hn->Clone("hepas1");
 
     c5->Print("Plots/plot5_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
     c5->Print("Plots/plot5_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");
->>>>>>> e3d55e6d7fd0155af6c98a5ee72ada2c6aced284
+    //>>>>>>> e3d55e6d7fd0155af6c98a5ee72ada2c6aced284
     //return;
 
 
