@@ -111,7 +111,8 @@ int main(int __argc, char *__argv[]){
   t_dut->SetBranchAddress("timestamps",&timestamps, &b_timestamps);
 
 	cout << "Made it a little further! " << endl; 
-  int numEvents = t_dut->GetEntriesFast();
+  //int numEvents = t_dut->GetEntriesFast();
+  int numEvents = 3000;
   cout << " ------------------------------------------------------" << endl;
   cout << " | Number of triggers found = " << numEvents << endl;
   cout << " ------------------------------------------------------" << endl;

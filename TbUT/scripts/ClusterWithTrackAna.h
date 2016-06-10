@@ -19,7 +19,6 @@
 
 #include "CMS.h"
 #include "AnalysisBase.h"
-
 //#include "ClusterWithTrackAna_Inputs.h"
 
 // Header file for the classes stored in the TTree if any.
@@ -69,8 +68,8 @@ filename = m_fileIndir+scanType+"_Scan-"+m_board+"-"+runplace+"-"+consR+"-"+m_ru
        scanType = "Run_Angle";
  filename = m_fileIndir+scanType+"_Scan-"+m_board+"-"+runplace+"-"+consR+"-"+m_runNumb+"_Tracks.root";
 //       filename = m_fileIndir+"Board"+m_board+"_Angle/"+scanType+"_Scan-"+getFileBase("Bias",m_board, m_bias, m_angle,m_sector)+"_Tuple_Tracks.root";  
-      } 
-     
+       } 
+       // filename="AddTrigTracks/Run_Angle_Scan-M1-FanIn-193-15110_out.root";
      cout << "===> Opening file: " << filename << endl;
      
 
@@ -94,12 +93,12 @@ filename = m_fileIndir+scanType+"_Scan-"+m_board+"-"+runplace+"-"+consR+"-"+m_ru
      hMeanNoise 	= (TH1F*)f->Get("hMeanNoise"); 
      hWidthNoise 	= (TH1F*)f->Get("hWidthNoise"); 
      hR_SNR = (TH2F*)f->Get("hR_SNR");
-     for(int i=0; i< 512; i++) {
+     //for(int i=0; i< 512; i++) {
 
-       for(int j=0; j<512; j++) {
-	 alpha[i][j] = hR_SNR->GetBinContent(i,j);
-       }
-     }
+       //for(int j=0; j<512; j++) {
+       // alpha[i][j] = hR_SNR->GetBinContent(i,j);
+       //}
+     //}
      cout << "===> Opening file: " << filename << endl;
 
      TString filename2 = filename.ReplaceAll("_Tracks","");

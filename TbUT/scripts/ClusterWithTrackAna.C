@@ -32,6 +32,7 @@
 #include <RooNumConvPdf.h>
 #include <TPaveStats.h> 
 #include "RooPlot.h"
+#include "TMatrixD.h" 
 
 
 struct RetVal{
@@ -659,8 +660,8 @@ void ClusterWithTrackAna::Loop()
    TH1F *hnoise = new TH1F("hnoise","Noise in connected channels",100,-200,200);
    TH1F *hnoiseChan = new TH1F("hnoiseChan","Noise in connected channels",200,0,200);
    TH1F *hnoisePerChannel = new TH1F("hnoisePerChannel","Noise",512,0,512);
-   TH3F *hSNR = new TH3F("hSNR","SNR",25,-6,6,25,-5,5,50,0,100);
-   TH2F *hSNR2D =  new TH2F("hSNR2D","SNR2D",25,-6,6,25,-5,5);
+   TH3F *hSNR = new TH3F("hSNR","SNR",2,-5,5,2,-6,6,50,0,100);
+   TH2F *hSNR2D =  new TH2F("hSNR2D","SNR2D",2,-5,5,2,-6,6);
    TH1D *hSNR_1 = new TH1D("hSNR_1","SNR",500,0,100);
 
    TH1F* h35 = new TH1F("h35","No. clusters / event",50,0.0,50.0);
@@ -675,13 +676,22 @@ void ClusterWithTrackAna::Loop()
      h43[i] = new TH1F(Form("h43_%d",i),Form("ADC_{L}-ADC_{R}, Bin %d, Odd Ch",i),160,-400,400);
      h44[i] = new TH1F(Form("h44_%d",i),Form("ADC_{L}-ADC_{R}, Bin %d, Odd Ch",i),160,-400,400);
    }
+   
 
+   Double_t maxSeedCharge;
+   int maxSeedPos;
+   /*Double_t  clustersSeedPosition[10];
+   Double_t  clustersSeedCharge[10];
+   Double_t  SNR[512];
+   TMatrixD alpha(512,512);
+   tree->SetBranchAddress("clustersSeedPosition", clustersSeedPosition);
+   tree->SetBranchAddress("clustersSeedCharge", clustersSeedCharge);
+   tree->SetBranchAddress("SNR",SNR);
+*/
+ TMatrixD alpha(512,512);
    for(int i=0; i<nChan; i++){
      hnoisePerChannel->Fill(i+0.5,noise[i]);
-     for(int j=0;j<nChan;j++){
-       hAlpha->Fill(i,j,alpha[i][j]);
-     }
-   }
+  }
    
 
 
@@ -748,7 +758,19 @@ void ClusterWithTrackAna::Loop()
 
         double tx = 1000*vec_trk_tx->at(k);
         double ty = 1000*vec_trk_ty->at(k);
-	//h311b->Fill(x_trk,y_trk);
+	
+  
+  
+ /* for (int i=0; i<512;i++){
+    for (int j=0;j<512;j++){
+
+      //cout << alpha[i][j] << endl;
+      hAlpha->Fill(i,j,alpha[i][j]);
+    }
+  }
+  */
+      
+  //h311b->Fill(x_trk,y_trk);
         h5->Fill(tx);
         h6->Fill(ty);
 
@@ -833,10 +855,34 @@ void ClusterWithTrackAna::Loop()
 	    hSNR->Fill(y_trk,x_trk,snr);
 	    hSNR_1->Fill(snr);
 	  }
+   // tree->GetEntry(jentry);
+     maxSeedCharge=0;
+     maxSeedPos=0;
+     for (int j=0;j<10;j++){
+       if (clustersSeedPosition[j]==0)continue;
+       if (maxSeedCharge<clustersSeedCharge[j]){
+         maxSeedCharge=clustersSeedCharge[j];
+         maxSeedPos=clustersSeedPosition[j];
+       }
+     }
+     
+// ASSUME FOUND MAX -> maxCh
 
 	  if(goodTrack && goodTime && fabs(dx)<dxWin && awayFromCutout){
-            h311a->Fill(x_trk,y_trk);
+      h311a->Fill(x_trk,y_trk);
 	    h122->Fill(y_trk);
+      if (SNR[maxSeedPos]!=0){
+        for(int m=0;m<512;m++){
+          if(SNR[m]>0) {
+double old = hAlpha->GetBinContent(maxSeedPos,m);
+            alpha[maxSeedPos][m]=SNR[m]/SNR[maxSeedPos];
+       hAlpha->SetBinContent(maxSeedPos,m,old+alpha[maxSeedPos][m]);
+          }
+        }
+      }
+
+// if chanMx=clusterPos
+
           }
 
           if(goodTrack && inFiducial && goodTime && fabs(dx)<dxWin){
@@ -1092,6 +1138,17 @@ void ClusterWithTrackAna::Loop()
    hEta->Draw("colz");
 
    c_strip->cd(6);
+
+// loop to normalize
+  Double_t maxS=0;
+  for (int i=0;i<512;i++){
+    maxS=hAlpha->GetBinContent(i,i);
+    for(int j=0;j<512;j++){
+      if(hAlpha->GetBinContent(i,j)==0) continue;
+      hAlpha->SetBinContent(i,j,hAlpha->GetBinContent(i,j)/maxS);
+    }
+  }
+ //hAlpha->GetZaxis()->SetRangeUser(0,0.2);
    addGraphics(hAlpha,1,"channel (seed)","channel");
    hAlpha->Draw("colz");
 
@@ -1162,11 +1219,11 @@ void ClusterWithTrackAna::Loop()
    hSNR->GetZaxis()->SetRangeUser(0,100);
    hSNR2D->GetZaxis()->SetRangeUser(0,100);
    RetVal value;
-   for(int i=0; i< hSNR->GetNbinsX(); i++) {
+   for(int i=1; i<= hSNR->GetNbinsX(); i++) {
      
-     for(int j=0; j<hSNR->GetNbinsY(); j++) {
+     for(int j=1; j<=hSNR->GetNbinsY(); j++) {
        
-       if(((i+1)*(j+1))%500==1) cout << "gone through " << i*j << " bins" << endl;
+       if(((i)*(j))%500==1) cout << "gone through " << i*j << " bins" << endl;
        value = lFit(hSNR->ProjectionZ("testH",i,i+1,j,j+1),1);
        
        hSNR2D->SetBinContent(i,j,value.MPV);

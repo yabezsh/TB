@@ -31,6 +31,13 @@ const TString m_runNumb = TString(getenv("DEFRUN"));
 //--------------------------------------------------------------------------------------
 const TString runplace = TString(getenv("RUNPLACE"));
 const TString consR = TString(getenv("RUNNUMBER"));
+//const TString m_fileIndir = TString("../AddTrigTracks/");
+/* const TString m_board   = TString(""); */
+
+/* const TString m_runNumb = TString(""); */
+/* //-------------------------------------------------------------------------------------- */
+/* const TString runplace = TString(""); */
+/* const TString consR = TString(""); */
 //
 
 
