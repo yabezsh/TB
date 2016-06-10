@@ -570,7 +570,7 @@ void ClusterWithTrackAna::Loop()
    TProfile *h12n = new TProfile("h12n","<ClusterSize> vs interstrip pos",50,-0.5,0.5,0.0,1000.0);
    TProfile *hClusterStrip = new TProfile("hClusterStrip","Cluster Size per strip",512,0,512,0,2);
    TH2F* hAlpha = new TH2F("hAlpha","<SNR(i) / SNR(seed)>", 512,0,512,512,0,512);
-   TH2F *hEta = new TH2F("hEta","Eta vs. strip",512,0,512,100,0,1);
+   TH2F *hEta = new TH2F("hEta","Eta vs. strip",512,0,512,200,-1,1);
    // hAlpha = hR_SNR->Clone();
    TH1F* h12cc = new TH1F("h12cc","Cluster Size",5,0,5);
    TH1F* h12on = new TH1F("h12on","dist of track to cutout",700,-2.0,5.0);h12on->Sumw2();
@@ -660,8 +660,8 @@ void ClusterWithTrackAna::Loop()
    TH1F *hnoise = new TH1F("hnoise","Noise in connected channels",100,-200,200);
    TH1F *hnoiseChan = new TH1F("hnoiseChan","Noise in connected channels",200,0,200);
    TH1F *hnoisePerChannel = new TH1F("hnoisePerChannel","Noise",512,0,512);
-   TH3F *hSNR = new TH3F("hSNR","SNR",2,-5,5,2,-6,6,50,0,100);
-   TH2F *hSNR2D =  new TH2F("hSNR2D","SNR2D",2,-5,5,2,-6,6);
+   TH3F *hSNR = new TH3F("hSNR","SNR",50,-5,5,50,-6,6,50,0,100);
+   TH2F *hSNR2D =  new TH2F("hSNR2D","SNR2D",50,-5,5,50,-6,6);
    TH1D *hSNR_1 = new TH1D("hSNR_1","SNR",500,0,100);
 
    TH1F* h35 = new TH1F("h35","No. clusters / event",50,0.0,50.0);
@@ -993,10 +993,14 @@ double old = hAlpha->GetBinContent(maxSeedPos,m);
               double chl2 = clustersCharge2StripLeft[j]*polarity;
               double pch = polarity*clustersSeedCharge[j];
               int ic = pch/50.;
-                double eta=(pch-chr)/(pch+chr);
-                hEta->Fill(clustersSeedPosition[j],eta);
+	      double eta=0;
+	      if(dx<0)
+		eta=(pch-chr)/(pch+chr);
+	      else 
+		eta=(chl-pch)/(pch+chl);
+	      hEta->Fill(clustersSeedPosition[j],eta);
               if(ic>=0 && ic<10 && clustersSize[j]<=2 ){
-                  
+                
                 if(iPeak==1) h41[ic]->Fill(chl-chr);
                 if(iPeak==0) h42[ic]->Fill(chl-chr);
                 if(chr2!=0 and chl2!=0){
