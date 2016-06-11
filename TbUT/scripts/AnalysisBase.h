@@ -50,6 +50,7 @@ class AnalysisBase {
   Double_t        clustersCharge1StripRight[10];
   Double_t        clustersCharge2StripRight[10];
   Double_t        dtime;
+  Double_t        SNR[512];
    
   Int_t           n_tp3_tracks;
   vector<double>  *vec_trk_x;
@@ -59,6 +60,7 @@ class AnalysisBase {
   vector<double>  *vec_trk_chi2ndf;
 
   // List of branches
+  TBranch        *b_SNR;
   TBranch        *b_clusterNumberPerEvent;   //!
   TBranch        *b_clustersTDC;   //!
   TBranch        *b_timestamps;   //!

@@ -183,6 +183,7 @@ void AnalysisBase::Init(TTree *tree)
   fChain->SetMakeClass(1);
 
   fChain->SetBranchAddress("clusterNumberPerEvent", &clusterNumberPerEvent, &b_clusterNumberPerEvent);
+  fChain->SetBranchAddress("SNR", SNR, &b_SNR);
   fChain->SetBranchAddress("clustersTDC", &clustersTDC, &b_clustersTDC);
   fChain->SetBranchAddress("timestamps", &timestamps, &b_timestamps);
   fChain->SetBranchAddress("clustersPosition", clustersPosition, &b_clustersPosition);

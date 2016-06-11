@@ -111,7 +111,8 @@ int main(int __argc, char *__argv[]){
   t_dut->SetBranchAddress("timestamps",&timestamps, &b_timestamps);
 
 	cout << "Made it a little further! " << endl; 
-  int numEvents = t_dut->GetEntriesFast();
+  //int numEvents = t_dut->GetEntriesFast();
+  int numEvents = 3000;
   cout << " ------------------------------------------------------" << endl;
   cout << " | Number of triggers found = " << numEvents << endl;
   cout << " ------------------------------------------------------" << endl;
@@ -217,7 +218,63 @@ int main(int __argc, char *__argv[]){
   iAli = 0;
   curr_pos = 0;
   //numEvents = 5000;
-  
+
+  //-------------- Do noise Plots --------------//
+  //--------------------------------------------//
+
+
+  f_noise->cd("TbUT");
+  // f_noise->cd("/afs/cern.ch/user/c/cbetanco/work/LHCb/KeplerDev_v3r0/Tb/TbUT");
+  TH2D *hNoise = (TH2D*)gDirectory->Get("CMSData_vs_channel");
+
+  f_out->cd();
+
+  TF1 *gau = new TF1("gau","gaus(0)",-120,120);
+  gau->SetParameters(10000,0.0,40.0);
+
+  int i = 128;
+  for(int i=0;i<512;i++){
+    if( i>=512 ) {
+      hMeanNoise->SetBinContent(i,-1000);
+      continue;
+    }
+    px[i] = hNoise->ProjectionY(Form("px%d",i),i,i);
+    px[i]->GetXaxis()->SetRangeUser(-200,200);
+    px[i]->SetTitle(Form("Channel %d", i));
+    px[i]->SetName(Form("Ch%d", i));
+    if(px[i]->GetEntries() < 10){
+      hMeanNoise->SetBinContent(i,-1000);
+      continue;
+    }
+    double p = px[i]->GetMaximum();
+    double m = px[i]->GetMean();
+    double e = px[i]->GetRMS();
+    gau->SetParameters(p, m, e);
+    gau->SetRange(m-3*e,m+3*e);
+
+    px[i]->Fit(gau,"RQ");
+    double mn = gau->GetParameter(1);
+    double wid = gau->GetParameter(2);
+    double emn = gau->GetParError(1);
+    double ewid = gau->GetParError(2);
+    hMeanNoise->SetBinContent(i,mn);
+    hMeanNoise->SetBinError(i,emn);
+    hWidthNoise->SetBinContent(i,wid);
+    hWidthNoise->SetBinError(i,ewid);
+  }
+  // Save histograms
+  hMeanNoise->Write();
+  hWidthNoise->Write();
+  for(int i=0;i<512;i++){
+   px[i]->Write();
+ }
+
+  TTree* t_cms = (TTree*)f_ut->Get("TbUT/CMS");
+  Double_t cmsData[512];
+  t_cms->SetBranchAddress("cmsData",&cmsData);
+  Double_t SNR[512]={0};
+  t_out->Branch("SNR",SNR,"SNR[512]/D");
+    
   for(int i=0;i < numEvents; i++){
     int nb = t_dut->GetEntry(i);
     if(nb <= 0) break;    
@@ -282,84 +339,6 @@ break;
       cout << "no tracks" << endl;
 
     }
-
-
-    t_out->Fill();
-  }
-
-  //fileout->Write();
-  //fileout->Close();  
-
-  //-------------- Do noise Plots --------------//
-  //--------------------------------------------//
-
-
-  f_noise->cd("TbUT");
-  // f_noise->cd("/afs/cern.ch/user/c/cbetanco/work/LHCb/KeplerDev_v3r0/Tb/TbUT");
-  TH2D *hNoise = (TH2D*)gDirectory->Get("CMSData_vs_channel");
-
-  f_out->cd();
-
-  TF1 *gau = new TF1("gau","gaus(0)",-120,120);
-  gau->SetParameters(10000,0.0,40.0);
-
-  int i = 128;
-  for(int i=0;i<512;i++){
-    if( i>=512 ) {
-      hMeanNoise->SetBinContent(i,-1000);
-      continue;
-    }
-    px[i] = hNoise->ProjectionY(Form("px%d",i),i,i);
-    px[i]->GetXaxis()->SetRangeUser(-200,200);
-    px[i]->SetTitle(Form("Channel %d", i));
-    px[i]->SetName(Form("Ch%d", i));
-    if(px[i]->GetEntries() < 10){
-      hMeanNoise->SetBinContent(i,-1000);
-      continue;
-    }
-    double p = px[i]->GetMaximum();
-    double m = px[i]->GetMean();
-    double e = px[i]->GetRMS();
-    gau->SetParameters(p, m, e);
-    gau->SetRange(m-3*e,m+3*e);
-
-    px[i]->Fit(gau,"RQ");
-    double mn = gau->GetParameter(1);
-    double wid = gau->GetParameter(2);
-    double emn = gau->GetParError(1);
-    double ewid = gau->GetParError(2);
-    hMeanNoise->SetBinContent(i,mn);
-    hMeanNoise->SetBinError(i,emn);
-    hWidthNoise->SetBinContent(i,wid);
-    hWidthNoise->SetBinError(i,ewid);
-  }
-
-  // Save histograms
-  hMeanNoise->Write();
-  hWidthNoise->Write();
-  for(int i=0;i<512;i++){
-   px[i]->Write();
- }
- 
- //************************************************************************
-  
-  TTree* t_cms = (TTree*)f_ut->Get("TbUT/CMS");
-  Double_t cmsData[512];
-  //std::vector<double> * cmsData = 0;
-  t_cms->SetBranchAddress("cmsData",&cmsData);
-  TH2D *hR_SNR = new TH2D("hR_SNR","",512,0,512,512,0,512);
-  TTree tSNR("tSNR","events vs SNR");
-  Double_t maxSNR={0};
-  Double_t SNR[512]={0};
-  int maxChannel={0};
-  tSNR.Branch("maxChannel",&maxChannel,"mc/I");
-  tSNR.Branch("maxSNR",&maxSNR,"mS/D");
-  tSNR.Branch("SNR",SNR,"SNR[512]/D");
-  
-  int evNr= t_cms->GetEntries();
-
-  for(int i=0;i < evNr; i++){
-    //cout << "entry = " << i << endl;
     t_cms->GetEntry(i);
     for(int j = 0; j<512; j++) {
       //cout << "channel = " << j << endl;
@@ -367,21 +346,41 @@ break;
       if(hWidthNoise->GetBinContent(j)!=0) SNR[j]= cmsData[j] / hWidthNoise->GetBinContent(j);
       //cout << "cmsData is " << cmsData[j] << endl;
       //cout << "SNR is " << SNR[j] << endl;
-      if(SNR[j]<0) continue;
-      if(SNR[j]> maxSNR ){
+      //if(SNR[j]<0) continue;
+      //if(SNR[j]> maxSNR ){
         //cout << "ABS  max = " << "   <   "<< maxChannel<<"\tSNR[j]: "<<SNR[j]<<"\tchannel: "<<j<<endl;
-        maxSNR =SNR[j];
-        maxChannel=j;
-        }
+        //maxSNR =SNR[j];
+        //maxChannel=j;
+        
       }
+
+    t_out->Fill();
+  }
+  
+
+  //fileout->Write();
+  //fileout->Close();  
+
+  
+
+  
+ 
+ //************************************************************************
+  
+ 
+/*
+  for(int i=0;i < evNr; i++){
+    //cout << "entry = " << i << endl;
+   
     tSNR.Fill();
-    //cout << "max = " << maxSNR << " \tCh: "<< maxChannel<<"\tentry; "<<i<<endl; 
-    maxSNR=0;
-    maxChannel=0;
-    }
+    
+    }*/
+  /*
   tSNR.Write();
   Double_t MaxSeedChannelVal[512]={0};
   TMatrixD CTarray(512,512);
+  Double_t MaxSeedChannelVal_Cut[512]={0};  // Threshold for seed SNR > 3
+  TMatrixD CTarray_Cut(512,512);
   for(int i=0;i < evNr; i++){
       //cout << "entry = " << i << endl;
       //t_cms->GetEntry(i);  
@@ -392,32 +391,50 @@ break;
         if(maxSNR!=0 && SNR[j]>0){
           CTarray[maxChannel][j]=CTarray[maxChannel][j]+SNR[j]/maxSNR;
           if(MaxSeedChannelVal[maxChannel]<CTarray[maxChannel][j])MaxSeedChannelVal[maxChannel]=CTarray[maxChannel][j];
+          if(SNR[j]>3.0){
+            CTarray_Cut[maxChannel][j]=CTarray_Cut[maxChannel][j]+SNR[j]/maxSNR;
+            if(MaxSeedChannelVal_Cut[maxChannel]<CTarray_Cut[maxChannel][j])MaxSeedChannelVal_Cut[maxChannel]=CTarray_Cut[maxChannel][j];
+          }
           //cout << "MaxSeedChannelVal[maxChannel] = " << MaxSeedChannelVal[maxChannel] << endl;
           //cout<<"maxSNR: "<<maxSNR<<"   SNR "<<j<<"  :"<<SNR[j]<<"    CTarray[maxChannel][j]: "<<CTarray[maxChannel][j]<<endl;
           //cout<<"CTarray[maxChannel][j]: "<<CTarray[maxChannel][j]<<endl;
         }
        }
     }
+    */
   //cout << "evNr = " << evNr << endl;
+    /*
     TH1F *hseedsig[512];
     TH1F *hseedchan[512];
+    TH1F *hseedsig_C[512];
+    TH1F *hseedchan_C[512];
    for(int i=0; i<512; i++){
-     hseedsig[i] = new TH1F(Form("hseedsig_%d",i),"seedchannel vs signal",100,0.0,1.0);
+     hseedsig[i] = new TH1F(Form("hseedsig_%d",i),"seedchannel vs signal",100,0.0,1.1);
      hseedchan[i] = new TH1F(Form("hseedchan_%d",i),"seedchannel vs channel",100,0.0,512);
+     hseedsig_C[i] = new TH1F(Form("hseedsig_C_%d",i),"seedchannel above threshold vs signal",100,0.0,1.1);
+     hseedchan_C[i] = new TH1F(Form("hseedchan_C_%d",i),"seedchannel above threshold vs channel",100,0.0,512);
      for(int j=0; j<512; j++){
        if(CTarray[i][j]!=0 && MaxSeedChannelVal[i]!=0) {
          //cout<<"CTarray[i][j]/MaxSeedChannelVal: "<<CTarray[i][j]/MaxSeedChannelVal<<endl;
          hseedsig[i]->Fill(CTarray[i][j]/MaxSeedChannelVal[i]);
-         hseedchan[i]->Fill(i,CTarray[i][j]);
+         hseedchan[i]->Fill(j,CTarray[i][j]/MaxSeedChannelVal[i]);
          hR_SNR->Fill(i, j,CTarray[i][j]/MaxSeedChannelVal[i]);
+       } 
+       if(CTarray_Cut[i][j]!=0 && MaxSeedChannelVal_Cut[i]!=0) {
+         hseedsig_C[i]->Fill(CTarray_Cut[i][j]/MaxSeedChannelVal_Cut[i]);
+         hseedchan_C[i]->Fill(j,CTarray_Cut[i][j]/MaxSeedChannelVal_Cut[i]);
+         hR_SNR_Cut->Fill(i, j,CTarray_Cut[i][j]/MaxSeedChannelVal_Cut[i]);
        } 
        
      }
      hseedsig[i]->Write();
      hseedchan[i]->Write();
+     hseedsig_C[i]->Write();
+     hseedchan_C[i]->Write();
    }
    hR_SNR->Write(); 
-
+   hR_SNR_Cut->Write(); 
+*/
  
  
  
@@ -426,11 +443,11 @@ break;
   delete f_ut;
   delete f_noise;  
   delete f_tpix;
-  //delete f_out;
+  delete f_out;
   
   // Write and close ROOT file.
   //f_out->Write();
-  f_out->Close();
+  //f_out->Close();
 
   return 0;
 }
