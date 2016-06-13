@@ -20,11 +20,6 @@ public:
 
 private:
 	void extendClusterSeeds(RawData<double> *p_inputData);
-	void fillOuterStrips(RawData<double>*)
-	{
-		// do nothing
-	};
-
 };
 
 }
