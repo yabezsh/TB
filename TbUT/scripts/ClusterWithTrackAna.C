@@ -761,16 +761,6 @@ void ClusterWithTrackAna::Loop()
 	
   
   
- /* for (int i=0; i<512;i++){
-    for (int j=0;j<512;j++){
-
-      //cout << alpha[i][j] << endl;
-      hAlpha->Fill(i,j,alpha[i][j]);
-    }
-  }
-  */
-      
-  //h311b->Fill(x_trk,y_trk);
         h5->Fill(tx);
         h6->Fill(ty);
 
@@ -1230,8 +1220,8 @@ double old = hAlpha->GetBinContent(maxSeedPos,m);
        if(((i)*(j))%500==1) cout << "gone through " << i*j << " bins" << endl;
        value = lFit(hSNR->ProjectionZ("testH",i,i+1,j,j+1),1);
        
-       hSNR2D->SetBinContent(i,j,value.MPV);
-       hSNR2D->SetBinError(i,j,value.width);
+       hSNR2D->SetBinContent(j,i,value.MPV);
+       hSNR2D->SetBinError(j,i,value.width);
      }
      
    }
