@@ -134,7 +134,7 @@ def RunAnalysis(board,PA,DUTRun,mode,evts,mask) :
             elif (fnmatch.fnmatch(filename,'*-'+board+'-'+PA+'-'+str(ped)+'.dat')) :
                 print 'Filename for pedestal run:', filename
                 filenameNoPathPed = filename
-
+        
         if (mode == 'batch') :
             # Use qsub
             #command = "qsub -l cput=" + cput + " -v board="+board+",PA="+PA+",DUTRun="+str(DUTRun)+",ped="+str(ped)+",filenameNoPathPhys="+filenameNoPathPhys+    ",filenameNoPathPed="+filenameNoPathPed+" SubmitAnalysis.pbs" # No spaces after ','.

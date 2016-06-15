@@ -1,8 +1,8 @@
 BOARD F1,FanUp,,DUT Run #,Kepler Run #,Stage,Stage,Stage,Bias,Current,Temp,RH,Online Flag,Offline Flag,Note
 Sector,Purpose,Bias,Run #,Run #,X (mm),Y (mm),Rot (deg),(V),(uA),( C ),(%),(Good/Bad),(Good/Bad),
 ,,,,,,,,,,,,,,
-1,Pedestal,Top side,1003,-,-,-,-,50,88,0,1,Good,,Sectors defined in picture -->
-1,Bias Scan,Top side,1004,17027,37,"7,5",0,50,88,0,1,Good,,https://twiki.cern.ch/twiki/pub/LHCb/SiliconStripTrackerTestbeamPage/TBMeasurementsLateMay2016.pptx
+1,Pedestal,Top side,1003,-,-,-,-,50,88,0,1,Good,,
+1,Bias Scan,Top side,1004,17027,37,"7,5",0,50,88,0,1,Good,,
 1,Pedestal,Top side,1005,-,37,"7,5",-,100,116,0,1,Good,,
 1,Bias Scan,Top side,1006,17028,37,"7,5",0,100,116,0,1,Good,,
 1,Pedestal,Top side,1007,-,37,"7,5",-,150,127,0,1,Good,,
@@ -21,8 +21,8 @@ Sector,Purpose,Bias,Run #,Run #,X (mm),Y (mm),Rot (deg),(V),(uA),( C ),(%),(Good
 ,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,
-1,Pedestal,Top side,1051,-,37,"7,5",-,50,77,"-0,3","1,6",Good,,Sectors defined in picture -->
-1,Bias Scan,Top side,1052,17057,37,"7,5",0,50,77,"-0,3","1,6",Good,,https://twiki.cern.ch/twiki/pub/LHCb/SiliconStripTrackerTestbeamPage/OneDayRunPlanForTypeHalfASensors.pptx
+1,Pedestal,Top side,1051,-,37,"7,5",-,50,77,"-0,3","1,6",Good,,
+1,Bias Scan,Top side,1052,17057,37,"7,5",0,50,77,"-0,3","1,6",Good,,
 1,Pedestal,Top side,1053,-,37,"7,5",-,100,101,"-0,5","1,8",Good,,
 1,Bias Scan,Top side,1054,17058,37,"7,5",0,100,101,"-0,5","1,8",Good,,
 1,Pedestal,Top side,1055,-,37,"7,5",-,150,111,"-0,5","1,8",Good,,
@@ -131,8 +131,8 @@ Sector,Purpose,Bias,Run #,Run #,X (mm),Y (mm),Rot (deg),(V),(uA),( C ),(%),(Good
 ,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,
-1,Pedestal,Back side,1153,,37,"7,5",,50,80,"0,3","3,3",Good,,Sectors defined in picture -->
-1,Bias Scan,Back side,1154,17109,37,"7,5",0,50,79,"0,2","3,3",Good,,https://twiki.cern.ch/twiki/pub/LHCb/SiliconStripTrackerTestbeamPage/OneDayRunPlanForTypeHalfASensors.pptx
+1,Pedestal,Back side,1153,,37,"7,5",,50,80,"0,3","3,3",Good,,
+1,Bias Scan,Back side,1154,17109,37,"7,5",0,50,79,"0,2","3,3",Good,,
 1,Pedestal,Back side,1155,,37,"7,5",,100,105,"0,2","3,5",Good,,
 1,Bias Scan,Back side,1156,17110,37,"7,5",0,100,105,"0,2","3,5",Good,,
 1,Pedestal,Back side,1157,,37,"7,5",,150,115,0,"3,1",Good,,
@@ -154,10 +154,10 @@ Sector,Purpose,Bias,Run #,Run #,X (mm),Y (mm),Rot (deg),(V),(uA),( C ),(%),(Good
 2,Bias Scan,Back side,1172,17118,45,"7,5",0,150,112,0,3,Good,,
 2,Pedestal,Back side,1173,,45,"7,5",0,170,114,0,3,Good,,
 2,Bias Scan,Back side,1174,17119,45,"7,5",0,170,114,0,3,Good,,
-2,Pedestal,Back side,1175,,45,"7,5",0,190,116,0,"3,1",Good,,"Saw center X needed homing, homed and reset to 45, no change in signal"
+2,Pedestal,Back side,1175,,45,"7,5",0,190,116,0,"3,1",Good,,"Saw center X needed homing homed and reset to 45 no change in signal"
 2,Bias Scan,Back side,1176,17120,45,"7,5",0,190,116,0,"3,1",Good,,
 2,Pedestal,Back side,1177,,45,"7,5",0,210,117,0,"3,1",Good,,
-2,Bias Scan,Back side,1178,17121,45,"7,5",0,210,117,0,"3,1",Bad,,"issue with Kepler plane continuously reading data, even between spills"
+2,Bias Scan,Back side,1178,17121,45,"7,5",0,210,117,0,"3,1",Bad,,"issue with Kepler plane continuously reading data even between spills"
 2,Bias Scan,Back side,1179,17122,45,"7,5",0,210,117,0,"3,1",Good,,
 2,Pedestal,Back side,1180,,45,"7,5",0,210,117,0,"3,1",Good,,
 2,Eff/Res,Back side,1181,17123,45,"7,5",0,210,117,0,"3,1",Good,,
