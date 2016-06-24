@@ -3,16 +3,6 @@ python Analysis.py -b M1 -r FanIn -t pn -s Run_Bias_Scan-M1-FanIn-7-15008.dat -p
 """
 
 import os,sys,getopt, subprocess
-#
-#telescopePath = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/May2016/TimePix/RootFiles"
-#inputPathPedestal = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/May2016/MAMBA"
-#inputPathSignal = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/May2016/MAMBA"
-#outputPath = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/May2016/DQMTest"
-
-# inputPathPedestal = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/LateMay2016/MAMBA"
-# inputPathSignal = "$KEPLERROOT/eos/lhcb/testbeam/ut/TemporaryData/LateMay2016/MAMBA"
-
-
 
 boardName = "M1"
 PA = "FanIn"
@@ -50,8 +40,10 @@ if PA!="FanIn" and PA!="FanUp":
 	sys.exit("Wrong PA option! Choose FanIn or FanUp!") 
 if boardName!="M1" and boardName!="M2" and boardName!="M3" and boardName!="M4" and boardName!="F1" and boardName!="F3":
         sys.exit("Choose the right board for a testbeam in the May 2016: M1, M3, M4, F1, F3. Otherwise, you need to check all paths.")
-print boardName
+
+
 telescopePath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/May2016/TimePix/RootFiles"
+
 if boardName=="M1" or boardName=="M3" or boardName=="M4":
 	inputPathPedestal = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/May2016/MAMBA"
 	inputPathSignal = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/May2016/MAMBA"
@@ -60,6 +52,7 @@ elif boardName=="F1" or boardName=="F3":
 	inputPathSignal = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/LateMay2016/MAMBA"
 else:
 	sys.exit("Input files location is definded for a testbeam in the May 2016. Please go to Analysis.py and change inputPathPedestal and inputPathSignal")
+
 outputPath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/May2016/DQMTest"
 
 inputFilePedestal = inputPathPedestal+"/"+boardName+"/"+PA+"/"+pedFile
