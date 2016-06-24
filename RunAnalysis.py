@@ -57,7 +57,7 @@ from ToolsForPython import *
 
 
 
-def RunAnalysis(board,PA,DUTRun,mode,evts,mask) :
+def RunAnalysis(board,PA,DUTRun,mode,evts,mask,onlyPlots) :
     # Check that the specified PA exists for the specified board (it can be that M1 has FanIn only, and so on).
     # print PADict[board]
     if PA not in PADict[board] :
@@ -138,7 +138,10 @@ def RunAnalysis(board,PA,DUTRun,mode,evts,mask) :
         if (mode == 'batch') :
             # Use qsub
             #command = "qsub -l cput=" + cput + " -v board="+board+",PA="+PA+",DUTRun="+str(DUTRun)+",ped="+str(ped)+",filenameNoPathPhys="+filenameNoPathPhys+    ",filenameNoPathPed="+filenameNoPathPed+" SubmitAnalysis.pbs" # No spaces after ','.
-            line_run = "python "+kepler+"/../Analysis.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
+            if onlyPlots:
+		line_run = "python "+kepler+"/../Analysis_onlyPlots.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
+	    else:
+		line_run = "python "+kepler+"/../Analysis.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
         
             with open('clusterRun_'+filenameNoPathPhys.split('-')[3]+'.sh','w') as text_file :
                 text_file.write(line_export_path)
@@ -158,8 +161,11 @@ def RunAnalysis(board,PA,DUTRun,mode,evts,mask) :
             
         elif (mode == 'local') :
             # Use python directly 
-            command = "python Analysis.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
-            print command
+	    if onlyPlots:            
+		command = "python Analysis_onlyPlots.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
+	    else:
+		command = "python Analysis.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
+	    print command
             subprocess.call(command,shell=True)
 
     return
@@ -181,6 +187,7 @@ if __name__ == "__main__" :
     parser.add_argument('--mode',required=True,choices=modeList,help='mode')
     parser.add_argument('--evts',required=False,type=int,help='evts')
     parser.add_argument('--mask',required=False,type=int,choices=[0,1],help='mask')
+    parser.add_argument('--onlyPlots',required=False,type=int,choices=[0,1],help='onlyPlots')
     
     args = parser.parse_args()
 
@@ -197,5 +204,9 @@ if __name__ == "__main__" :
         mask = 0
     else :
         mask = args.mask
+    if args.onlyPlots is None :
+	onlyPlots = 0
+    else:
+	onlyPlots = 1
 
-    RunAnalysis(board,PA,DUTRun,mode,evts,mask)
+    RunAnalysis(board,PA,DUTRun,mode,evts,mask,onlyPlots)
