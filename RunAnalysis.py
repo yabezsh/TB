@@ -154,13 +154,13 @@ def RunAnalysis(board,PA,DUTRun,mode,evts,mask) :
             
             command = "bsub -q 8nh clusterRun_"+filenameNoPathPhys.split('-')[3]+".sh"
             print command
-            # subprocess.call(command,shell=True)
+            subprocess.call(command,shell=True)
             
         elif (mode == 'local') :
             # Use python directly 
             command = "python Analysis.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
             print command
-            # subprocess.call(command,shell=True)
+            subprocess.call(command,shell=True)
 
     return
 
