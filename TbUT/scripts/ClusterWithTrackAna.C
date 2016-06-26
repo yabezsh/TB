@@ -380,7 +380,7 @@ void addGraphics(TH1 *h, int iCol = 1, TString XTitle="", TString YTitle="")
     h->SetMarkerSize(0.7);
     h->SetMarkerStyle(20);
     h->GetXaxis()->SetTitleOffset(1.0);  
-    h->GetYaxis()->SetTitleOffset(1.0);
+    h->GetYaxis()->SetTitleOffset(1.2);
     h->GetXaxis()->SetTitleSize(0.045);  
     h->GetYaxis()->SetTitleSize(0.045);
     h->GetXaxis()->SetLabelSize(0.04);  
@@ -406,7 +406,7 @@ void addGraphics(TH2 *h, int iCol = 1, TString XTitle="", TString YTitle="")
     //h->SetMarkerSize(0.7);
     //h->SetMarkerStyle(20);
     h->GetXaxis()->SetTitleOffset(1.0);  
-    h->GetYaxis()->SetTitleOffset(.3);
+    h->GetYaxis()->SetTitleOffset(1.2);
     h->GetXaxis()->SetTitleSize(0.045);  
     h->GetYaxis()->SetTitleSize(0.045);
     h->GetXaxis()->SetLabelSize(0.04);  
@@ -416,11 +416,11 @@ void addGraphics(TH2 *h, int iCol = 1, TString XTitle="", TString YTitle="")
     h->SetLineWidth(2);
 }
 
-void addGraphics(TH1 *h, TString XTitle, TString YTitle,TString ZTitle,int iCol = 1)
+void addGraphics(TH1 *h, TString XTitle, TString YTitle, TString Title="",int iCol = 1)
 {
+    if (Title!=""){h->SetTitle(Title);}
     h->SetXTitle(XTitle);
     h->SetYTitle(YTitle);
-    h->SetZTitle(ZTitle);
     h->SetStats(kFALSE);
     h->SetLineColor(iCol);
     h->SetMarkerColor(iCol);
@@ -432,23 +432,21 @@ void addGraphics(TH1 *h, TString XTitle, TString YTitle,TString ZTitle,int iCol 
     h->SetMarkerSize(0.7);
     h->SetMarkerStyle(20);
     h->GetXaxis()->SetTitleOffset(1.0);  
-    h->GetYaxis()->SetTitleOffset(1.0);
-    h->GetZaxis()->SetTitleOffset(1.0);
+    h->GetYaxis()->SetTitleOffset(1.2);
     
     h->GetXaxis()->SetTitleSize(0.045);  
     h->GetYaxis()->SetTitleSize(0.045);
-    h->GetZaxis()->SetTitleSize(0.045);
     h->GetXaxis()->SetLabelSize(0.04);  
     h->GetYaxis()->SetLabelSize(0.04);  
-    h->GetZaxis()->SetLabelSize(0.04);  
     
     h->SetNdivisions(505,"X");
     h->SetNdivisions(505,"Y");
     h->SetLineWidth(2);
 }
-void addGraphics(TH2 *h, TString XTitle, TString YTitle, TString ZTitle, int iCol = 1)
+void addGraphics(TH2 *h, TString XTitle, TString YTitle, TString ZTitle, TString Title="",int iCol = 1)
 {
     //float bw = h->GetBinWidth(1);
+    if (Title!=""){h->SetTitle(Title);}
     h->SetXTitle(XTitle);
     h->SetYTitle(YTitle);
     h->SetZTitle(ZTitle);
@@ -463,8 +461,8 @@ void addGraphics(TH2 *h, TString XTitle, TString YTitle, TString ZTitle, int iCo
     //h->SetMarkerSize(0.7);
     //h->SetMarkerStyle(20);
     h->GetXaxis()->SetTitleOffset(1.0);  
-    h->GetYaxis()->SetTitleOffset(1.0);
-    h->GetZaxis()->SetTitleOffset(1.0);    
+    h->GetYaxis()->SetTitleOffset(1.3);
+    h->GetZaxis()->SetTitleOffset(1.3);    
     h->GetXaxis()->SetTitleSize(0.045);  
     h->GetYaxis()->SetTitleSize(0.045);
     h->GetZaxis()->SetTitleSize(0.045);
@@ -476,6 +474,21 @@ void addGraphics(TH2 *h, TString XTitle, TString YTitle, TString ZTitle, int iCo
     h->SetLineWidth(2);
 }
 
+TCanvas* addCanvas(TString canvasTitle, Int_t xSize=800, Int_t ySize=800,Double_t rMargin=0.17,Double_t lMargin=0.12)
+{
+   TCanvas *tempCanvas = new TCanvas(canvasTitle, "",xSize,ySize);
+   tempCanvas->SetRightMargin(rMargin);
+   tempCanvas->SetLeftMargin(lMargin);
+   tempCanvas->cd();
+   return tempCanvas;
+}
+
+void savePlots(TCanvas* saveCanvas, TString nameFile)
+{
+   saveCanvas->Print("Plots/"+nameFile+"_" + m_board + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
+   saveCanvas->Print("Plots/"+nameFile+"_" + m_board + "_" + runplace + "_" + consR +"_"+m_runNumb+".pdf");
+   saveCanvas->Print("Plots/"+nameFile+"_" + m_board + "_" + runplace + "_" + consR +"_"+m_runNumb+".root"); 
+}
 
 void ClusterWithTrackAna::Loop()
 {
@@ -641,6 +654,7 @@ void ClusterWithTrackAna::Loop()
    TProfile *hClusterStrip = new TProfile("hClusterStrip","Cluster Size per strip",512,0,512,0,2);
    TH2F* hAlpha = new TH2F("hAlpha","<SNR(i) / SNR(seed)>", 512,0,512,512,0,512);
    TH2F* hAsym = new TH2F("hAsym", "Charge asymmetry about seed",512,0,512,200,-1,1);
+   TH1F* hAsym_av = new TH1F("hAsym_av", "Charge asymmetry about seed",200,-1,1);
    TH2F *hEta = new TH2F("hEta","Eta vs. strip",512,0,512,200,-1,1);
    TH2F *hEta_dX = new TH2F("hEta_dX","Eta vs. #Delta x",50,0,0.25,200,-1,1);
    TH1D *hEta_proj = new TH1D("hEta_proj","Eta",200,-1,1);
@@ -1245,7 +1259,7 @@ void ClusterWithTrackAna::Loop()
    c_strip->cd(1);
    addGraphics(hnoisePerChannel,1,"noise per channel");
    hnoisePerChannel->Draw();
-
+/*
    c_strip->cd(2);
    addGraphics(hADCperStrip, 1 ,"channel","ADC");
    hADCperStrip->GetXaxis()->SetRangeUser(lowCh,hiCh);
@@ -1260,11 +1274,11 @@ void ClusterWithTrackAna::Loop()
    addGraphics(hClusterStrip, 1, "channel","<Cluster Size>");
    hClusterStrip->GetXaxis()->SetRangeUser(lowCh,hiCh);
    hClusterStrip->Draw();
-
+*/
    c_strip->cd(5);
-   hEta->GetXaxis()->SetRangeUser(lowCh,hiCh);
-   addGraphics(hEta, 1, "channel", "#eta");
-   hEta->Draw("colz");
+  // hEta->GetXaxis()->SetRangeUser(lowCh,hiCh);
+ //  addGraphics(hEta, 1, "channel", "#eta");
+ //  hEta->Draw("colz");
 
    c_strip->cd(6);
 
@@ -1278,146 +1292,118 @@ void ClusterWithTrackAna::Loop()
     }
   }
  //hAlpha->GetZaxis()->SetRangeUser(0,0.2);
-   addGraphics(hAlpha,1,"channel (seed)","channel");
-   hAlpha->GetXaxis()->SetRangeUser(lowCh,hiCh);
-   hAlpha->GetYaxis()->SetRangeUser(lowCh,hiCh);
-   hAlpha->Draw("colz");
+  // addGraphics(hAlpha,"Channel (seed)", "Channel","SNR","SNR_{i} / SNR_{seed}");
+  // hAlpha->GetXaxis()->SetRangeUser(lowCh,hiCh);
+  // hAlpha->GetYaxis()->SetRangeUser(lowCh,hiCh);
+  // hAlpha->Draw("colz");
 
    c_strip->Print("Plots/StripPlot_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
    c_strip->Print("Plots/StripPlot_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");   
+   
+   TCanvas *c_ADCperStrip = addCanvas("c_ADCperStrip");
+   addGraphics(hADCperStrip,"channel","ADC","Counts","ADC");
+   hADCperStrip->GetXaxis()->SetRangeUser(lowCh,hiCh);
+   hADCperStrip->Draw("colz");
+   savePlots(c_ADCperStrip,"ADC_per_Strip");
+   
+   TCanvas *c_SNRperStrip = addCanvas("c_SNRperStrip");
+   addGraphics(hSNRperStrip,"channel","SNR","Counts","SNR");
+   hSNRperStrip->GetXaxis()->SetRangeUser(lowCh,hiCh);
+   hSNRperStrip->Draw("colz");
+   savePlots(c_SNRperStrip,"SNR_per_Strip");
 
-   TCanvas *c_alpha = new TCanvas("c_alpha", "",500,500);
-   c_alpha->cd();
+   TCanvas *c_ClusterSize_perStrip = addCanvas("c_ClusterSize_perStrip");
+   addGraphics(hClusterStrip,"channel","Cluster Size","Cluster Size");
+   hClusterStrip->GetXaxis()->SetRangeUser(lowCh,hiCh);
+   hClusterStrip->Draw("colz");
+   savePlots(c_ClusterSize_perStrip,"ClusterSize_per_Strip");
+      
+   
+   TCanvas *c_alpha = addCanvas("c_alpha");
+   addGraphics(hAlpha,"Channel (seed)", "Channel","SNR","SNR_{i} / SNR_{seed}");
    hAlpha->GetZaxis()->SetRangeUser(0,0.2);
    hAlpha->Draw("colz");
-
-   c_alpha->Print("Plots/Alpha_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
-   c_alpha->Print("Plots/Alpha_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".pdf");
-   c_alpha->Print("Plots/Alpha_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");  
-
+   savePlots(c_alpha,"Alpha");
+   
    // Canvas for eta distribution
    // TCanvas *c_eta = new TCanvas("c_eta", "",500,500);
    hEta_proj = hEta->ProjectionY();
    //c_eta->Divide(3);
-   TCanvas *c_eta_strip = new TCanvas("c_eta_strip", "",500,500);
-   c_eta_strip->cd();
+   TCanvas *c_eta_strip = addCanvas("c_eta_strip");
+   addGraphics(hEta, "Channel","#eta","Counts","#eta vs. strip");
    hEta->GetXaxis()->SetRangeUser(lowCh,hiCh);
    hEta->Draw("colz");
-   c_eta_strip->Print("Plots/Eta_strip_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
-   c_eta_strip->Print("Plots/Eta_strip_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".pdf");
-   c_eta_strip->Print("Plots/Eta_strip_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");  
-
-   TCanvas *c_asym = new TCanvas("c_asym", "",500,500);
-   c_asym->SetRightMargin(0.15);
-   c_asym->SetLeftMargin(0.1);
-   
-   c_asym->cd();
-   addGraphics(hAsym, "Channel","Asymmetry [mm]","Counts");
-   //hAsym->GetZaxis()->SetTitle("test");
+   savePlots(c_eta_strip,"Eta_strip");
+  
+   TCanvas *c_asym = addCanvas("c_asym");
+   addGraphics(hAsym, "Channel","Asymmetry,mm","Counts");
    hAsym->GetXaxis()->SetRangeUser(lowCh,hiCh);
    hAsym->Draw("colz");
-   c_asym->Print("Plots/Asym_strip_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
-   c_asym->Print("Plots/Asym_strip_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".pdf");
-   c_asym->Print("Plots/Asym_strip_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");  
-
-   TCanvas *c_eta = new TCanvas("c_eta", "",500,500);
-   c_eta->cd();
-   hEta_proj->SetTitle("Eta");
-   hEta_proj->Draw();
-   //c_eta->cd(3);
-   c_eta->Print("Plots/Eta_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
-   c_eta->Print("Plots/Eta_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".pdf");
-   c_eta->Print("Plots/Eta_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");  
-
-
-   TCanvas *c_eta_dx = new TCanvas("c_eta_dx", "",600,600);
-   c_eta_dx->cd();
-   hEta_dX->SetTitle("Eta vs. #Delta x");
-   hEta_dX->GetXaxis()->SetRangeUser(0,0.15);
-   hEta_dX->GetXaxis()->SetTitle("|#Delta x| [mm]");
-   hEta_dX->GetYaxis()->SetTitle("#eta");
-   hEta_dX->Draw("colz");
-
-   c_eta_dx->Print("Plots/Eta_dx_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
-   c_eta_dx->Print("Plots/Eta_dx_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".pdf");
-   c_eta_dx->Print("Plots/Eta_dx_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");   
+   savePlots(c_asym,"Asym_strip");
+   RetVal averageAsymmperCh;
+   TCanvas *c_asym_av = addCanvas("c_asym_av");
+   addGraphics(hAsym_av, "Channel","Asymmetry,mm","Charge asymmetry");
    
-   //TCanvas *c_eff = new TCanvas("c_eff", "",1500,500);
-   //c_eff->Divide(3);
-   //c_eff->cd(1);
+   for(Int_t iStr=0;iStr<hAsym->GetNbinsX();iStr++)
+   {
+  //   averageAsymmperCh = lFit(Asym->ProjectionY("proba",iStr,iStr),1);
+  //   hAsym_av->SetBinContent(i+1,averageAsymmperCh.MPV);
+  }
+   
+   
+   TCanvas *c_eta = addCanvas("c_eta");
+   addGraphics(hEta_proj,"#eta","Counts","#eta");
+   hEta_proj->Draw();
+   savePlots(c_eta,"Eta");
 
-   TCanvas *c_eff_2D = new TCanvas("c_eff_2D", "",500,500);
-   gStyle->SetOptStat(0);
-   c_eff_2D->SetLeftMargin(0.13);
-   c_eff_2D->SetRightMargin(0.2);
-   c_eff_2D->cd();
-   h311a->Divide(h311b);
+   TCanvas *c_eta_dx = addCanvas("c_eta_dx");
+   addGraphics(hEta_dX, "|#Delta x|, mm","#eta","Counts","#eta vs. #Delta x");
+   hEta_dX->Draw("colz");
+   savePlots(c_eta_dx,"Eta_dx");
+
+   TCanvas *c_eff_2D = addCanvas("c_eff_2D");
+   h311a->Divide(h311b);					//IARO: TODO -  I would prefer to have a separate histo (not to overwrite one which we have, because it can lead to confuses at some point). But I was not sure that stuff which are done after are not based on it. Need to check
+   addGraphics(h311a, "X_{trk}, mm","Y_{trk}, mm","","Efficiency");
    h311a->GetZaxis()->SetRangeUser(0.9,1);
    h311a->Draw("colz");
-   c_eff_2D->Print("Plots/Eff_2D_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
-   c_eff_2D->Print("Plots/Eff_2D_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".pdf");
-   c_eff_2D->Print("Plots/Eff_2D_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");   
-
-   //c_eff->cd(2);
-   TCanvas *c_eff_X = new TCanvas("c_eff_X", "",500,500);
-   c_eff_X->cd();
-   //hEffX->Divide(hEffX,hTrkX,1.0,1.0,"B");
-   //hEffX->GetYaxis()->SetRangeUser(0.9,1);
-   //hEffX->Draw("colz");
+   savePlots(c_eff_2D,"Eff_2D");
+  
+   TCanvas *c_eff_X = addCanvas("c_eff_X");
    TH1F *hex = (TH1F*)h12dn->Clone("hex");
    hex->SetName("hex");
    hex->Divide(h12dn,h12dd,1.0,1.0,"B");
    float bw = 1000*h12dd->GetBinWidth(1);
-   TString yt = Form("#Good DUT hit / # Track ",bw);
-   addGraphics(hex, 1, "X_{trk} [mm]", yt);
-   hex->SetTitle("DUT Efficiency vs X_{trk}");
+   TString yt = Form("#Good DUT hit / #Track ",bw);
+   addGraphics(hex, "X_{trk}, mm", yt,"DUT Efficiency vs. X_{trk}");
    hex->GetXaxis()->SetRangeUser(xMin-0.5,xMax+0.5);
    hex->GetYaxis()->SetRangeUser(0.9,1.1);
    hex->SetMinimum(0.8);
    hex->SetMaximum(1.1);
    hex->Draw("e");
-   c_eff_X->Print("Plots/Eff_X_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
-   c_eff_X->Print("Plots/Eff_X_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".pdf");
-   c_eff_X->Print("Plots/Eff_X_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");   
-
-
-   //   c_eff->cd(3);
-   TCanvas *c_eff_Y = new TCanvas("c_eff_Y", "",500,500);
-   c_eff_Y->cd();
+   savePlots(c_eff_X,"Eff_X");
+  
+   TCanvas *c_eff_Y = addCanvas("c_eff_Y");
    TH1F *hey = (TH1F*)h12b->Clone("hey");
    hey->Divide(h12b,h12a,1.0,1.0,"B");
    //float 
    bw = 1000*h12b->GetBinWidth(1);
    //TString 
-   yt = Form("(#Good DUT hit / # Track)" ,bw);
-   addGraphics(hey, 1, "Y_{trk} [mm]", yt);
-   hey->SetTitle("DUT Efficiency vs Y_{trk}");
+   yt = Form("#Good DUT hit / #Track" ,bw);
+   addGraphics(hey, "Y_{trk}, mm", yt,"DUT Efficiency vs. Y_{trk}");
    hey->GetXaxis()->SetRangeUser(yMin-0.5,yMax+0.5);
    hey->GetYaxis()->SetRangeUser(0.9,1.1);
    hey->SetMinimum(0.8);
    hey->SetMaximum(1.1);
    hey->Draw("e");
-   //hEffY->Divide(hTrkY);
-   //hEffY->GetYaxis()->SetRangeUser(0.95,1);
-   //hEffY->Draw("colz");
-
-   c_eff_Y->Print("Plots/Eff_Y_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
-   c_eff_Y->Print("Plots/Eff_Y_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".pdf");
-   c_eff_Y->Print("Plots/Eff_Y_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");   
+   savePlots(c_eff_Y,"Eff_Y"); 
    
 
-  TCanvas *c_snr_2D = new TCanvas("c_snr_2D", "",500,500);
-   c_snr_2D->cd();   
-
-   hSNR2D->GetXaxis()->SetTitle("X_{trk} [mm]");
-   hSNR2D->GetYaxis()->SetTitle("Y_{trk} [mm]");
-   addGraphics(hSNR2D,1, "X_{trk} [mm]","Y_{trk} [mm]");
-
+/*   TCanvas *c_snr_2D = addCanvas("c_snr_2D");
+   addGraphics(hSNR2D, "X_{trk}, mm","Y_{trk}, mm", "SNR", "SNR");
    hSNR->GetZaxis()->SetRangeUser(0,100);
    hSNR2D->GetZaxis()->SetRangeUser(0,35);
    RetVal value;
-   
-/*   for(int i=0; i< hSNR->GetNbinsX(); i++) {
+   for(int i=0; i< hSNR->GetNbinsX(); i++) {
      
      for(int j=0; j<hSNR->GetNbinsY(); j++) {
        
@@ -1429,14 +1415,9 @@ void ClusterWithTrackAna::Loop()
      }
      
    }
-
-   hSNR2D->SetTitle("SNR");
    hSNR2D->Draw("colz");
- */  
-   c_snr_2D->Print("Plots/SNR_2D_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
-   c_snr_2D->Print("Plots/SNR_2D_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".pdf");
-   c_snr_2D->Print("Plots/SNR_2D_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");   
-
+   savePlots(c_snr_2D,"SNR_2D");
+*/
    TCanvas *c_trk = new TCanvas("c_trk", "",1500,1000);
    c_trk->Divide(3,2);
    c_trk->cd(1)->SetLeftMargin(0.13);;
