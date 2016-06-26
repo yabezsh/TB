@@ -380,7 +380,7 @@ void addGraphics(TH1 *h, int iCol = 1, TString XTitle="", TString YTitle="")
     h->SetMarkerSize(0.7);
     h->SetMarkerStyle(20);
     h->GetXaxis()->SetTitleOffset(1.0);  
-    h->GetYaxis()->SetTitleOffset(1.2);
+    h->GetYaxis()->SetTitleOffset(1.0);
     h->GetXaxis()->SetTitleSize(0.045);  
     h->GetYaxis()->SetTitleSize(0.045);
     h->GetXaxis()->SetLabelSize(0.04);  
@@ -406,11 +406,71 @@ void addGraphics(TH2 *h, int iCol = 1, TString XTitle="", TString YTitle="")
     //h->SetMarkerSize(0.7);
     //h->SetMarkerStyle(20);
     h->GetXaxis()->SetTitleOffset(1.0);  
-    h->GetYaxis()->SetTitleOffset(1.2);
+    h->GetYaxis()->SetTitleOffset(.3);
     h->GetXaxis()->SetTitleSize(0.045);  
     h->GetYaxis()->SetTitleSize(0.045);
     h->GetXaxis()->SetLabelSize(0.04);  
     h->GetYaxis()->SetLabelSize(0.04);  
+    h->SetNdivisions(505,"X");
+    h->SetNdivisions(505,"Y");
+    h->SetLineWidth(2);
+}
+
+void addGraphics(TH1 *h, TString XTitle, TString YTitle,TString ZTitle,int iCol = 1)
+{
+    h->SetXTitle(XTitle);
+    h->SetYTitle(YTitle);
+    h->SetZTitle(ZTitle);
+    h->SetStats(kFALSE);
+    h->SetLineColor(iCol);
+    h->SetMarkerColor(iCol);
+    h->SetMinimum(0.0);
+    h->SetMaximum(1.2*h->GetMaximum());
+    h->SetTitleSize(0.1);
+
+    //h->SetLineColor(kBlack);
+    h->SetMarkerSize(0.7);
+    h->SetMarkerStyle(20);
+    h->GetXaxis()->SetTitleOffset(1.0);  
+    h->GetYaxis()->SetTitleOffset(1.0);
+    h->GetZaxis()->SetTitleOffset(1.0);
+    
+    h->GetXaxis()->SetTitleSize(0.045);  
+    h->GetYaxis()->SetTitleSize(0.045);
+    h->GetZaxis()->SetTitleSize(0.045);
+    h->GetXaxis()->SetLabelSize(0.04);  
+    h->GetYaxis()->SetLabelSize(0.04);  
+    h->GetZaxis()->SetLabelSize(0.04);  
+    
+    h->SetNdivisions(505,"X");
+    h->SetNdivisions(505,"Y");
+    h->SetLineWidth(2);
+}
+void addGraphics(TH2 *h, TString XTitle, TString YTitle, TString ZTitle, int iCol = 1)
+{
+    //float bw = h->GetBinWidth(1);
+    h->SetXTitle(XTitle);
+    h->SetYTitle(YTitle);
+    h->SetZTitle(ZTitle);
+    h->SetStats(kFALSE);
+    h->SetLineColor(iCol);
+    h->SetMarkerColor(iCol);
+    h->SetMinimum(0.0);
+    h->SetMaximum(1.2*h->GetMaximum());
+    h->SetTitleSize(0.1);
+
+    //h->SetLineColor(kBlack);
+    //h->SetMarkerSize(0.7);
+    //h->SetMarkerStyle(20);
+    h->GetXaxis()->SetTitleOffset(1.0);  
+    h->GetYaxis()->SetTitleOffset(1.0);
+    h->GetZaxis()->SetTitleOffset(1.0);    
+    h->GetXaxis()->SetTitleSize(0.045);  
+    h->GetYaxis()->SetTitleSize(0.045);
+    h->GetZaxis()->SetTitleSize(0.045);
+    h->GetXaxis()->SetLabelSize(0.04);  
+    h->GetYaxis()->SetLabelSize(0.04);  
+    h->GetZaxis()->SetLabelSize(0.04); 
     h->SetNdivisions(505,"X");
     h->SetNdivisions(505,"Y");
     h->SetLineWidth(2);
@@ -1248,7 +1308,12 @@ void ClusterWithTrackAna::Loop()
    c_eta_strip->Print("Plots/Eta_strip_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");  
 
    TCanvas *c_asym = new TCanvas("c_asym", "",500,500);
+   c_asym->SetRightMargin(0.15);
+   c_asym->SetLeftMargin(0.1);
+   
    c_asym->cd();
+   addGraphics(hAsym, "Channel","Asymmetry [mm]","Counts");
+   //hAsym->GetZaxis()->SetTitle("test");
    hAsym->GetXaxis()->SetRangeUser(lowCh,hiCh);
    hAsym->Draw("colz");
    c_asym->Print("Plots/Asym_strip_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
@@ -1265,7 +1330,7 @@ void ClusterWithTrackAna::Loop()
    c_eta->Print("Plots/Eta_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");  
 
 
-   TCanvas *c_eta_dx = new TCanvas("c_eta_dx", "",500,500);
+   TCanvas *c_eta_dx = new TCanvas("c_eta_dx", "",600,600);
    c_eta_dx->cd();
    hEta_dX->SetTitle("Eta vs. #Delta x");
    hEta_dX->GetXaxis()->SetRangeUser(0,0.15);
@@ -1352,7 +1417,7 @@ void ClusterWithTrackAna::Loop()
    hSNR2D->GetZaxis()->SetRangeUser(0,35);
    RetVal value;
    
-   for(int i=0; i< hSNR->GetNbinsX(); i++) {
+/*   for(int i=0; i< hSNR->GetNbinsX(); i++) {
      
      for(int j=0; j<hSNR->GetNbinsY(); j++) {
        
@@ -1367,7 +1432,7 @@ void ClusterWithTrackAna::Loop()
 
    hSNR2D->SetTitle("SNR");
    hSNR2D->Draw("colz");
-   
+ */  
    c_snr_2D->Print("Plots/SNR_2D_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
    c_snr_2D->Print("Plots/SNR_2D_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".pdf");
    c_snr_2D->Print("Plots/SNR_2D_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");   
