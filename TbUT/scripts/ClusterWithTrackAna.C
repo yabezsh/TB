@@ -16,6 +16,7 @@
 #include <TH1D.h>
 #include <TMath.h>
 #include <TGraph.h>
+#include <TGraphErrors.h>
 #include <TF1.h>
 #include <TGraphErrors.h>
 #include <TChain.h>
@@ -85,6 +86,7 @@ RetVal PrintLandau(TH1D* h,double Center,int MinAdc,int MaxAdc,TString string,bo
     return langaus;
 
 }
+
 
 RetVal lFit(TH1D* h,bool MPVreturn = 0,float left=0.45,float right=4.0,TString string = "SNR"){
     if (MPVreturn==1){
@@ -462,7 +464,7 @@ void addGraphics(TH2 *h, TString XTitle, TString YTitle, TString ZTitle, TString
     //h->SetMarkerStyle(20);
     h->GetXaxis()->SetTitleOffset(1.0);  
     h->GetYaxis()->SetTitleOffset(1.3);
-    h->GetZaxis()->SetTitleOffset(1.3);    
+    h->GetZaxis()->SetTitleOffset(1.4);    
     h->GetXaxis()->SetTitleSize(0.045);  
     h->GetYaxis()->SetTitleSize(0.045);
     h->GetZaxis()->SetTitleSize(0.045);
@@ -471,6 +473,30 @@ void addGraphics(TH2 *h, TString XTitle, TString YTitle, TString ZTitle, TString
     h->GetZaxis()->SetLabelSize(0.04); 
     h->SetNdivisions(505,"X");
     h->SetNdivisions(505,"Y");
+    h->SetLineWidth(2);
+}
+
+void addGraphics(TGraphErrors *h, TString XTitle, TString YTitle, TString Title="",int iCol = 1)
+{
+    if (Title!=""){h->SetTitle(Title);}
+    h->GetXaxis()->SetTitle(XTitle);
+    h->GetYaxis()->SetTitle(YTitle);
+    h->SetLineColor(iCol);
+    h->SetMarkerColor(iCol);
+//    h->SetMinimum(-1.);
+//    h->SetMaximum(1.2*h->GetMaximum());
+
+    //h->SetLineColor(kBlack);
+    h->SetMarkerSize(0.7);
+    h->SetMarkerStyle(20);
+    h->GetXaxis()->SetTitleOffset(1.0);  
+    h->GetYaxis()->SetTitleOffset(1.2);
+    
+    h->GetXaxis()->SetTitleSize(0.045);  
+    h->GetYaxis()->SetTitleSize(0.045);
+    h->GetXaxis()->SetLabelSize(0.04);  
+    h->GetYaxis()->SetLabelSize(0.04);  
+
     h->SetLineWidth(2);
 }
 
@@ -1311,7 +1337,7 @@ void ClusterWithTrackAna::Loop()
    hSNRperStrip->GetXaxis()->SetRangeUser(lowCh,hiCh);
    hSNRperStrip->Draw("colz");
    savePlots(c_SNRperStrip,"SNR_per_Strip");
-
+   
    TCanvas *c_ClusterSize_perStrip = addCanvas("c_ClusterSize_perStrip");
    addGraphics(hClusterStrip,"channel","Cluster Size","Cluster Size");
    hClusterStrip->GetXaxis()->SetRangeUser(lowCh,hiCh);
@@ -1336,19 +1362,50 @@ void ClusterWithTrackAna::Loop()
    savePlots(c_eta_strip,"Eta_strip");
   
    TCanvas *c_asym = addCanvas("c_asym");
-   addGraphics(hAsym, "Channel","Asymmetry,mm","Counts");
+   addGraphics(hAsym, "Channel","Asymmetry","Counts");
    hAsym->GetXaxis()->SetRangeUser(lowCh,hiCh);
+   hAsym->GetZaxis()->SetRangeUser(0,160);
    hAsym->Draw("colz");
    savePlots(c_asym,"Asym_strip");
    RetVal averageAsymmperCh;
-   TCanvas *c_asym_av = addCanvas("c_asym_av");
-   addGraphics(hAsym_av, "Channel","Asymmetry,mm","Charge asymmetry");
    
-   for(Int_t iStr=0;iStr<hAsym->GetNbinsX();iStr++)
-   {
-  //   averageAsymmperCh = lFit(Asym->ProjectionY("proba",iStr,iStr),1);
-  //   hAsym_av->SetBinContent(i+1,averageAsymmperCh.MPV);
-  }
+   addGraphics(hAsym_av, "Channel","Asymmetry,mm","Charge asymmetry");
+   vector <Double_t>  averageAsym;
+   vector <Double_t>  averageAsymAbs;
+   vector <Double_t>  averageAsymEr;
+   vector <Double_t>  averageAsymAbsEr;
+   vector <Double_t>  channelN;
+   for(Int_t iStr=lowCh;iStr<hiCh;iStr++)
+   { 
+     TH1F *hAsymStr = new TH1F("asymPerStrip","asymPerStrip",200,-1.,1.);
+     TH1F *hAsymStrAbs = new TH1F("asymPerStripAbs","asymPerStripAbs",200,-1.,1.);    
+     for(Int_t j=0;j<hAsymStr->GetNbinsX();j++)
+     {
+       hAsymStr->SetBinContent(j+1, hAsym->GetBinContent(iStr+1,j+1));  
+       if(j<101){hAsymStrAbs->SetBinContent(j+101, hAsym->GetBinContent(iStr+1,j+1));}
+       else{hAsymStrAbs->SetBinContent(j+1, hAsym->GetBinContent(iStr+1,j+1));}
+     }
+     channelN.push_back(iStr);
+     averageAsym.push_back(hAsymStr->GetMean());
+     averageAsymEr.push_back(hAsymStr->GetMeanError());
+     hAsymStr->Delete();
+     
+     averageAsymAbs.push_back(hAsymStrAbs->GetMean());
+     averageAsymAbsEr.push_back(hAsymStrAbs->GetMeanError());
+     hAsymStrAbs->Delete();
+   }
+   TCanvas *c_asym_av = addCanvas("c_asym_av");
+   TGraphErrors *gAverageAsym = new TGraphErrors(channelN.size(), &channelN[0],&averageAsym[0],0,&averageAsymEr[0]);
+   addGraphics(gAverageAsym,"Channel","Asymmetry","Average asymmetry per strip");
+   gAverageAsym->Draw("AP");
+   
+   TCanvas *c_asym_avAbs = addCanvas("c_asym_avAbs");
+   TGraphErrors *gAverageAsymAbs = new TGraphErrors(channelN.size(), &channelN[0],&averageAsymAbs[0],0,&averageAsymAbsEr[0]);
+   addGraphics(gAverageAsymAbs,"Channel","Asymmetry","Average absolute asymmetry per strip");
+   gAverageAsymAbs->Draw("AP");
+   
+   savePlots(c_asym_av,"Average_asymmetry");
+   savePlots(c_asym_avAbs,"AverageAbsolute_asymmetry");
    
    
    TCanvas *c_eta = addCanvas("c_eta");
