@@ -1276,56 +1276,6 @@ void ClusterWithTrackAna::Loop()
 
    //   gStyle->SetOptStat(0);
 
-   addGraphics(h3b, 1, "X_{trk} [mm]", "Y_{trk} [mm] ");
-   h3b->GetXaxis()->SetRangeUser(-5,5);
-   h3b->GetYaxis()->SetRangeUser(-5,5);
-
-   TCanvas *c_strip = new TCanvas("c_strip", "",1500,1000);
-   c_strip->Divide(3,2);
-   c_strip->cd(1);
-   addGraphics(hnoisePerChannel,1,"noise per channel");
-   hnoisePerChannel->Draw();
-/*
-   c_strip->cd(2);
-   addGraphics(hADCperStrip, 1 ,"channel","ADC");
-   hADCperStrip->GetXaxis()->SetRangeUser(lowCh,hiCh);
-   hADCperStrip->Draw("colz");
-
-   c_strip->cd(3);
-   addGraphics(hSNRperStrip, 1 ,"channel","SNR");
-   hSNRperStrip->GetXaxis()->SetRangeUser(lowCh,hiCh);
-   hSNRperStrip->Draw("colz");
-
-   c_strip->cd(4);
-   addGraphics(hClusterStrip, 1, "channel","<Cluster Size>");
-   hClusterStrip->GetXaxis()->SetRangeUser(lowCh,hiCh);
-   hClusterStrip->Draw();
-*/
-   c_strip->cd(5);
-  // hEta->GetXaxis()->SetRangeUser(lowCh,hiCh);
- //  addGraphics(hEta, 1, "channel", "#eta");
- //  hEta->Draw("colz");
-
-   c_strip->cd(6);
-
-// loop to normalize
-  Double_t maxS=0;
-  for (int i=0;i<512;i++){
-    maxS=hAlpha->GetBinContent(i,i);
-    for(int j=0;j<512;j++){
-      if(hAlpha->GetBinContent(i,j)==0) continue;
-      hAlpha->SetBinContent(i,j,hAlpha->GetBinContent(i,j)/maxS);
-    }
-  }
- //hAlpha->GetZaxis()->SetRangeUser(0,0.2);
-  // addGraphics(hAlpha,"Channel (seed)", "Channel","SNR","SNR_{i} / SNR_{seed}");
-  // hAlpha->GetXaxis()->SetRangeUser(lowCh,hiCh);
-  // hAlpha->GetYaxis()->SetRangeUser(lowCh,hiCh);
-  // hAlpha->Draw("colz");
-
-   c_strip->Print("Plots/StripPlot_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
-   c_strip->Print("Plots/StripPlot_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");   
-   
    TCanvas *c_ADCperStrip = addCanvas("c_ADCperStrip");
    addGraphics(hADCperStrip,"channel","ADC","Counts","ADC");
    hADCperStrip->GetXaxis()->SetRangeUser(lowCh,hiCh);
@@ -2470,6 +2420,63 @@ void ClusterWithTrackAna::Loop()
 
     c6->Print("Plots/CrossTalk_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
     c6->Print("Plots/CrossTalk_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");
+    
+//---------------------------------------------------------------------------------------------------
+
+   addGraphics(h3b, 1, "X_{trk} [mm]", "Y_{trk} [mm] ");
+   h3b->GetXaxis()->SetRangeUser(-5,5);
+   h3b->GetYaxis()->SetRangeUser(-5,5);
+
+   TCanvas *c_strip = new TCanvas("c_strip", "",1500,1000);
+   c_strip->Divide(3,2);
+   c_strip->cd(1);
+   addGraphics(hnoisePerChannel,1,"noise per channel");
+   hnoisePerChannel->Draw();
+
+   c_strip->cd(2);
+  // addGraphics(hADCperStrip, 1 ,"channel","ADC");
+   hADCperStrip->GetXaxis()->SetRangeUser(lowCh,hiCh);
+   hADCperStrip->GetZaxis()->SetRangeUser(0.9,1);
+   hADCperStrip->Draw("colz");
+
+   c_strip->cd(3);
+ //  addGraphics(hSNRperStrip, 1 ,"channel","SNR");
+   hSNRperStrip->GetXaxis()->SetRangeUser(lowCh,hiCh);
+   hSNRperStrip->Draw("colz");
+
+   c_strip->cd(4);
+  // addGraphics(hClusterStrip, 1, "channel","<Cluster Size>");
+   hClusterStrip->GetXaxis()->SetRangeUser(lowCh,hiCh);
+   hClusterStrip->Draw();
+
+   c_strip->cd(5);
+   hEta->GetXaxis()->SetRangeUser(lowCh,hiCh);
+   //addGraphics(hEta, 1, "channel", "#eta");
+   hEta->Draw("colz");
+
+   c_strip->cd(6);
+
+// loop to normalize
+  Double_t maxS=0;
+  for (int i=0;i<512;i++){
+    maxS=hAlpha->GetBinContent(i,i);
+    for(int j=0;j<512;j++){
+      if(hAlpha->GetBinContent(i,j)==0) continue;
+      hAlpha->SetBinContent(i,j,hAlpha->GetBinContent(i,j)/maxS);
+    }
+  }
+   hAlpha->GetZaxis()->SetRangeUser(0,0.2);
+   addGraphics(hAlpha,"Channel (seed)", "Channel","SNR","SNR_{i} / SNR_{seed}");
+   hAlpha->GetXaxis()->SetRangeUser(lowCh,hiCh);
+   hAlpha->GetYaxis()->SetRangeUser(lowCh,hiCh);
+   hAlpha->Draw("colz");
+
+   c_strip->Print("Plots/StripPlot_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
+   c_strip->Print("Plots/StripPlot_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");   
+   
+    
+    
+    
 
 
     fout->Write();
