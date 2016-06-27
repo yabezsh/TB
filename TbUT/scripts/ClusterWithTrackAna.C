@@ -89,12 +89,21 @@ RetVal PrintLandau(TH1D* h,double Center,int MinAdc,int MaxAdc,TString string,bo
 
 
 RetVal lFit(TH1D* h,bool MPVreturn = 0,float left=0.45,float right=4.0,TString string = "SNR"){
+      Int_t max = 0, maxBin = 0;
+      for(Int_t i = 50 ;i<h->GetNbinsX();i++)
+	{
+	 if(h->GetBinContent(i+1)>max)
+	 {
+	   max =  h->GetBinContent(i+1);
+	   maxBin = i+1;
+	 }
+	}
     if (MPVreturn==1){
-        RetVal MPV = PrintLandau(h,h->GetBinCenter(h->GetMaximumBin()),h->GetBinCenter(h->GetMaximumBin())*left,h->GetBinCenter(h->GetMaximumBin())*right,string,1);
+        RetVal MPV = PrintLandau(h,h->GetBinCenter(maxBin),h->GetBinCenter(maxBin)*left,h->GetBinCenter(maxBin)*right,string,1);
         return MPV;  
     }else{ 
-        PrintLandau(h,h->GetBinCenter(h->GetMaximumBin()),h->GetBinCenter(h->GetMaximumBin())*left,h->GetBinCenter(h->GetMaximumBin())*right,string,0);
-        return {0,0,0};
+              PrintLandau(h,h->GetBinCenter(maxBin),h->GetBinCenter(maxBin)*left,h->GetBinCenter(maxBin)*right,string,0);
+	      return {0,0,0};
     }
 }
 
