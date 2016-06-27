@@ -417,7 +417,7 @@ void addGraphics(TH2 *h, int iCol = 1, TString XTitle="", TString YTitle="")
     //h->SetMarkerSize(0.7);
     //h->SetMarkerStyle(20);
     h->GetXaxis()->SetTitleOffset(1.0);  
-    h->GetYaxis()->SetTitleOffset(1.2);
+    h->GetYaxis()->SetTitleOffset(1.4);
     h->GetXaxis()->SetTitleSize(0.045);  
     h->GetYaxis()->SetTitleSize(0.045);
     h->GetXaxis()->SetLabelSize(0.04);  
@@ -443,7 +443,7 @@ void addGraphics(TH1 *h, TString XTitle, TString YTitle, TString Title="",int iC
     h->SetMarkerSize(0.7);
     h->SetMarkerStyle(20);
     h->GetXaxis()->SetTitleOffset(1.0);  
-    h->GetYaxis()->SetTitleOffset(1.2);
+    h->GetYaxis()->SetTitleOffset(1.4);
     
     h->GetXaxis()->SetTitleSize(0.045);  
     h->GetYaxis()->SetTitleSize(0.045);
@@ -472,7 +472,7 @@ void addGraphics(TH2 *h, TString XTitle, TString YTitle, TString ZTitle, TString
     //h->SetMarkerSize(0.7);
     //h->SetMarkerStyle(20);
     h->GetXaxis()->SetTitleOffset(1.0);  
-    h->GetYaxis()->SetTitleOffset(1.3);
+    h->GetYaxis()->SetTitleOffset(1.4);
     h->GetZaxis()->SetTitleOffset(1.4);    
     h->GetXaxis()->SetTitleSize(0.045);  
     h->GetYaxis()->SetTitleSize(0.045);
@@ -1263,24 +1263,24 @@ void ClusterWithTrackAna::Loop()
      hiCh = 465;
    }
    if(m_board2=="M1" && runplace == "FanUp") {
-     lowCh = 161;
-     hiCh = 181;
+     lowCh = 188;//lowCh = 161;
+     hiCh = 206; //hiCh = 181;
    }
    if(m_board2=="M3" && runplace == "FanIn") {
-     lowCh = 412;
-     hiCh = 432;
+     lowCh = 434;//lowCh = 412;
+     hiCh = 464;//hiCh = 432;
    }
    if(m_board2=="M3" && runplace == "FanUp") {
-     lowCh = 163;
-     hiCh = 183;
+     lowCh = 190;//lowCh = 163;
+     hiCh = 210;//hiCh = 183;
    }
    if(m_board2=="M4" && runplace == "FanIn") {
-     lowCh = 431;
-     hiCh = 451;
+     lowCh = 443;//lowCh = 431;
+     hiCh = 464;//hiCh = 451;
    }
-   if(m_board2=="M4" && runplace == "FanUp") {
-     lowCh = 164;
-     hiCh = 184;
+   if(m_board2=="M4" && runplace == "FanUp") {///??????????????????????????????????????????//
+     lowCh = 180;//lowCh = 164;
+     hiCh = 210;//hiCh = 184;
    }
 
    //   gStyle->SetOptStat(0);
@@ -1341,7 +1341,7 @@ void ClusterWithTrackAna::Loop()
    addGraphics(hAlpha,"Channel (seed)", "Channel","SNR","SNR_{i} / SNR_{seed}");
    hAlpha->GetXaxis()->SetRangeUser(lowCh,hiCh);
    hAlpha->GetYaxis()->SetRangeUser(lowCh,hiCh);
-   hAlpha->GetZaxis()->SetRangeUser(0,0.2);
+   hAlpha->GetZaxis()->SetRangeUser(0,.3);
    hAlpha->Draw("colz");
    savePlots(c_alpha,"Alpha");
    
@@ -1358,7 +1358,7 @@ void ClusterWithTrackAna::Loop()
    TCanvas *c_asym = addCanvas("c_asym");
    addGraphics(hAsym, "Channel","Asymmetry","Counts");
    hAsym->GetXaxis()->SetRangeUser(lowCh,hiCh);
-   hAsym->GetZaxis()->SetRangeUser(0,160);
+  // hAsym->GetZaxis()->SetRangeUser(0,160);
    hAsym->Draw("colz");
    savePlots(c_asym,"Asym_strip");
    
@@ -1505,7 +1505,7 @@ void ClusterWithTrackAna::Loop()
    //addGraphics(h4a, 2, "Strip # with cluster", "");
    h311a->GetXaxis()->SetRangeUser(-5,5);
    h311a->GetYaxis()->SetRangeUser(-6,6);
-   h311a->GetZaxis()->SetRangeUser(0,1);
+   h311a->GetZaxis()->SetRangeUser(0.9,1);
    h311a->Draw("colz");
    //  if(holeQuadPar[0]!=0) funchole->Draw("same");
    //if(fabs(xLeftHole)<900 && fabs(xRightHole)<900){
