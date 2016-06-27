@@ -1337,6 +1337,30 @@ void ClusterWithTrackAna::Loop()
    hSNRperStrip->GetXaxis()->SetRangeUser(lowCh,hiCh);
    hSNRperStrip->Draw("colz");
    savePlots(c_SNRperStrip,"SNR_per_Strip");
+
+   
+   vector <Double_t>  MPVpCh;
+   vector <Double_t>  MPVpChErr;
+   vector <Double_t>  channelNMPV;
+   TCanvas *c_SNR_MPVperStrip = addCanvas("c_SNR_MPVperStrip");
+   RetVal MPV_perStrip;
+   for(Int_t iStr=lowCh;iStr<hiCh;iStr++)
+   {
+     TH1D *hSNR_MPV_strip = new TH1D("SNR_MPV_perStr","SNR_MPV_perStr",50,0,100.);
+     for(Int_t j=0;j<hSNR_MPV_strip->GetNbinsX();j++)
+     {
+       hSNR_MPV_strip->SetBinContent(j+1,hSNRperStrip->GetBinContent(iStr+1,j+1));       
+     }
+     MPV_perStrip = lFit(hSNR_MPV_strip,1);
+     MPVpCh.push_back(MPV_perStrip.MPV);
+     MPVpChErr.push_back(MPV_perStrip.width);
+     channelNMPV.push_back(iStr);
+     hSNR_MPV_strip->Delete();
+   }
+   TGraphErrors *gMPVstrip = new TGraphErrors(channelNMPV.size(), &channelNMPV[0],&MPVpCh[0],0,&MPVpChErr[0]);
+   addGraphics(gMPVstrip,"Channel","SNR_{MPV}","SNR per Strip");
+   gMPVstrip->Draw("AP");
+   savePlots(c_SNR_MPVperStrip,"SNR_MPV_perStrip");
    
    TCanvas *c_ClusterSize_perStrip = addCanvas("c_ClusterSize_perStrip");
    addGraphics(hClusterStrip,"channel","Cluster Size","Cluster Size");
@@ -1367,9 +1391,8 @@ void ClusterWithTrackAna::Loop()
    hAsym->GetZaxis()->SetRangeUser(0,160);
    hAsym->Draw("colz");
    savePlots(c_asym,"Asym_strip");
-   RetVal averageAsymmperCh;
    
-   addGraphics(hAsym_av, "Channel","Asymmetry,mm","Charge asymmetry");
+   RetVal averageAsymmperCh;
    vector <Double_t>  averageAsym;
    vector <Double_t>  averageAsymAbs;
    vector <Double_t>  averageAsymEr;
