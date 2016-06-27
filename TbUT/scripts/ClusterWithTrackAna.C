@@ -90,7 +90,7 @@ RetVal PrintLandau(TH1D* h,double Center,int MinAdc,int MaxAdc,TString string,bo
 
 RetVal lFit(TH1D* h,bool MPVreturn = 0,float left=0.45,float right=4.0,TString string = "SNR"){
       Int_t max = 0, maxBin = 0;
-      for(Int_t i = 50 ;i<h->GetNbinsX();i++)
+      for(Int_t i = h->GetNbinsX()/10.;i<h->GetNbinsX();i++)
 	{
 	 if(h->GetBinContent(i+1)>max)
 	 {
@@ -1327,9 +1327,20 @@ void ClusterWithTrackAna::Loop()
    hClusterStrip->Draw("colz");
    savePlots(c_ClusterSize_perStrip,"ClusterSize_per_Strip");
       
+   // loop to normalize
+  Double_t maxS=0;
+  for (int i=0;i<512;i++){
+    maxS=hAlpha->GetBinContent(i,i);
+    for(int j=0;j<512;j++){
+      if(hAlpha->GetBinContent(i,j)==0) continue;
+      hAlpha->SetBinContent(i,j,hAlpha->GetBinContent(i,j)/maxS);
+    }
+   }
    
    TCanvas *c_alpha = addCanvas("c_alpha");
    addGraphics(hAlpha,"Channel (seed)", "Channel","SNR","SNR_{i} / SNR_{seed}");
+   hAlpha->GetXaxis()->SetRangeUser(lowCh,hiCh);
+   hAlpha->GetYaxis()->SetRangeUser(lowCh,hiCh);
    hAlpha->GetZaxis()->SetRangeUser(0,0.2);
    hAlpha->Draw("colz");
    savePlots(c_alpha,"Alpha");
@@ -2445,7 +2456,6 @@ void ClusterWithTrackAna::Loop()
    c_strip->cd(2);
   // addGraphics(hADCperStrip, 1 ,"channel","ADC");
    hADCperStrip->GetXaxis()->SetRangeUser(lowCh,hiCh);
-   hADCperStrip->GetZaxis()->SetRangeUser(0.9,1);
    hADCperStrip->Draw("colz");
 
    c_strip->cd(3);
@@ -2466,7 +2476,7 @@ void ClusterWithTrackAna::Loop()
    c_strip->cd(6);
 
 // loop to normalize
-  Double_t maxS=0;
+/*  Double_t maxS=0;
   for (int i=0;i<512;i++){
     maxS=hAlpha->GetBinContent(i,i);
     for(int j=0;j<512;j++){
@@ -2478,7 +2488,7 @@ void ClusterWithTrackAna::Loop()
    addGraphics(hAlpha,"Channel (seed)", "Channel","SNR","SNR_{i} / SNR_{seed}");
    hAlpha->GetXaxis()->SetRangeUser(lowCh,hiCh);
    hAlpha->GetYaxis()->SetRangeUser(lowCh,hiCh);
-   hAlpha->Draw("colz");
+  */ hAlpha->Draw("colz");
 
    c_strip->Print("Plots/StripPlot_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
    c_strip->Print("Plots/StripPlot_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");   
