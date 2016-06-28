@@ -511,6 +511,7 @@ void addGraphics(TGraphErrors *h, TString XTitle, TString YTitle, TString Title=
 
 TCanvas* addCanvas(TString canvasTitle, Int_t xSize=800, Int_t ySize=800,Double_t rMargin=0.17,Double_t lMargin=0.12)
 {
+
    TCanvas *tempCanvas = new TCanvas(canvasTitle, "",xSize,ySize);
    tempCanvas->SetRightMargin(rMargin);
    tempCanvas->SetLeftMargin(lMargin);
@@ -520,10 +521,11 @@ TCanvas* addCanvas(TString canvasTitle, Int_t xSize=800, Int_t ySize=800,Double_
 
 void savePlots(TCanvas* saveCanvas, TString nameFile)
 {
+    if (nameFile=="Signal_MPV_perStrip"||nameFile=="SNR_MPV_perStrip"){
    saveCanvas->Print("Plots/"+nameFile+"_" + m_board + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
    saveCanvas->Print("Plots/"+nameFile+"_" + m_board + "_" + runplace + "_" + consR +"_"+m_runNumb+".pdf");
    saveCanvas->Print("Plots/"+nameFile+"_" + m_board + "_" + runplace + "_" + consR +"_"+m_runNumb+".root"); 
-   saveCanvas->Print("Plots/"+nameFile+"_" + m_board + "_" + runplace + "_" + consR +"_"+m_runNumb+".C"); 
+   saveCanvas->Print("Plots/"+nameFile+"_" + m_board + "_" + runplace + "_" + consR +"_"+m_runNumb+".C"); }
 }
 
 void ClusterWithTrackAna::Loop()
@@ -1319,8 +1321,8 @@ void ClusterWithTrackAna::Loop()
    RetVal SignalMPV_perStr;
    for(Int_t iStr=lowCh;iStr<hiCh;iStr++)
    {
-     TH1D *hSNR_MPV_strip = new TH1D("SNR_MPV_perStr","SNR_MPV_perStr",500,0,1000.);
-     TH1D *hSignal_MPV_strip = new TH1D("Signal_MPV_perStr","SNR_Signal_perStr",50,0,100.);
+     TH1D *hSNR_MPV_strip = new TH1D("SNR_MPV_perStr","SNR_MPV_perStr",50,0,100.);
+     TH1D *hSignal_MPV_strip = new TH1D("Signal_MPV_perStr","SNR_Signal_perStr",500,0,1000.);
      for(Int_t j=0;j<hSNR_MPV_strip->GetNbinsX();j++)
      {
        hSNR_MPV_strip->SetBinContent(j+1,hSNRperStrip->GetBinContent(iStr+1,j+1));       
@@ -2566,7 +2568,7 @@ void ClusterWithTrackAna::Loop()
    c_strip->Print("Plots/StripPlot_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");   
    
     
-   TCanvas *c_snr_2D = addCanvas("c_snr_2D");
+ /*  TCanvas *c_snr_2D = addCanvas("c_snr_2D");
    addGraphics(hSNR2D, "X_{trk}, mm","Y_{trk}, mm", "SNR", "SNR");
    hSNR->GetZaxis()->SetRangeUser(0,100);
    hSNR2D->GetZaxis()->SetRangeUser(0,35);
@@ -2587,7 +2589,7 @@ void ClusterWithTrackAna::Loop()
    savePlots(c_snr_2D,"SNR_2D");
 
     
-
+*/
 
     fout->Write();
 
