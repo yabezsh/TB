@@ -1259,7 +1259,7 @@ void ClusterWithTrackAna::Loop()
    // Get region around beam for given boards (hard coded)
    double lowCh = 0;
    double hiCh = 512;
-   if(m_board2=="M1" && runplace == "FanIn") {
+  /* if(m_board2=="M1" && runplace == "FanIn") {
      lowCh = 445;
      hiCh = 465;
    }
@@ -1283,7 +1283,7 @@ void ClusterWithTrackAna::Loop()
      lowCh = 180;//lowCh = 164;
      hiCh = 210;//hiCh = 184;
    }
-
+*/
  /*  if(m_board2=="F1" && runplace == "FanUp") {///??????????????????????????????????????????//
      lowCh = 125;
      hiCh = 220;
@@ -1297,43 +1297,71 @@ void ClusterWithTrackAna::Loop()
 
    TCanvas *c_ADCperStrip = addCanvas("c_ADCperStrip");
    addGraphics(hADCperStrip,"channel","ADC","Counts","ADC");
-   //hADCperStrip->GetXaxis()->SetRangeUser(lowCh,hiCh);
+   hADCperStrip->GetXaxis()->SetRangeUser(hADCperStrip->FindFirstBinAbove()-10,hADCperStrip->FindLastBinAbove()+10);
    hADCperStrip->Draw("colz");
    savePlots(c_ADCperStrip,"ADC_per_Strip");
    
    TCanvas *c_SNRperStrip = addCanvas("c_SNRperStrip");
    addGraphics(hSNRperStrip,"channel","SNR","Counts","SNR");
-   hSNRperStrip->GetXaxis()->SetRangeUser(lowCh,hiCh);
+   hSNRperStrip->GetXaxis()->SetRangeUser(hSNRperStrip->FindFirstBinAbove()-10,hSNRperStrip->FindLastBinAbove()+10);
    hSNRperStrip->Draw("colz");
    savePlots(c_SNRperStrip,"SNR_per_Strip");
 
+
+   vector <Double_t>  SignalMPVpCh;
+   vector <Double_t>  SignalMPVpChErr;
    
    vector <Double_t>  MPVpCh;
    vector <Double_t>  MPVpChErr;
    vector <Double_t>  channelNMPV;
    TCanvas *c_SNR_MPVperStrip = addCanvas("c_SNR_MPVperStrip");
    RetVal MPV_perStrip;
+   RetVal SignalMPV_perStr;
    for(Int_t iStr=lowCh;iStr<hiCh;iStr++)
    {
-     TH1D *hSNR_MPV_strip = new TH1D("SNR_MPV_perStr","SNR_MPV_perStr",50,0,100.);
+     TH1D *hSNR_MPV_strip = new TH1D("SNR_MPV_perStr","SNR_MPV_perStr",500,0,1000.);
+     TH1D *hSignal_MPV_strip = new TH1D("Signal_MPV_perStr","SNR_Signal_perStr",50,0,100.);
      for(Int_t j=0;j<hSNR_MPV_strip->GetNbinsX();j++)
      {
        hSNR_MPV_strip->SetBinContent(j+1,hSNRperStrip->GetBinContent(iStr+1,j+1));       
      }
+     
+     for(Int_t j=0;j<hSignal_MPV_strip->GetNbinsX();j++)
+     {
+       hSignal_MPV_strip->SetBinContent(j+1,hADCperStrip->GetBinContent(iStr+1,j+1));
+     }
+
+     
+     
      MPV_perStrip = lFit(hSNR_MPV_strip,1);
+     SignalMPV_perStr = lFit(hSignal_MPV_strip,1);
+     if(MPV_perStrip.MPV>0){
      MPVpCh.push_back(MPV_perStrip.MPV);
-     MPVpChErr.push_back(MPV_perStrip.width);
-     channelNMPV.push_back(iStr);
+     MPVpChErr.push_back(MPV_perStrip.width);}
+     if(SignalMPV_perStr.MPV>0){
+       channelNMPV.push_back(iStr);
+     SignalMPVpCh.push_back(SignalMPV_perStr.MPV);
+     SignalMPVpChErr.push_back(SignalMPV_perStr.width);}
+     
+    // channelNMPV.push_back(iStr);
      hSNR_MPV_strip->Delete();
+     hSignal_MPV_strip->Delete();
    }
    TGraphErrors *gMPVstrip = new TGraphErrors(channelNMPV.size(), &channelNMPV[0],&MPVpCh[0],0,&MPVpChErr[0]);
    addGraphics(gMPVstrip,"Channel","SNR_{MPV}","SNR per Strip");
    gMPVstrip->Draw("AP");
+   
+   TCanvas *c_signal_MPVperStrip = addCanvas("c_signal_MPVperStrip");
+   TGraphErrors *gSigMPVstrip = new TGraphErrors(channelNMPV.size(), &channelNMPV[0],&SignalMPVpCh[0],0,&SignalMPVpChErr[0]);
+   addGraphics(gSigMPVstrip,"Channel","Signal_{MPV}","MPV of signal per Strip");
+   gSigMPVstrip->Draw("AP");
+   
+   savePlots(c_signal_MPVperStrip,"Signal_MPV_perStrip");
    savePlots(c_SNR_MPVperStrip,"SNR_MPV_perStrip");
    
    TCanvas *c_ClusterSize_perStrip = addCanvas("c_ClusterSize_perStrip");
    addGraphics(hClusterStrip,"channel","Cluster Size","Cluster Size");
-   hClusterStrip->GetXaxis()->SetRangeUser(lowCh,hiCh);
+   hClusterStrip->GetXaxis()->SetRangeUser(hClusterStrip->FindFirstBinAbove()-10,hClusterStrip->FindLastBinAbove()+10);
    hClusterStrip->Draw("colz");
    savePlots(c_ClusterSize_perStrip,"ClusterSize_per_Strip");
       
@@ -1349,8 +1377,8 @@ void ClusterWithTrackAna::Loop()
    
    TCanvas *c_alpha = addCanvas("c_alpha");
    addGraphics(hAlpha,"Channel_{seed}", "Channel_{i}","SNR_{i} / SNR_{seed}","SNR_{i} / SNR_{seed}");
-   hAlpha->GetXaxis()->SetRangeUser(lowCh,hiCh);
-   hAlpha->GetYaxis()->SetRangeUser(lowCh,hiCh);
+   hAlpha->GetXaxis()->SetRangeUser(hAlpha->FindFirstBinAbove()-10,hAlpha->FindLastBinAbove()+10);
+   hAlpha->GetYaxis()->SetRangeUser(hAlpha->FindFirstBinAbove(0,2)-10,hAlpha->FindLastBinAbove(0,2)+10);
    hAlpha->GetZaxis()->SetRangeUser(0,.3);
    hAlpha->Draw("colz");
    savePlots(c_alpha,"Alpha");
@@ -1361,13 +1389,13 @@ void ClusterWithTrackAna::Loop()
    //c_eta->Divide(3);
    TCanvas *c_eta_strip = addCanvas("c_eta_strip");
    addGraphics(hEta, "Channel","#eta","Counts","#eta vs. strip");
-   hEta->GetXaxis()->SetRangeUser(lowCh,hiCh);
+   hEta->GetXaxis()->SetRangeUser(hEta->FindFirstBinAbove()-10,hEta->FindLastBinAbove()+10);
    hEta->Draw("colz");
    savePlots(c_eta_strip,"Eta_strip");
   
    TCanvas *c_asym = addCanvas("c_asym");
    addGraphics(hAsym, "Channel","Asymmetry","Counts");
-   hAsym->GetXaxis()->SetRangeUser(lowCh,hiCh);
+   hAsym->GetXaxis()->SetRangeUser(hAsym->FindFirstBinAbove()-10,hAsym->FindLastBinAbove()+10);
    hAsym->GetZaxis()->SetRangeUser(0,200);
    hAsym->Draw("colz");
    savePlots(c_asym,"Asym_strip");
@@ -1378,23 +1406,27 @@ void ClusterWithTrackAna::Loop()
    vector <Double_t>  averageAsymEr;
    vector <Double_t>  averageAsymAbsEr;
    vector <Double_t>  channelN;
-   for(Int_t iStr=lowCh;iStr<hiCh;iStr++)
+   for(Int_t iStr=hAsym->FindFirstBinAbove();iStr<hAsym->FindLastBinAbove()+1;iStr++)
    { 
      TH1F *hAsymStr = new TH1F("asymPerStrip","asymPerStrip",200,-1.,1.);
      TH1F *hAsymStrAbs = new TH1F("asymPerStripAbs","asymPerStripAbs",200,-1.,1.);    
      for(Int_t j=0;j<hAsymStr->GetNbinsX();j++)
      {
-       hAsymStr->SetBinContent(j+1, hAsym->GetBinContent(iStr+1,j+1));  
-       if(j<101){hAsymStrAbs->SetBinContent(j+101, hAsym->GetBinContent(iStr+1,j+1));}
-       else{hAsymStrAbs->SetBinContent(j+1, hAsym->GetBinContent(iStr+1,j+1));}
+       hAsymStr->SetBinContent(j, hAsym->GetBinContent(iStr,j+1));  
+       if(j<100){hAsymStrAbs->SetBinContent(j+100, hAsym->GetBinContent(iStr,j+1));}
+       else{hAsymStrAbs->SetBinContent(j+1, hAsym->GetBinContent(iStr,j+1));}
      }
+     
      channelN.push_back(iStr);
      averageAsym.push_back(hAsymStr->GetMean());
      averageAsymEr.push_back(hAsymStr->GetMeanError());
-     hAsymStr->Delete();
      
      averageAsymAbs.push_back(hAsymStrAbs->GetMean());
      averageAsymAbsEr.push_back(hAsymStrAbs->GetMeanError());
+     
+     hAsymStr->Delete();
+     
+
      hAsymStrAbs->Delete();
    }
    TCanvas *c_asym_av = addCanvas("c_asym_av");
@@ -2534,7 +2566,26 @@ void ClusterWithTrackAna::Loop()
    c_strip->Print("Plots/StripPlot_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");   
    
     
-    
+   TCanvas *c_snr_2D = addCanvas("c_snr_2D");
+   addGraphics(hSNR2D, "X_{trk}, mm","Y_{trk}, mm", "SNR", "SNR");
+   hSNR->GetZaxis()->SetRangeUser(0,100);
+   hSNR2D->GetZaxis()->SetRangeUser(0,35);
+   RetVal value;
+   for(int i=0; i< hSNR->GetNbinsX(); i++) {
+     
+     for(int j=0; j<hSNR->GetNbinsY(); j++) {
+       
+       if(((i)*(j))%500==1) cout << "gone through " << i*j << " bins" << endl;
+       value = lFit(hSNR->ProjectionZ("testH",i,i,j,j),1);
+       
+       hSNR2D->SetBinContent(j+1,i+1,value.MPV);
+       hSNR2D->SetBinError(j+1,i+1,value.width);
+     }
+     
+   }
+   hSNR2D->Draw("colz");
+   savePlots(c_snr_2D,"SNR_2D");
+
     
 
 
