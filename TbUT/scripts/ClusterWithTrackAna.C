@@ -429,7 +429,7 @@ void addGraphics(TH2 *h, int iCol = 1, TString XTitle="", TString YTitle="")
 
 void addGraphics(TH1 *h, TString XTitle, TString YTitle, TString Title="",int iCol = 1)
 {
-    if (Title!=""){h->SetTitle(Title);}
+    if (Title!=""){h->SetTitle(Title+": "+ m_board + "," + runplace);}
     h->SetXTitle(XTitle);
     h->SetYTitle(YTitle);
     h->SetStats(kFALSE);
@@ -457,7 +457,7 @@ void addGraphics(TH1 *h, TString XTitle, TString YTitle, TString Title="",int iC
 void addGraphics(TH2 *h, TString XTitle, TString YTitle, TString ZTitle, TString Title="",int iCol = 1)
 {
     //float bw = h->GetBinWidth(1);
-    if (Title!=""){h->SetTitle(Title);}
+    if (Title!=""){h->SetTitle(Title+": "+ m_board + "," + runplace);}
     h->SetXTitle(XTitle);
     h->SetYTitle(YTitle);
     h->SetZTitle(ZTitle);
@@ -487,7 +487,7 @@ void addGraphics(TH2 *h, TString XTitle, TString YTitle, TString ZTitle, TString
 
 void addGraphics(TGraphErrors *h, TString XTitle, TString YTitle, TString Title="",int iCol = 1)
 {
-    if (Title!=""){h->SetTitle(Title);}
+    if (Title!=""){h->SetTitle(Title+": "+ m_board + "," + runplace);}
     h->GetXaxis()->SetTitle(XTitle);
     h->GetYaxis()->SetTitle(YTitle);
     h->SetLineColor(iCol);
@@ -523,6 +523,7 @@ void savePlots(TCanvas* saveCanvas, TString nameFile)
    saveCanvas->Print("Plots/"+nameFile+"_" + m_board + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
    saveCanvas->Print("Plots/"+nameFile+"_" + m_board + "_" + runplace + "_" + consR +"_"+m_runNumb+".pdf");
    saveCanvas->Print("Plots/"+nameFile+"_" + m_board + "_" + runplace + "_" + consR +"_"+m_runNumb+".root"); 
+   saveCanvas->Print("Plots/"+nameFile+"_" + m_board + "_" + runplace + "_" + consR +"_"+m_runNumb+".C"); 
 }
 
 void ClusterWithTrackAna::Loop()
@@ -834,7 +835,7 @@ void ClusterWithTrackAna::Loop()
    if(writeEventsWithMissinhHitsToFile){
      myfile.open("MissingDUTHits.dat");
    }
-
+  
    int iChan = nChan;
    double nomStrip = 0, detStrip = 0;
    int nPrint = 0;
@@ -1283,11 +1284,20 @@ void ClusterWithTrackAna::Loop()
      hiCh = 210;//hiCh = 184;
    }
 
-   //   gStyle->SetOptStat(0);
+ /*  if(m_board2=="F1" && runplace == "FanUp") {///??????????????????????????????????????????//
+     lowCh = 125;
+     hiCh = 220;
+   }
+   
+   if(m_board2=="F3" && runplace == "FanUp") {///??????????????????????????????????????????//
+     lowCh = 140;//lowCh = 164;
+     hiCh = 485;//hiCh = 184;
+   }
+   *///   gStyle->SetOptStat(0);
 
    TCanvas *c_ADCperStrip = addCanvas("c_ADCperStrip");
    addGraphics(hADCperStrip,"channel","ADC","Counts","ADC");
-   hADCperStrip->GetXaxis()->SetRangeUser(lowCh,hiCh);
+   //hADCperStrip->GetXaxis()->SetRangeUser(lowCh,hiCh);
    hADCperStrip->Draw("colz");
    savePlots(c_ADCperStrip,"ADC_per_Strip");
    
@@ -1338,7 +1348,7 @@ void ClusterWithTrackAna::Loop()
    }
    
    TCanvas *c_alpha = addCanvas("c_alpha");
-   addGraphics(hAlpha,"Channel (seed)", "Channel","SNR","SNR_{i} / SNR_{seed}");
+   addGraphics(hAlpha,"Channel_{seed}", "Channel_{i}","SNR_{i} / SNR_{seed}","SNR_{i} / SNR_{seed}");
    hAlpha->GetXaxis()->SetRangeUser(lowCh,hiCh);
    hAlpha->GetYaxis()->SetRangeUser(lowCh,hiCh);
    hAlpha->GetZaxis()->SetRangeUser(0,.3);
@@ -1358,7 +1368,7 @@ void ClusterWithTrackAna::Loop()
    TCanvas *c_asym = addCanvas("c_asym");
    addGraphics(hAsym, "Channel","Asymmetry","Counts");
    hAsym->GetXaxis()->SetRangeUser(lowCh,hiCh);
-  // hAsym->GetZaxis()->SetRangeUser(0,160);
+   hAsym->GetZaxis()->SetRangeUser(0,200);
    hAsym->Draw("colz");
    savePlots(c_asym,"Asym_strip");
    
@@ -1417,7 +1427,37 @@ void ClusterWithTrackAna::Loop()
    h311a->GetZaxis()->SetRangeUser(0.9,1);
    h311a->Draw("colz");
    savePlots(c_eff_2D,"Eff_2D");
-  
+   
+   TCanvas *c_Tracks_2D = addCanvas("c_Tracks_2D");
+   addGraphics(h311b, "X_{trk}, mm","Y_{trk}, mm","","Tracks");
+   h311b->Draw("colz");
+   savePlots(c_Tracks_2D,"Tracks_2D");
+   
+ ///////-------------------------if need to understand efficiency 
+/*   TCanvas *cEffDistrP = new TCanvas("ProfileEffDistr", "",600,600);
+   cEffDistrP->Divide(3,5);
+   for(Int_t iX=40;iX<55;iX++){
+    cEffDistrP->cd(iX-39);
+    TH1F* effProfY= new TH1F("effProfY","effProfY",100,-5,5);
+    TH1F* NTrackY= new TH1F("NTrackY","NTrackY",100,-5,5);
+    for(Int_t i=0;i<effProfY->GetNbinsX();i++)
+    {
+      effProfY->SetBinContent(i+1,h311a->GetBinContent(iX,i+1));
+      NTrackY->SetBinContent(i+1,h311b->GetBinContent(iX,i+1));
+    }
+    effProfY->SetFillColor(3);
+    effProfY->Draw();
+    //cEffDistrP->cd(2);
+    //NTrackY->Draw();
+    NTrackY->Scale(1./(NTrackY->GetBinContent(NTrackY->GetMaximumBin())));
+    //cEffDistrP->cd(3);
+    NTrackY->SetLineColor(2);
+    NTrackY->SetLineWidth(2);
+    NTrackY->Draw("same");
+   }
+   savePlots(cEffDistrP,"EffDistrP");
+ *///----------------------------------------------------------- 
+   
    TCanvas *c_eff_X = addCanvas("c_eff_X");
    TH1F *hex = (TH1F*)h12dn->Clone("hex");
    hex->SetName("hex");
@@ -1426,9 +1466,9 @@ void ClusterWithTrackAna::Loop()
    TString yt = Form("#Good DUT hit / #Track ",bw);
    addGraphics(hex, "X_{trk}, mm", yt,"DUT Efficiency vs. X_{trk}");
    hex->GetXaxis()->SetRangeUser(xMin-0.5,xMax+0.5);
-   hex->GetYaxis()->SetRangeUser(0.9,1.1);
-   hex->SetMinimum(0.8);
-   hex->SetMaximum(1.1);
+   hex->GetYaxis()->SetRangeUser(0.95,1.02);
+   hex->SetMinimum(0.95);
+   hex->SetMaximum(1.02);
    hex->Draw("e");
    savePlots(c_eff_X,"Eff_X");
   
@@ -1441,14 +1481,14 @@ void ClusterWithTrackAna::Loop()
    yt = Form("#Good DUT hit / #Track" ,bw);
    addGraphics(hey, "Y_{trk}, mm", yt,"DUT Efficiency vs. Y_{trk}");
    hey->GetXaxis()->SetRangeUser(yMin-0.5,yMax+0.5);
-   hey->GetYaxis()->SetRangeUser(0.9,1.1);
-   hey->SetMinimum(0.8);
-   hey->SetMaximum(1.1);
+   hey->GetYaxis()->SetRangeUser(0.95,1.02);
+   hey->SetMinimum(0.95);
+   hey->SetMaximum(1.02);
    hey->Draw("e");
    savePlots(c_eff_Y,"Eff_Y"); 
    
 
-/*   TCanvas *c_snr_2D = addCanvas("c_snr_2D");
+  /* TCanvas *c_snr_2D = addCanvas("c_snr_2D");
    addGraphics(hSNR2D, "X_{trk}, mm","Y_{trk}, mm", "SNR", "SNR");
    hSNR->GetZaxis()->SetRangeUser(0,100);
    hSNR2D->GetZaxis()->SetRangeUser(0,35);
