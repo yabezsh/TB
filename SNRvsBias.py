@@ -11,8 +11,8 @@ Description:
     - the number of 2-strip clusters
     - the fraction of 1-strip clusters
     - the fraction of 2-strip clusters
-    as a function of the bias voltage for a given board, a given pitch adapter region, and a given biasing scheme.
-    It opens the logbook and gets the subset corresponding to the desired bias voltage scan. After that, for each physics run, it reads the text file with SNR and corresponding uncertainty. Then, it creates a TGraph with the SNR as a function of the bias voltage.
+    as a function of the absolute value of the bias voltage for a given board, a given pitch adapter region, and a given biasing scheme.
+    It opens the logbook and gets the subset corresponding to the desired bias voltage scan. After that, for each physics run, it reads the text file with SNR and corresponding uncertainty. Then, it creates a TGraph with the SNR as a function of the absolute value of the bias voltage.
     The following arguments can/have to be provided:
     - board (str): the board one wants to analyse (M1, M3, or M4);
     - PA (str): the pitch adapter region one wants to analyse (FanIn or FanUp);
@@ -128,37 +128,43 @@ def SNRvsBias(board,PA,BS) :
         telescopeRun = int(row['Telescope run'])
         print telescopeRun
 
-        bias = int(row['Bias voltage (V)'])
+        bias = abs(int(row['Bias voltage (V)']))
         print bias
 
         if bias not in lbias :
+            print 'First run at this bias voltage.'
 
-            filename = pathToInput+'output_'+str(DUTRun)+'/MPV_'+board+'_'+PA+'_'+str(DUTRun)+'_'+str(telescopeRun)+'.txt'
+            filename = pathToInput+'output_'+str(DUTRun)+'/MPV_'+board+'_'+PA+'_'+str(DUTRun)+'_'+str(telescopeRun)+'_roofit.txt'
+            print filename
+
             if os.path.exists(filename) : 
                 with open(filename,'r') as text_file :
                     text_file.readline()
                     values = text_file.readline().replace('\n','')
-                    values_list = values.split(',')
+                    values_list = values.split(' ')
                     SNR = values_list[0]
                     SNRU = values_list[1]
                     # !!! Uncomment it when the new jobs are done.
-                    # width = values_list[2]
-                    # widthU = values_list[3]
+                    width = values_list[2]
+                    widthU = values_list[3]
                     # !!! Until here.
                     # !!! Comment it when the new jobs are done.
-                    width = 0.
-                    widthU = 0.
+                    # width = 0.
+                    # widthU = 0.
                     # !!! Until here.
                     # print values
                     # print values_list
-                    print 'SNR:', SNR
-                    print 'SNR uncertainty:', SNRU
-                    print 'Width:', width
-                    print 'Width uncertainty:', widthU
-                    lSNR.append(SNR)
-                    lSNRU.append(SNRU)
-                    lwidth.append(width)
-                    lwidthU.append(widthU)
+                    if float(SNR) > 0. :
+                        print 'SNR:', SNR
+                        print 'SNR uncertainty:', SNRU
+                        print 'Width:', width
+                        print 'Width uncertainty:', widthU
+                        lSNR.append(SNR)
+                        lSNRU.append(SNRU)
+                        lwidth.append(width)
+                        lwidthU.append(widthU)
+                    else :
+                        print 'ERROR! Found run for which the SNR is negative.'
                     text_file.closed
 
                 filename = pathToInput+'output_'+str(DUTRun)+'/Plots/AnalysisOutput_'+board+'_'+PA+'_'+str(DUTRun)+'_'+str(telescopeRun)+'.root'
@@ -185,7 +191,8 @@ def SNRvsBias(board,PA,BS) :
                 else :
                     lf2StripCluster.append(twoStripCluster/entries)
             
-            lbias.append(bias)
+                if float(SNR) > 0. :
+                    lbias.append(bias)
 
     print lSNR
     print lSNRU
@@ -229,80 +236,82 @@ def SNRvsBias(board,PA,BS) :
     outFileROOT = ROOT.TFile(pathToOutput+funName+'_'+board+'_'+PA+'_'+BS+'.root','RECREATE')
     outFileROOT.cd()
 
-    aSNR = np.asarray(lSNR,dtype=float) 
-    aSNRU = np.asarray(lSNRU,dtype=float)
+    if len(lbias) > 0 :
 
-    awidth = np.asarray(lwidth,dtype=float) 
-    awidthU = np.asarray(lwidthU,dtype=float)
+        aSNR = np.asarray(lSNR,dtype=float) 
+        aSNRU = np.asarray(lSNRU,dtype=float)
 
-    a1StripCluster = np.asarray(l1StripCluster,dtype=float)
-    a2StripCluster = np.asarray(l2StripCluster,dtype=float)
+        awidth = np.asarray(lwidth,dtype=float) 
+        awidthU = np.asarray(lwidthU,dtype=float)
 
-    af1StripCluster = np.asarray(lf1StripCluster,dtype=float)
-    af2StripCluster = np.asarray(lf2StripCluster,dtype=float)
+        a1StripCluster = np.asarray(l1StripCluster,dtype=float)
+        a2StripCluster = np.asarray(l2StripCluster,dtype=float)
 
-    abias = np.asarray(lbias,dtype=float)
-    abiasU = np.zeros(len(aSNR),dtype=float)
+        af1StripCluster = np.asarray(lf1StripCluster,dtype=float)
+        af2StripCluster = np.asarray(lf2StripCluster,dtype=float)
 
-    cSNRvsBias = ROOT.TCanvas('cSNRvsBias'+'_'+board+'_'+PA+'_'+BS,'cSNRvsBias'+'_'+board+'_'+PA+'_'+BS,800,600)
-    gSNRvsBias = ROOT.TGraphErrors(len(aSNR),abias,aSNR,abiasU,aSNRU)
-    InitGraph(gSNRvsBias,'SNR vs bias voltage','Bias voltage (V)','SNR')
-    SetStyleObj(obj=gSNRvsBias,lineColor=ROOT.kRed)
-    gSNRvsBias.SetMinimum(0.)
-    gSNRvsBias.SetMaximum(30.)
-    gSNRvsBias.GetXaxis().SetLimits(0.,500.)
-    DrawObj(cSNRvsBias,gSNRvsBias,None,'AP',pathToFigures)
-    gSNRvsBias.SetName('gSNRvsBias'+'_'+board+'_'+PA+'_'+BS)
-    gSNRvsBias.Write()
+        abias = np.asarray(lbias,dtype=float)
+        abiasU = np.zeros(len(aSNR),dtype=float)
 
-    cwidthvsBias = ROOT.TCanvas('cwidthvsBias'+'_'+board+'_'+PA+'_'+BS,'cwidthvsBias'+'_'+board+'_'+PA+'_'+BS,800,600)
-    gwidthvsBias = ROOT.TGraphErrors(len(awidth),abias,awidth,abiasU,awidthU)
-    InitGraph(gwidthvsBias,'Width of Landau distribution vs bias voltage','Bias voltage (V)','Width of Landau distribution')
-    SetStyleObj(obj=gwidthvsBias,lineColor=ROOT.kRed)
-    gwidthvsBias.SetMinimum(0.)
-    gwidthvsBias.SetMaximum(30.)
-    gwidthvsBias.GetXaxis().SetLimits(0.,500.)
-    DrawObj(cwidthvsBias,gwidthvsBias,None,'AP',pathToFigures)
-    gwidthvsBias.SetName('gwidthvsBias'+'_'+board+'_'+PA+'_'+BS)
-    gwidthvsBias.Write()
+        cSNRvsBias = ROOT.TCanvas('cSNRvsBias'+'_'+board+'_'+PA+'_'+BS,'cSNRvsBias'+'_'+board+'_'+PA+'_'+BS,800,600)
+        gSNRvsBias = ROOT.TGraphErrors(len(aSNR),abias,aSNR,abiasU,aSNRU)
+        InitGraph(gSNRvsBias,'SNR vs bias voltage','Bias voltage (V)','SNR')
+        SetStyleObj(obj=gSNRvsBias,lineColor=ROOT.kRed)
+        gSNRvsBias.SetMinimum(0.)
+        gSNRvsBias.SetMaximum(30.)
+        gSNRvsBias.GetXaxis().SetLimits(0.,500.)
+        DrawObj(cSNRvsBias,gSNRvsBias,None,'AP',pathToFigures)
+        gSNRvsBias.SetName('gSNRvsBias'+'_'+board+'_'+PA+'_'+BS)
+        gSNRvsBias.Write()
 
-    # Create a TGraph with the number of 1-strip clusters as a function of the bias voltage.
-    c1StripClustervsBias = ROOT.TCanvas('c1StripClustervsBias'+'_'+board+'_'+PA+'_'+BS,'c1StripClustervsBias'+'_'+board+'_'+PA+'_'+BS,800,600)
-    g1StripClustervsBias = ROOT.TGraph(len(a1StripCluster),abias,a1StripCluster)
-    InitGraph(g1StripClustervsBias,'Number of 1-strip clusters vs bias voltage','Bias voltage (V)','Number of 1-strip clusters')
-    SetStyleObj(obj=g1StripClustervsBias,lineColor=ROOT.kRed)
-    DrawObj(c1StripClustervsBias,g1StripClustervsBias,None,'AP',pathToFigures)
-    g1StripClustervsBias.SetName('g1StripClustervsBias'+'_'+board+'_'+PA+'_'+BS)
-    g1StripClustervsBias.Write()
+        cwidthvsBias = ROOT.TCanvas('cwidthvsBias'+'_'+board+'_'+PA+'_'+BS,'cwidthvsBias'+'_'+board+'_'+PA+'_'+BS,800,600)
+        gwidthvsBias = ROOT.TGraphErrors(len(awidth),abias,awidth,abiasU,awidthU)
+        InitGraph(gwidthvsBias,'Width of Landau distribution vs bias voltage','Bias voltage (V)','Width of Landau distribution')
+        SetStyleObj(obj=gwidthvsBias,lineColor=ROOT.kRed)
+        gwidthvsBias.SetMinimum(0.)
+        gwidthvsBias.SetMaximum(4.)
+        gwidthvsBias.GetXaxis().SetLimits(0.,500.)
+        DrawObj(cwidthvsBias,gwidthvsBias,None,'AP',pathToFigures)
+        gwidthvsBias.SetName('gwidthvsBias'+'_'+board+'_'+PA+'_'+BS)
+        gwidthvsBias.Write()
 
-    # Create a TGraph with the number of 2-strip clusters as a function of the bias voltage.
-    c2StripClustervsBias = ROOT.TCanvas('c2StripClustervsBias'+'_'+board+'_'+PA+'_'+BS,'c2StripClustervsBias'+'_'+board+'_'+PA+'_'+BS,800,600)
-    g2StripClustervsBias= ROOT.TGraph(len(a2StripCluster),abias,a2StripCluster)
-    InitGraph(g2StripClustervsBias,'Number of 2-strip clusters vs bias voltage','Bias voltage (V)','Number of 2-strip clusters')
-    SetStyleObj(obj=g2StripClustervsBias,lineColor=ROOT.kRed)
-    DrawObj(c2StripClustervsBias,g2StripClustervsBias,None,'AP',pathToFigures)
-    g2StripClustervsBias.SetName('g2StripClustervsBias'+'_'+board+'_'+PA+'_'+BS)
-    g2StripClustervsBias.Write()
+        # Create a TGraph with the number of 1-strip clusters as a function of the bias voltage.
+        c1StripClustervsBias = ROOT.TCanvas('c1StripClustervsBias'+'_'+board+'_'+PA+'_'+BS,'c1StripClustervsBias'+'_'+board+'_'+PA+'_'+BS,800,600)
+        g1StripClustervsBias = ROOT.TGraph(len(a1StripCluster),abias,a1StripCluster)
+        InitGraph(g1StripClustervsBias,'Number of 1-strip clusters vs bias voltage','Bias voltage (V)','Number of 1-strip clusters')
+        SetStyleObj(obj=g1StripClustervsBias,lineColor=ROOT.kRed)
+        DrawObj(c1StripClustervsBias,g1StripClustervsBias,None,'AP',pathToFigures)
+        g1StripClustervsBias.SetName('g1StripClustervsBias'+'_'+board+'_'+PA+'_'+BS)
+        g1StripClustervsBias.Write()
 
-    # Create a TGraph with the fraction of 1-strip clusters as a function of the bias voltage.
-    cf1StripClustervsBias = ROOT.TCanvas('cf1StripClustervsBias'+'_'+board+'_'+PA+'_'+BS,'cf1StripClustervsBias'+'_'+board+'_'+PA+'_'+BS,800,600)
-    gf1StripClustervsBias = ROOT.TGraph(len(af1StripCluster),abias,af1StripCluster)
-    InitGraph(gf1StripClustervsBias,'Fraction of 1-strip clusters vs bias voltage','Bias voltage (V)','Fraction of 1-strip clusters')
-    SetStyleObj(obj=gf1StripClustervsBias,lineColor=ROOT.kRed)
-    gf1StripClustervsBias.GetXaxis().SetLimits(0.,500.)
-    DrawObj(cf1StripClustervsBias,gf1StripClustervsBias,None,'AP',pathToFigures)
-    gf1StripClustervsBias.SetName('gf1StripClustervsBias'+'_'+board+'_'+PA+'_'+BS)
-    gf1StripClustervsBias.Write()
+        # Create a TGraph with the number of 2-strip clusters as a function of the bias voltage.
+        c2StripClustervsBias = ROOT.TCanvas('c2StripClustervsBias'+'_'+board+'_'+PA+'_'+BS,'c2StripClustervsBias'+'_'+board+'_'+PA+'_'+BS,800,600)
+        g2StripClustervsBias= ROOT.TGraph(len(a2StripCluster),abias,a2StripCluster)
+        InitGraph(g2StripClustervsBias,'Number of 2-strip clusters vs bias voltage','Bias voltage (V)','Number of 2-strip clusters')
+        SetStyleObj(obj=g2StripClustervsBias,lineColor=ROOT.kRed)
+        DrawObj(c2StripClustervsBias,g2StripClustervsBias,None,'AP',pathToFigures)
+        g2StripClustervsBias.SetName('g2StripClustervsBias'+'_'+board+'_'+PA+'_'+BS)
+        g2StripClustervsBias.Write()
 
-    # Create a TGraph with the fraction of 2-strip clusters as a function of the bias voltage.
-    cf2StripClustervsBias = ROOT.TCanvas('cf2StripClustervsBias'+'_'+board+'_'+PA+'_'+BS,'cf2StripClustervsBias'+'_'+board+'_'+PA+'_'+BS,800,600)
-    gf2StripClustervsBias = ROOT.TGraph(len(af2StripCluster),abias,af2StripCluster)
-    InitGraph(gf2StripClustervsBias,'Fraction of 2-strip clusters vs bias voltage','Bias voltage (V)','Fraction of 2-strip clusters')
-    SetStyleObj(obj=gf2StripClustervsBias,lineColor=ROOT.kRed)
-    gf2StripClustervsBias.GetXaxis().SetLimits(0.,500.)
-    DrawObj(cf2StripClustervsBias,gf2StripClustervsBias,None,'AP',pathToFigures)
-    gf2StripClustervsBias.SetName('gf2StripClustervsBias'+'_'+board+'_'+PA+'_'+BS)
-    gf2StripClustervsBias.Write()
+        # Create a TGraph with the fraction of 1-strip clusters as a function of the bias voltage.
+        cf1StripClustervsBias = ROOT.TCanvas('cf1StripClustervsBias'+'_'+board+'_'+PA+'_'+BS,'cf1StripClustervsBias'+'_'+board+'_'+PA+'_'+BS,800,600)
+        gf1StripClustervsBias = ROOT.TGraph(len(af1StripCluster),abias,af1StripCluster)
+        InitGraph(gf1StripClustervsBias,'Fraction of 1-strip clusters vs bias voltage','Bias voltage (V)','Fraction of 1-strip clusters')
+        SetStyleObj(obj=gf1StripClustervsBias,lineColor=ROOT.kRed)
+        gf1StripClustervsBias.GetXaxis().SetLimits(0.,500.)
+        DrawObj(cf1StripClustervsBias,gf1StripClustervsBias,None,'AP',pathToFigures)
+        gf1StripClustervsBias.SetName('gf1StripClustervsBias'+'_'+board+'_'+PA+'_'+BS)
+        gf1StripClustervsBias.Write()
+
+        # Create a TGraph with the fraction of 2-strip clusters as a function of the bias voltage.
+        cf2StripClustervsBias = ROOT.TCanvas('cf2StripClustervsBias'+'_'+board+'_'+PA+'_'+BS,'cf2StripClustervsBias'+'_'+board+'_'+PA+'_'+BS,800,600)
+        gf2StripClustervsBias = ROOT.TGraph(len(af2StripCluster),abias,af2StripCluster)
+        InitGraph(gf2StripClustervsBias,'Fraction of 2-strip clusters vs bias voltage','Bias voltage (V)','Fraction of 2-strip clusters')
+        SetStyleObj(obj=gf2StripClustervsBias,lineColor=ROOT.kRed)
+        gf2StripClustervsBias.GetXaxis().SetLimits(0.,500.)
+        DrawObj(cf2StripClustervsBias,gf2StripClustervsBias,None,'AP',pathToFigures)
+        gf2StripClustervsBias.SetName('gf2StripClustervsBias'+'_'+board+'_'+PA+'_'+BS)
+        gf2StripClustervsBias.Write()
 
     outFileROOT.Close()
 

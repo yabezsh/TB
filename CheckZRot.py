@@ -115,34 +115,35 @@ def CheckZRot(board,PA) :
         filename = pathToInput+'output_'+str(DUTRun)+'/Plots/AnalysisOutput_'+board+'_'+PA+'_'+str(DUTRun)+'_'+str(telescopeRun)+'.root'
         if os.path.exists(filename) : 
             inFileROOT = ROOT.TFile(filename,'READ')
-            h9 = inFileROOT.Get('h9') 
-            entries = h9.GetEntries()
-            print 'Entries:', entries
-            if entries == 0 :
-                print 'ERROR! Found histogram with zero entries.'
-            else : 
-                f = ROOT.TF1('f','pol1')
-                # f.SetParameter(0,0.)
-                # f.SetParLimits(0,0.,50.)
-                # f.SetParameter(1,0.)
-                # f.SetParLimits(1,0.,50.)
-                h9.Fit(f)
-                a0 = f.GetParameter(0)
-                a0_u = f.GetParError(0)
-                a1 = f.GetParameter(1)
-                a1_u = f.GetParError(1)
+            if inFileROOT.GetListOfKeys().Contains('h9') :
+                h9 = inFileROOT.Get('h9') 
+                entries = h9.GetEntries()
+                print 'Entries:', entries
+                if entries == 0 :
+                    print 'ERROR! Found histogram with zero entries.'
+                else : 
+                    f = ROOT.TF1('f','pol1')
+                    # f.SetParameter(0,0.)
+                    # f.SetParLimits(0,0.,50.)
+                    # f.SetParameter(1,0.)
+                    # f.SetParLimits(1,0.,50.)
+                    h9.Fit(f)
+                    a0 = f.GetParameter(0)
+                    a0_u = f.GetParError(0)
+                    a1 = f.GetParameter(1)
+                    a1_u = f.GetParError(1)
 
-                print 'a0:', a0, '+/-', a0_u
-                print 'a1:', a1, '+/-', a1_u
+                    print 'a0:', a0, '+/-', a0_u
+                    print 'a1:', a1, '+/-', a1_u
    
-                # If the fit results are not compatible with a horizontal straight line (possible rotation around z), print a warning.
-                if (a1/a1_u > 3.) :
-                    print 'WARNING! Possible rotation around z.'
+                    # If the fit results are not compatible with a horizontal straight line (possible rotation around z), print a warning.
+                    if (a1/a1_u > 3.) :
+                        print 'WARNING! Possible rotation around z.'
 
-                la0.append(a0)
-                la0_u.append(a0_u)
-                la1.append(a1)
-                la1_u.append(a1_u)
+                    la0.append(a0)
+                    la0_u.append(a0_u)
+                    la1.append(a1)
+                    la1_u.append(a1_u)
             
             inFileROOT.Close()
 

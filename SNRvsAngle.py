@@ -129,46 +129,51 @@ def SNRvsAngle(board,PA,BS) :
         angle = int(row['Rotation (deg)'])
         print angle
 
-        filename = pathToInput+'output_'+str(DUTRun)+'/MPV_'+board+'_'+PA+'_'+str(DUTRun)+'_'+str(telescopeRun)+'.txt'
-        if os.path.exists(filename) : 
-            with open(filename,'r') as text_file :
-                text_file.readline()
-                values = text_file.readline().replace('\n','')
-                values_list = values.split(',')
-                SNR = values_list[0]
-                SNRU = values_list[1]
-                # print values
-                # print values_list
-                print 'SNR:', SNR
-                print 'SNR uncertainty:', SNRU
-                lSNR.append(SNR)
-                lSNRU.append(SNRU)
-                langle.append(angle)
-                text_file.closed
+        if angle not in langle :
+            print 'First run at this angle.'
 
-            filename = pathToInput+'output_'+str(DUTRun)+'/Plots/AnalysisOutput_'+board+'_'+PA+'_'+str(DUTRun)+'_'+str(telescopeRun)+'.root'
+            filename = pathToInput+'output_'+str(DUTRun)+'/MPV_'+board+'_'+PA+'_'+str(DUTRun)+'_'+str(telescopeRun)+'_roofit.txt'
             print filename
-            inFileROOTClusterSize = ROOT.TFile(filename,'READ')
-            hclusterSize = inFileROOTClusterSize.Get('h12cc') 
-            entries = hclusterSize.GetEntries()
-            print 'Entries:', entries
-            if entries == 0 :
-                print 'ERROR! Found histogram with zero entries.'
-            print hclusterSize
-            oneStripCluster = hclusterSize.GetBinContent(hclusterSize.FindBin(1))
-            print oneStripCluster
-            l1StripCluster.append(oneStripCluster)
-            if entries == 0 :
-                lf1StripCluster.append(-1.)
-            else :
-                lf1StripCluster.append(oneStripCluster/entries)
-            twoStripCluster = hclusterSize.GetBinContent(hclusterSize.FindBin(2))
-            print twoStripCluster
-            l2StripCluster.append(twoStripCluster)
-            if entries == 0 :
-                lf2StripCluster.append(-1.)
-            else :
-                lf2StripCluster.append(twoStripCluster/entries)
+
+            if os.path.exists(filename) : 
+                with open(filename,'r') as text_file :
+                    text_file.readline()
+                    values = text_file.readline().replace('\n','')
+                    values_list = values.split(' ')
+                    SNR = values_list[0]
+                    SNRU = values_list[1]
+                    # print values
+                    # print values_list
+                    print 'SNR:', SNR
+                    print 'SNR uncertainty:', SNRU
+                    lSNR.append(SNR)
+                    lSNRU.append(SNRU)
+                    langle.append(angle)
+                    text_file.closed
+
+                filename = pathToInput+'output_'+str(DUTRun)+'/Plots/AnalysisOutput_'+board+'_'+PA+'_'+str(DUTRun)+'_'+str(telescopeRun)+'.root'
+                print filename
+                inFileROOTClusterSize = ROOT.TFile(filename,'READ')
+                hclusterSize = inFileROOTClusterSize.Get('h12cc') 
+                entries = hclusterSize.GetEntries()
+                print 'Entries:', entries
+                if entries == 0 :
+                    print 'ERROR! Found histogram with zero entries.'
+                print hclusterSize
+                oneStripCluster = hclusterSize.GetBinContent(hclusterSize.FindBin(1))
+                print oneStripCluster
+                l1StripCluster.append(oneStripCluster)
+                if entries == 0 :
+                    lf1StripCluster.append(-1.)
+                else :
+                    lf1StripCluster.append(oneStripCluster/entries)
+                twoStripCluster = hclusterSize.GetBinContent(hclusterSize.FindBin(2))
+                print twoStripCluster
+                l2StripCluster.append(twoStripCluster)
+                if entries == 0 :
+                    lf2StripCluster.append(-1.)
+                else :
+                    lf2StripCluster.append(twoStripCluster/entries)
 
     print lSNR
     print lSNRU
@@ -236,7 +241,8 @@ def SNRvsAngle(board,PA,BS) :
     print 'Angle at the peak:', SNRAnglePeak, '+/-', SNRAnglePeakU 
     print 'Signal at the peak:', SNRPeak
     DrawObj(cSNRvsAngle,gSNRvsAngle,None,'AP',pathToFigures)
-   
+    gSNRvsAngle.Write()
+
     # Create a TGraph with the number of 1-strip clusters as a function of the angle.
     c1StripClustervsAngle = ROOT.TCanvas('c1StripClustervsAngle'+'_'+board+'_'+PA+'_'+BS,'c1StripClustervsAngle'+'_'+board+'_'+PA+'_'+BS,800,600)
     g1StripClustervsAngle = ROOT.TGraph(len(a1StripCluster),aangle,a1StripCluster)
@@ -244,6 +250,7 @@ def SNRvsAngle(board,PA,BS) :
     InitGraph(g1StripClustervsAngle,'Number of 1-strip clusters vs angle','Angle','Number of 1-strip clusters')
     SetStyleObj(obj=g1StripClustervsAngle,lineColor=ROOT.kRed)
     DrawObj(c1StripClustervsAngle,g1StripClustervsAngle,None,'AP',pathToFigures)
+    g1StripClustervsAngle.Write()
 
     # Create a TGraph with the number of 2-strip clusters as a function of the angle.
     c2StripClustervsAngle = ROOT.TCanvas('c2StripClustervsAngle'+'_'+board+'_'+PA+'_'+BS,'c2StripClustervsAngle'+'_'+board+'_'+PA+'_'+BS,800,600)
@@ -252,7 +259,8 @@ def SNRvsAngle(board,PA,BS) :
     InitGraph(g2StripClustervsAngle,'Number of 2-strip clusters vs angle','Angle','Number of 2-strip clusters')
     SetStyleObj(obj=g2StripClustervsAngle,lineColor=ROOT.kRed)
     DrawObj(c2StripClustervsAngle,g2StripClustervsAngle,None,'AP',pathToFigures)
-    
+    g2StripClustervsAngle.Write()
+
     # Create a TGraph with the fraction of 1-strip clusters as a function of the angle.
     cf1StripClustervsAngle = ROOT.TCanvas('cf1StripClustervsAngle'+'_'+board+'_'+PA+'_'+BS,'cf1StripClustervsAngle'+'_'+board+'_'+PA+'_'+BS,800,600)
     gf1StripClustervsAngle = ROOT.TGraph(len(af1StripCluster),aangle,af1StripCluster)
@@ -276,7 +284,8 @@ def SNRvsAngle(board,PA,BS) :
     print 'Angle at the peak:', f1StripClusterAnglePeak, '+/-', f1StripClusterAnglePeakU
     print 'Signal at the peak:', f1StripClusterPeak
     DrawObj(cf1StripClustervsAngle,gf1StripClustervsAngle,None,'AP',pathToFigures)
-    
+    gf1StripClustervsAngle.Write()
+
     # Create a TGraph with the fraction of 2-strip clusters as a function of the angle.
     cf2StripClustervsAngle = ROOT.TCanvas('cf2StripClustervsAngle'+'_'+board+'_'+PA+'_'+BS,'cf2StripClustervsAngle'+'_'+board+'_'+PA+'_'+BS,800,600)
     gf2StripClustervsAngle = ROOT.TGraph(len(af2StripCluster),aangle,af2StripCluster)
@@ -300,6 +309,7 @@ def SNRvsAngle(board,PA,BS) :
     print 'Angle at the peak:', f2StripClusterAnglePeak, '+/-', f2StripClusterAnglePeakU
     print 'Signal at the peak:', f2StripClusterPeak
     DrawObj(cf2StripClustervsAngle,gf2StripClustervsAngle,None,'AP',pathToFigures)
+    gf2StripClustervsAngle.Write()
     '''
     ff2StripClustervsAngle = ROOT.TF1('ff2StripClustervsAngle','[0]/cos((x-[1])*3.14159/180.)',minFit,maxFit)
     ff2StripClustervsAngle.SetParLimits(0,0.16,0.20)

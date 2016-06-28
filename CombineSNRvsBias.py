@@ -56,6 +56,10 @@ def CombineSNRvsBias(PA,BS) :
     gM3 = ROOT.TGraphErrors()
     gM4 = ROOT.TGraphErrors()
 
+    gwidthM1 = ROOT.TGraphErrors()
+    gwidthM3 = ROOT.TGraphErrors()
+    gwidthM4 = ROOT.TGraphErrors()
+    
     for board in boardList :
         # Path to input data.
         pathToInput = DQM+board+'/'+PA+'/SNRvsBias/'
@@ -66,21 +70,31 @@ def CombineSNRvsBias(PA,BS) :
             inFileROOT = ROOT.TFile(filename,'READ')
             if board is 'M1' :
                 gM1 = inFileROOT.Get('gSNRvsBias_'+board+'_'+PA+'_'+BS) 
+                gwidthM1 = inFileROOT.Get('gwidthvsBias_'+board+'_'+PA+'_'+BS) 
             elif board is 'M3' :
                 gM3 = inFileROOT.Get('gSNRvsBias_'+board+'_'+PA+'_'+BS) 
+                gwidthM3 = inFileROOT.Get('gwidthvsBias_'+board+'_'+PA+'_'+BS) 
             elif board is 'M4' :
                 gM4 = inFileROOT.Get('gSNRvsBias_'+board+'_'+PA+'_'+BS) 
+                gwidthM4 = inFileROOT.Get('gwidthvsBias_'+board+'_'+PA+'_'+BS) 
         elif os.path.exists(filename.replace('Back','Both')) :
             print 'Filename (replacing back with both):', filename.replace('Back','Both')
             inFileROOT = ROOT.TFile(filename.replace('Back','Both'),'READ')
             if board is 'M1' :
                 gM1 = inFileROOT.Get('gSNRvsBias_'+board+'_'+PA+'_'+BS.replace('Back','Both')) 
+                gwidthM1 = inFileROOT.Get('gwidthvsBias_'+board+'_'+PA+'_'+BS.replace('Back','Both')) 
             elif board is 'M3' :
                 gM3 = inFileROOT.Get('gSNRvsBias_'+board+'_'+PA+'_'+BS.replace('Back','Both')) 
+                gwidthM3 = inFileROOT.Get('gwidthvsBias_'+board+'_'+PA+'_'+BS.replace('Back','Both')) 
             elif board is 'M4' :
                 gM4 = inFileROOT.Get('gSNRvsBias_'+board+'_'+PA+'_'+BS.replace('Back','Both')) 
+                gwidthM4 = inFileROOT.Get('gwidthvsBias_'+board+'_'+PA+'_'+BS.replace('Back','Both')) 
 
-    if gM1 is not None and gM3 is not None and gM4 is not None :
+    if gM1 is not None and gM3 is not None and gM4 is not None and gwidthM1 is not None and gwidthM3 is not None and gwidthM4 is not None :
+        
+        outFileROOT = ROOT.TFile(pathToOutput+funName+'_'+PA+'_'+BS+'.root','RECREATE')
+
+
 
         gM1.SetLineColor(ROOT.kAzure-3)
         gM3.SetLineColor(ROOT.kViolet-1)
@@ -104,25 +118,16 @@ def CombineSNRvsBias(PA,BS) :
         objList.append(gM4)
 
         labelDict = {}
-        # labelDict['gSNRvsBias_M1_'+PA+'_'+BS] = 'unirradiated'
-        # labelDict['gSNRvsBias_M3_'+PA+'_'+BS] = 'nominal dose'
-        # labelDict['gSNRvsBias_M4_'+PA+'_'+BS] = '2 x nominal dose'
         labelDict[gM1.GetName()] = 'unirradiated'
         labelDict[gM3.GetName()] = 'nominal dose'
         labelDict[gM4.GetName()] = '2 x nominal dose'
 
         optionDict = {}
-        # optionDict['gSNRvsBias_M1_'+PA+'_'+BS] = 'lp'
-        # optionDict['gSNRvsBias_M3_'+PA+'_'+BS] = 'lp'
-        # optionDict['gSNRvsBias_M4_'+PA+'_'+BS] = 'lp'
         optionDict[gM1.GetName()] = 'lp'
         optionDict[gM3.GetName()] = 'lp'
         optionDict[gM4.GetName()] = 'lp'
 
         drawOptionDict = {}
-        # drawOptionDict['gSNRvsBias_M1_'+PA+'_'+BS] = 'APL'
-        # drawOptionDict['gSNRvsBias_M3_'+PA+'_'+BS] = 'APL'
-        # drawOptionDict['gSNRvsBias_M4_'+PA+'_'+BS] = 'APL'
         drawOptionDict[gM1.GetName()] = 'APL'
         drawOptionDict[gM3.GetName()] = 'APL'
         drawOptionDict[gM4.GetName()] = 'APL'
@@ -130,7 +135,6 @@ def CombineSNRvsBias(PA,BS) :
         legSNRvsBias = CreateLegend(objList,labelDict,optionDict,0.60,0.23,0.90,0.53)
 
         # Create a TGraph with the SNR as a function of the bias voltage.
-        outFileROOT = ROOT.TFile(pathToOutput+funName+'_'+PA+'_'+BS+'.root','RECREATE')
         cSNRvsBias = ROOT.TCanvas('cSNRvsBias'+'_'+PA+'_'+BS,'cSNRvsBias'+'_'+PA+'_'+BS,800,600)
         mgSNRvsBias = ROOT.TMultiGraph('mgSNRvsBias','SNR vs bias voltage')
         mgSNRvsBias.Add(gM1,'PL')
@@ -146,6 +150,65 @@ def CombineSNRvsBias(PA,BS) :
         InitGraph(mgSNRvsBias,'SNR vs bias voltage','Bias voltage (V)','SNR')
         DrawObj(cSNRvsBias,mgSNRvsBias,legSNRvsBias,'APL',pathToFigures)
         mgSNRvsBias.Write()
+
+
+    
+        gwidthM1.SetLineColor(ROOT.kAzure-3)
+        gwidthM3.SetLineColor(ROOT.kViolet-1)
+        gwidthM4.SetLineColor(ROOT.kRed)
+
+        gwidthM1.SetMarkerColor(ROOT.kAzure-3)
+        gwidthM3.SetMarkerColor(ROOT.kViolet-1)
+        gwidthM4.SetMarkerColor(ROOT.kRed)
+    
+        gwidthM1.SetLineStyle(1)
+        gwidthM3.SetLineStyle(3)
+        gwidthM4.SetLineStyle(7)
+
+        gwidthM1.SetLineWidth(2)
+        gwidthM3.SetLineWidth(2)
+        gwidthM4.SetLineWidth(2)
+
+        objListWidth = []
+        objListWidth.append(gwidthM1)
+        objListWidth.append(gwidthM3)
+        objListWidth.append(gwidthM4)
+
+        labelDictWidth = {}
+        labelDictWidth[gwidthM1.GetName()] = 'unirradiated'
+        labelDictWidth[gwidthM3.GetName()] = 'nominal dose'
+        labelDictWidth[gwidthM4.GetName()] = '2 x nominal dose'
+
+        optionDictWidth = {}
+        optionDictWidth[gwidthM1.GetName()] = 'lp'
+        optionDictWidth[gwidthM3.GetName()] = 'lp'
+        optionDictWidth[gwidthM4.GetName()] = 'lp'
+
+        drawOptionDictWidth = {}
+        drawOptionDictWidth[gwidthM1.GetName()] = 'APL'
+        drawOptionDictWidth[gwidthM3.GetName()] = 'APL'
+        drawOptionDictWidth[gwidthM4.GetName()] = 'APL'
+
+        legwidthvsBias = CreateLegend(objListWidth,labelDictWidth,optionDictWidth,0.60,0.23,0.90,0.53)
+
+        # Create a TGraph with the width as a function of the bias voltage.
+        cwidthvsBias = ROOT.TCanvas('cwidthvsBias'+'_'+PA+'_'+BS,'cwidthvsBias'+'_'+PA+'_'+BS,800,600)
+        mgwidthvsBias = ROOT.TMultiGraph('mgwidthvsBias','Width of Landau distribution vs bias voltage')
+        mgwidthvsBias.Add(gwidthM1,'PL')
+        mgwidthvsBias.Add(gwidthM3,'PL')
+        mgwidthvsBias.Add(gwidthM4,'PL')
+        mgwidthvsBias.SetMinimum(0.)
+        mgwidthvsBias.SetMaximum(2.5)
+        gwidthM1.GetXaxis().SetLimits(0.,500.)
+        gwidthM3.GetXaxis().SetLimits(0.,500.)
+        gwidthM4.GetXaxis().SetLimits(0.,500.)
+        mgwidthvsBias.Draw('APL')
+        cwidthvsBias.Update()
+        InitGraph(mgwidthvsBias,'Width of Landau distribution vs bias voltage','Bias voltage (V)','Width of Landau distribution')
+        DrawObj(cwidthvsBias,mgwidthvsBias,legwidthvsBias,'APL',pathToFigures)
+        mgwidthvsBias.Write()
+
+
 
         outFileROOT.cd()
         outFileROOT.Close()
