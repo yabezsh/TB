@@ -12,6 +12,7 @@
 #include <cstring>
 #include <iostream>
 #include <string>
+#include <sstream>
 
 #include <TH1D.h>
 #include <TMath.h>
@@ -35,6 +36,14 @@
 #include "RooPlot.h"
 #include "TMatrixD.h" 
 
+
+
+TString NumberToString ( Int_t Number )
+  {
+     ostringstream ss;
+     ss << Number;
+     return ss.str();
+  }
 
 struct RetVal{
     Double_t MPV;
@@ -522,10 +531,11 @@ TCanvas* addCanvas(TString canvasTitle, Int_t xSize=800, Int_t ySize=800,Double_
 void savePlots(TCanvas* saveCanvas, TString nameFile)
 {
    // if (nameFile=="Signal_MPV_perStrip"||nameFile=="SNR_MPV_perStrip"){
-   saveCanvas->Print("Plots/"+nameFile+"_" + m_board + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
+if (nameFile=="EffDistrP"){
+  saveCanvas->Print("Plots/"+nameFile+"_" + m_board + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
    saveCanvas->Print("Plots/"+nameFile+"_" + m_board + "_" + runplace + "_" + consR +"_"+m_runNumb+".pdf");
    saveCanvas->Print("Plots/"+nameFile+"_" + m_board + "_" + runplace + "_" + consR +"_"+m_runNumb+".root"); 
-   saveCanvas->Print("Plots/"+nameFile+"_" + m_board + "_" + runplace + "_" + consR +"_"+m_runNumb+".C"); //}
+   saveCanvas->Print("Plots/"+nameFile+"_" + m_board + "_" + runplace + "_" + consR +"_"+m_runNumb+".C"); }
 }
 
 void ClusterWithTrackAna::Loop()
@@ -1468,11 +1478,15 @@ void ClusterWithTrackAna::Loop()
    savePlots(c_Tracks_2D,"Tracks_2D");
    
  ///////-------------------------if need to understand efficiency 
-/*   TCanvas *cEffDistrP = new TCanvas("ProfileEffDistr", "",600,600);
+   TCanvas *cEffDistrP = new TCanvas("ProfileEffDistr", "",600,600);
    cEffDistrP->Divide(3,5);
    for(Int_t iX=40;iX<55;iX++){
+     
     cEffDistrP->cd(iX-39);
     TH1F* effProfY= new TH1F("effProfY","effProfY",100,-5,5);
+    TString binNx = NumberToString(iX);
+    effProfY->SetTitle("Y distribution of efficiency and Tracks for X bin № "+ binNx);
+    effProfY->SetXTitle("Y");
     TH1F* NTrackY= new TH1F("NTrackY","NTrackY",100,-5,5);
     for(Int_t i=0;i<effProfY->GetNbinsX();i++)
     {
@@ -1490,7 +1504,7 @@ void ClusterWithTrackAna::Loop()
     NTrackY->Draw("same");
    }
    savePlots(cEffDistrP,"EffDistrP");
- *///----------------------------------------------------------- 
+ //----------------------------------------------------------- 
    
    TCanvas *c_eff_X = addCanvas("c_eff_X");
    TH1F *hex = (TH1F*)h12dn->Clone("hex");
@@ -2567,7 +2581,7 @@ void ClusterWithTrackAna::Loop()
    c_strip->Print("Plots/StripPlot_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
    c_strip->Print("Plots/StripPlot_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");   
    
-    
+/*    
    TCanvas *c_snr_2D = addCanvas("c_snr_2D");
    addGraphics(hSNR2D, "X_{trk}, mm","Y_{trk}, mm", "SNR", "SNR");
    hSNR->GetZaxis()->SetRangeUser(0,100);
@@ -2588,7 +2602,7 @@ void ClusterWithTrackAna::Loop()
    hSNR2D->Draw("colz");
    savePlots(c_snr_2D,"SNR_2D");
 
-    
+*/    
 
 
     fout->Write();
