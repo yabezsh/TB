@@ -13,6 +13,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <cstdlib>
 
 #include <TH1D.h>
 #include <TMath.h>
@@ -528,14 +529,23 @@ TCanvas* addCanvas(TString canvasTitle, Int_t xSize=800, Int_t ySize=800,Double_
    return tempCanvas;
 }
 
-void savePlots(TCanvas* saveCanvas, TString nameFile)
+void savePlots(TCanvas* saveCanvas, TString nameFile, TString addFolder = "")
 {
+  if(addFolder!=""){
+    const int dir_err = system("mkdir -p Plots/"+addFolder);
+    if (-1 == dir_err)
+    {
+      printf("Error creating directory!n");
+      exit(1);
+    }
+    addFolder = addFolder+"/";
+  }
    // if (nameFile=="Signal_MPV_perStrip"||nameFile=="SNR_MPV_perStrip"){
-if (nameFile=="EffDistrP"){
-  saveCanvas->Print("Plots/"+nameFile+"_" + m_board + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
-   saveCanvas->Print("Plots/"+nameFile+"_" + m_board + "_" + runplace + "_" + consR +"_"+m_runNumb+".pdf");
-   saveCanvas->Print("Plots/"+nameFile+"_" + m_board + "_" + runplace + "_" + consR +"_"+m_runNumb+".root"); 
-   saveCanvas->Print("Plots/"+nameFile+"_" + m_board + "_" + runplace + "_" + consR +"_"+m_runNumb+".C"); }
+//if (nameFile=="EffDistrP"){
+   saveCanvas->Print("Plots/"+addFolder+nameFile+"_" + m_board + "_" + runplace + "_" + consR +"_"+m_runNumb+".png");
+   saveCanvas->Print("Plots/"+addFolder+nameFile+"_" + m_board + "_" + runplace + "_" + consR +"_"+m_runNumb+".pdf");
+   saveCanvas->Print("Plots/"+addFolder+nameFile+"_" + m_board + "_" + runplace + "_" + consR +"_"+m_runNumb+".root"); 
+   saveCanvas->Print("Plots/"+addFolder+nameFile+"_" + m_board + "_" + runplace + "_" + consR +"_"+m_runNumb+".C"); //}
 }
 
 void ClusterWithTrackAna::Loop()
@@ -1478,32 +1488,42 @@ void ClusterWithTrackAna::Loop()
    savePlots(c_Tracks_2D,"Tracks_2D");
    
  ///////-------------------------if need to understand efficiency 
-   TCanvas *cEffDistrP = new TCanvas("ProfileEffDistr", "",600,600);
-   cEffDistrP->Divide(3,5);
-   for(Int_t iX=40;iX<55;iX++){
-     
-    cEffDistrP->cd(iX-39);
-    TH1F* effProfY= new TH1F("effProfY","effProfY",100,-5,5);
+ //  TCanvas *cEffDistrP = new TCanvas("ProfileEffDistr", "",1000,1000);
+//   cEffDistrP->Divide(3,4);
+   TCanvas* cEffDistrP[10];
+   TH1F* effProfY[10];
+   TH1F* NTrackY[10];
+   TLegend* legProfY[10];
+   for(Int_t iX=40;iX<52;iX++){
     TString binNx = NumberToString(iX);
-    effProfY->SetTitle("Y distribution of efficiency and Tracks for X bin № "+ binNx);
-    effProfY->SetXTitle("Y");
-    TH1F* NTrackY= new TH1F("NTrackY","NTrackY",100,-5,5);
-    for(Int_t i=0;i<effProfY->GetNbinsX();i++)
+    TString nameD = "ProfileEffDistr_"+binNx;
+    cEffDistrP[iX-40] = new TCanvas(nameD, "",1000,1000);
+   // cEffDistrP->cd(iX-39);
+    effProfY[iX-40]= new TH1F(nameD,"effProfY",100,-5,5);
+    effProfY[iX-40]->SetTitle("Y distribution of efficiency and Tracks for X bin № "+ binNx);
+    effProfY[iX-40]->SetXTitle("Y");
+    NTrackY[iX-40]= new TH1F("NTrackY","NTrackY",100,-5,5);
+    for(Int_t i=0;i<effProfY[iX-40]->GetNbinsX();i++)
     {
-      effProfY->SetBinContent(i+1,h311a->GetBinContent(iX,i+1));
-      NTrackY->SetBinContent(i+1,h311b->GetBinContent(iX,i+1));
+      effProfY[iX-40]->SetBinContent(i+1,h311a->GetBinContent(iX,i+1));
+      NTrackY[iX-40]->SetBinContent(i+1,h311b->GetBinContent(iX,i+1));
     }
-    effProfY->SetFillColor(3);
-    effProfY->Draw();
+    effProfY[iX-40]->SetFillColor(3);
+    effProfY[iX-40]->Draw();
     //cEffDistrP->cd(2);
     //NTrackY->Draw();
-    NTrackY->Scale(1./(NTrackY->GetBinContent(NTrackY->GetMaximumBin())));
+    NTrackY[iX-40]->Scale(1./(NTrackY[iX-40]->GetBinContent(NTrackY[iX-40]->GetMaximumBin())));
     //cEffDistrP->cd(3);
-    NTrackY->SetLineColor(2);
-    NTrackY->SetLineWidth(2);
-    NTrackY->Draw("same");
-   }
-   savePlots(cEffDistrP,"EffDistrP");
+    NTrackY[iX-40]->SetLineColor(2);
+    NTrackY[iX-40]->SetLineWidth(2);
+    NTrackY[iX-40]->Draw("same");
+    legProfY[iX-40] = new TLegend(0.1,0.9,0.48,1.);
+    legProfY[iX-40]->AddEntry(effProfY[iX-40],"Efficiency distribution for Y at certain X bin","f"); 
+    legProfY[iX-40]->AddEntry(NTrackY[iX-40],"Tracks distribution for Y at certain X bin","l");
+    legProfY[iX-40]->Draw();
+    savePlots(cEffDistrP[iX-40],nameD,"EfficiencyProfile");
+  }
+//   savePlots(cEffDistrP,"EffDistrP");
  //----------------------------------------------------------- 
    
    TCanvas *c_eff_X = addCanvas("c_eff_X");
