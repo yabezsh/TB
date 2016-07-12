@@ -18,6 +18,7 @@ CMSIterativelyPerBeetle::CMSIterativelyPerBeetle(IChannelMaskProvider& p_masksPr
 void CMSIterativelyPerBeetle::initializeCorrectionAndHitMaps()
 {
 	for (int channel=0;channel<m_channelNumber;channel+=m_channelPerBeetle){
+		m_usedChannelPerBeetle.insert(std::make_pair(channel,0));
 		m_correctionPerBeetle.insert(std::make_pair(channel,0));
 		m_hitThresholdPerBeetle.insert(std::make_pair(channel,200));
 	}
@@ -42,6 +43,7 @@ void CMSIterativelyPerBeetle::processEvent(RawData<>* p_data, RawData<double> **
 template<typename DATA_TYPE>
 void CMSIterativelyPerBeetle::calculateCorrection(RawData<DATA_TYPE>* p_inputData)
 {
+	std::map<int, int>::iterator usedChannelMapIt = m_usedChannelPerBeetle.begin();
 	for(auto& mapIt : m_correctionPerBeetle)
 	{
 		int usedChannels=0;
@@ -57,6 +59,8 @@ void CMSIterativelyPerBeetle::calculateCorrection(RawData<DATA_TYPE>* p_inputDat
 		}
 		if(usedChannels) mapIt.second/=static_cast<double>(usedChannels);
 		if(usedChannels) rmsPerBeetle/=static_cast<double>(usedChannels);
+		usedChannelMapIt->second = usedChannels;
+		usedChannelMapIt++;
 		rmsPerBeetle-=mapIt.second*mapIt.second;
 		double rmsMultiplicity=4;
 		m_hitThresholdPerBeetle[mapIt.first]=rmsMultiplicity*sqrt(rmsPerBeetle);

@@ -18,12 +18,15 @@ NTupleCreator::NTupleCreator(const std::string& name, ISvcLocator* pSvcLocator):
 	  declareProperty("WritePedestal",  m_isPedestalWritten = true);
 	  declareProperty("WriteCMS",       m_isCMSWritten = true);
 	  declareProperty("WriteClusters",  m_isClusterWritten = true);
+	  declareProperty("WriteCMSCorrection",  m_isCMSCorrectionWritten = true);
+
 
 	  declareProperty("RawLocation",      m_rawLocation = TbUT::DataLocations::RawTES );
 	  declareProperty("HeaderLocation",   m_headerLocation = TbUT::DataLocations::HeaderTES );
 	  declareProperty("PedestalLocation", m_pedestalLocation = TbUT::DataLocations::PedestalTES );
 	  declareProperty("CMSLocation",      m_cmsLocation = TbUT::DataLocations::CMSTES );
 	  declareProperty("ClusterLocation",  m_clusterLocation = TbUT::DataLocations::Clusters_TES );
+	  declareProperty("CMSCorrectionLocation",  m_CMSCorrectionLocation = TbUT::DataLocations::CMS_Correction_TES );
 
 }
 
@@ -36,6 +39,7 @@ StatusCode NTupleCreator::initialize()
 	if(m_isPedestalWritten) bookPedestal();
 	if(m_isCMSWritten) bookCMS();
 	if(m_isClusterWritten) bookClusters();
+	if(m_isCMSCorrectionWritten) bookCMSCorrection();
 
 	return StatusCode::SUCCESS;
 }
@@ -49,6 +53,7 @@ try{
 		if(m_isPedestalWritten) fillPedestal();
 		if(m_isCMSWritten) fillCMS();
 		if(m_isClusterWritten) fillClusters();
+		if(m_isCMSCorrectionWritten) fillCMSCorrection();
 		m_eventNumber++;
 	}
 	return StatusCode::SUCCESS;
@@ -126,6 +131,18 @@ void NTupleCreator::bookClusters()
 	ntuple->addItem("clustersCharge2StripRight",maxClusterContainerSize ,m_clusterCharge2StripRight);
 
 }
+
+void NTupleCreator::bookCMSCorrection()
+{
+	NTupleFilePtr file1(ntupleSvc(), "/NTUPLES/FILE1");
+	NTuplePtr ntuple(ntupleSvc(), "/NTUPLES/FILE1/TbUT/CMSCorrection");
+	if (ntuple) return;
+	ntuple = ntupleSvc()->book("/NTUPLES/FILE1/TbUT/CMSCorrection",CLID_ColumnWiseTuple, "TbUT nTuple");
+	const int numberOfBeetle = 32;
+	ntuple->addItem("CMSCorrection", numberOfBeetle, m_cmsCorrection);
+	ntuple->addItem("CMSUsedChannel", numberOfBeetle, m_cmsUsedChannels);
+}
+
 
 void NTupleCreator::fillRawData()
 {
@@ -230,4 +247,33 @@ void NTupleCreator::fillClusters()
 		if(clusterCounter>=maxClusterContainerSize) break;
 	}
 	ntupleSvc()->writeRecord("/NTUPLES/FILE1/TbUT/Clusters");
+}
+
+
+
+CMSCorrectionsContainer* NTupleCreator::getCMSCorrectionsFromTES(){
+	CMSCorrectionsContainer* cmsCorrectionContainer=getIfExists<CMSCorrectionsContainer>(m_CMSCorrectionLocation);
+	if(!cmsCorrectionContainer){
+		std::string errorMsg="There is no cmsCorrections in: " +m_CMSCorrectionLocation;
+		throw DataError(errorMsg);
+	}
+	return  cmsCorrectionContainer;
+}
+
+
+void NTupleCreator::fillCMSCorrection()
+{
+	CMSCorrectionsContainer* cmsCorrection=getCMSCorrectionsFromTES();
+	for(auto& cmsCorrectionData:  cmsCorrection->getData())
+	{
+		auto usedChannelMap = cmsCorrectionData.getUsedChannelMap();
+		auto correctionMap = cmsCorrectionData.getCorrectionMap();
+		int beetle =0;
+		for(auto correlctionMapIt : correctionMap ){
+			m_cmsCorrection[beetle]=correlctionMapIt.second;
+			m_cmsUsedChannels[beetle]=usedChannelMap[correlctionMapIt.first];
+			beetle++;
+		}
+	    ntupleSvc()->writeRecord("/NTUPLES/FILE1/TbUT/CMSCorrection");
+	}
 }

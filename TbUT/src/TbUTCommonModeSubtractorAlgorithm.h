@@ -15,6 +15,7 @@
 #include "TbUTChannelMaskFileValidator.h"
 #include "TbUTNoiseCalculatorfactory.h"
 #include "TbUTNoise.h"
+#include "TbUTCMSCorrections.h"
 #include <boost/shared_ptr.hpp>
 
 namespace TbUT
@@ -40,11 +41,14 @@ private:
 	void processEvent();
 	StatusCode skippTreaningEvent();
 
+	CMSCorrections buildCMSCorrection();
+
 	StatusCode saveNoiseToFile();
 
 	RawDataContainer<>* m_dataContainer;
 	RawData<>* m_data;
 	RawDataContainer<double>* m_outputContainer;
+	CMSCorrectionsContainer* m_CMSCorrectionsContainerContainer;
 
 
 	std::string m_inputDataLocation;
@@ -53,6 +57,7 @@ private:
 	std::string m_CMSOption;
 	std::string m_noiseCalculatorType;
 	std::string m_noiseOutputLocation;
+	std::string m_cmsCorrectionLocation;
 
 	int m_event;
 	int m_skipEvent;

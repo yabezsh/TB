@@ -16,6 +16,16 @@ class CmsPerBeetle: public ICommonModeSubtractor
 public:
 	CmsPerBeetle(IChannelMaskProvider& p_masksProvider,double p_hitThreshold);
 	void processEvent(RawData<>* p_data, RawData<double> **p_output);
+
+	std::map<int, double> getCorrectionMap(){
+	     std::map<int,double> arbitraryMap;
+	     return arbitraryMap;
+	}
+	std::map<int, int> getUsedChannelMap(){
+	     std::map<int,int> arbitraryMap;
+	     return arbitraryMap;
+	}
+
 private:
 	void calculateCorrection(RawData<>* p_inputData);
 	void removeCM(RawData<>* p_data, RawData<double> **p_output);

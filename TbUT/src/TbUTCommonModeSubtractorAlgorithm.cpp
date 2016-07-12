@@ -7,6 +7,7 @@
 
 #include "TbUTCommonModeSubtractorAlgorithm.h"
 
+
 using namespace TbUT;
 
 DECLARE_NAMESPACE_ALGORITHM_FACTORY(TbUT,CommonModeSubtractorAlgorithm)
@@ -17,12 +18,14 @@ CommonModeSubtractorAlgorithm::CommonModeSubtractorAlgorithm(const std::string& 
 		m_dataContainer(),
 		m_data(),
 		m_outputContainer(),
+		m_CMSCorrectionsContainerContainer(),
 		m_inputDataLocation(),
 		m_outputDataLocation(),
 		m_channelMaskInputLocation(),
 		m_CMSOption(),
 		m_noiseCalculatorType(),
 		m_noiseOutputLocation(),
+		m_cmsCorrectionLocation(TbUT::DataLocations::CMS_Correction_TES),
 		m_event(0),
 		m_skipEvent(0),
 		m_channelMaskFileValidator(m_channelMaskInputLocation),
@@ -60,6 +63,7 @@ StatusCode CommonModeSubtractorAlgorithm::execute()
 	}
 	if(StatusCode::SUCCESS != getData()) return StatusCode::FAILURE;
 	m_outputContainer =new RawDataContainer<double>();
+	m_CMSCorrectionsContainerContainer = new CMSCorrectionsContainer();
 
 	if(m_dataContainer->isEmpty()){
 		put(m_outputContainer,m_outputDataLocation);
@@ -72,6 +76,7 @@ StatusCode CommonModeSubtractorAlgorithm::execute()
 		delete m_data;
 	}
 	put(m_outputContainer,m_outputDataLocation);
+	put(m_CMSCorrectionsContainerContainer, m_cmsCorrectionLocation);
 
 	return StatusCode::SUCCESS;
 }
@@ -136,6 +141,7 @@ void CommonModeSubtractorAlgorithm::processEvent()
 	m_CMSEnginePtr->processEvent(m_data,&l_afterCMS);
 	m_noiseCalculatorPtr->updateNoise(l_afterCMS);
 	m_outputContainer->addData(*l_afterCMS);
+	m_CMSCorrectionsContainerContainer->addData(buildCMSCorrection());
 	m_event++;
 }
 
@@ -156,4 +162,11 @@ try{
 }
 
 
+CMSCorrections CommonModeSubtractorAlgorithm::buildCMSCorrection()
+{
+	CMSCorrections corrections;
+	corrections.setCorrectionMap(m_CMSEnginePtr->getCorrectionMap());
+	corrections.setUsedMap(m_CMSEnginePtr->getUsedChannelMap());
+	return corrections;
+}
 

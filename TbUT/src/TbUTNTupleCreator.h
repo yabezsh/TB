@@ -4,6 +4,7 @@
 #include "GaudiAlg/GaudiTupleAlg.h"
 #include "TbUTRawData.h"
 #include "TbUTCluster.h"
+#include "TbUTCMSCorrections.h"
 
 #include <string>
 #include <stdexcept>
@@ -30,10 +31,11 @@ class NTupleCreator : public GaudiTupleAlg {
 
  private:
 	void bookRawData();
-        void bookHeaderData();
+    void bookHeaderData();
 	void bookPedestal();
 	void bookCMS();
 	void bookClusters();
+	void bookCMSCorrection();
 
 
 	void fillRawData();
@@ -41,24 +43,31 @@ class NTupleCreator : public GaudiTupleAlg {
 	void fillPedestal();
 	void fillCMS();
 	void fillClusters();
+	void fillCMSCorrection();
+
 	template <typename DATA_TYPE = int>
 	RawDataContainer<DATA_TYPE>* getDataFromTES(const std::string& p_location);
 	ClusterContainer* getClustersFromTES();
+	CMSCorrectionsContainer* getCMSCorrectionsFromTES();
+
 
 	int m_eventNumber;
 	int m_storeEventNumber;
 	bool m_isRawWritten;
-        bool m_isHeaderWritten;
+    bool m_isHeaderWritten;
 	bool m_isPedestalWritten;
 	bool m_isCMSWritten;
 	bool m_isClusterWritten;
+	bool m_isCMSCorrectionWritten;
 
 	std::string m_rawLocation;
 	std::string m_pedestalLocation;
 	std::string m_cmsLocation;
 	std::string m_clusterLocation;
 	std::string m_headerLocation;
- 
+	std::string m_CMSCorrectionLocation;
+
+
 	NTuple::Array<double> m_rawSignal;
 	NTuple::Array<double> m_header0Signal;
 	NTuple::Array<double> m_header1Signal;
@@ -68,6 +77,9 @@ class NTupleCreator : public GaudiTupleAlg {
 	NTuple::Array<double> m_header3P2Signal;
 	NTuple::Array<double> m_pedestalSignal;
 	NTuple::Array<double> m_cmsSignal;
+	NTuple::Array<double> m_cmsCorrection;
+	NTuple::Array<int> m_cmsUsedChannels;
+
 
 	NTuple::Item<int> m_clusterNumberPerEvent;
 	NTuple::Item<unsigned int> m_tdc;
