@@ -15,7 +15,7 @@ namespace TbUT
         void processEvent(RawData<>* p_data, RawData<double> **p_output);
 
     	std::map<int, double> getCorrectionMap(){
-    		return m_correctionPerBeetle;
+    		return m_cumulcatedCorrectionPerBeetle;
     	}
     	std::map<int, int> getUsedChannelMap(){
     		return m_usedChannelPerBeetle;
@@ -26,7 +26,8 @@ namespace TbUT
         void calculateCorrection(RawData<DATA_TYPE>* p_inputData);
 	template<typename INPUT_DATA_TYPE, typename OUTPUT_TYPE_NAME>
         void removeCM(RawData<INPUT_DATA_TYPE>* p_data, RawData<OUTPUT_TYPE_NAME> **p_output);
-        void resetHitThresholds();
+        void resetMaps();
+        void resetCMSCorrection();
 
         void initializeCorrectionAndHitMaps();
 
@@ -34,6 +35,7 @@ namespace TbUT
         const int m_channelNumber;
         const int m_channelPerBeetle;
     	std::map<int, double> m_correctionPerBeetle;
+    	std::map<int, double> m_cumulcatedCorrectionPerBeetle;
     	std::map<int, int> m_usedChannelPerBeetle;
     	std::map<int, double> m_hitThresholdPerBeetle;
     };

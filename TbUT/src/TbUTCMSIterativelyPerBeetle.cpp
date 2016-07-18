@@ -1,6 +1,7 @@
 #include "TbUTCMSIterativelyPerBeetle.h"
 #include <iostream>
 #include <cmath>
+#include <algorithm>
 
 using namespace TbUT;
 using namespace std;
@@ -20,24 +21,28 @@ void CMSIterativelyPerBeetle::initializeCorrectionAndHitMaps()
 	for (int channel=0;channel<m_channelNumber;channel+=m_channelPerBeetle){
 		m_usedChannelPerBeetle.insert(std::make_pair(channel,0));
 		m_correctionPerBeetle.insert(std::make_pair(channel,0));
+		m_cumulcatedCorrectionPerBeetle.insert(std::make_pair(channel,0));
 		m_hitThresholdPerBeetle.insert(std::make_pair(channel,200));
 	}
 }
 
 void CMSIterativelyPerBeetle::processEvent(RawData<>* p_data, RawData<double> **p_output)
 {
+	resetMaps();
 	int numberOfIteration=2;
 	RawData<double>* tmpData;
 	// first iteration
 	calculateCorrection<int>(p_data);
 	removeCM<int, double>(p_data,p_output);
+    resetCMSCorrection();
+
 	// rest of the iterations
 	for(int iteration=1;iteration<numberOfIteration; iteration++){
 		tmpData=new RawData<double>(**p_output);
 		calculateCorrection<double>(tmpData);
 		removeCM<double, double>(tmpData,p_output);
+	    resetCMSCorrection();
 	}
-	resetHitThresholds();
 }
 
 template<typename DATA_TYPE>
@@ -59,11 +64,12 @@ void CMSIterativelyPerBeetle::calculateCorrection(RawData<DATA_TYPE>* p_inputDat
 		}
 		if(usedChannels) mapIt.second/=static_cast<double>(usedChannels);
 		if(usedChannels) rmsPerBeetle/=static_cast<double>(usedChannels);
-		usedChannelMapIt->second = usedChannels;
+		usedChannelMapIt->second = std::max(usedChannelMapIt->second, usedChannels);
 		usedChannelMapIt++;
 		rmsPerBeetle-=mapIt.second*mapIt.second;
 		double rmsMultiplicity=4;
 		m_hitThresholdPerBeetle[mapIt.first]=rmsMultiplicity*sqrt(rmsPerBeetle);
+		m_cumulcatedCorrectionPerBeetle[mapIt.first]+=mapIt.second;
 	}
 }
 
@@ -86,10 +92,22 @@ void CMSIterativelyPerBeetle::removeCM(RawData<INPUT_DATA_TYPE>* p_data, RawData
 	}
 	 (*p_output)->setTDC(p_data->getTDC());
 	 (*p_output)->setTime(p_data->getTime());
-
 }
 
-void CMSIterativelyPerBeetle::resetHitThresholds()
+void CMSIterativelyPerBeetle::resetMaps()
 {
 	for(auto& mapIt : m_hitThresholdPerBeetle) mapIt.second=200;
+	for(auto& mapIt : m_cumulcatedCorrectionPerBeetle) mapIt.second=0;
+	for(auto& mapIt : m_usedChannelPerBeetle) mapIt.second=0;
 }
+
+void CMSIterativelyPerBeetle::resetCMSCorrection()
+{
+	for(auto& mapIt : m_correctionPerBeetle) mapIt.second=0.;
+
+}
+
+
+
+
+
