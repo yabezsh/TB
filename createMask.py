@@ -1,5 +1,5 @@
 # script to generate a masking file
-
+#test
 import getopt, sys, os
 
 def readExcept(excepFile):
