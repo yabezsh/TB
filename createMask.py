@@ -31,7 +31,7 @@ if __name__=="__main__":
 	print start,"  ",end
 	exeptionList = readExcept(os.environ["KEPLERROOT"]+"/../TbUT/options/UT/exceptions"+boardName+".dat")
 	print exeptionList
-	for i in xrange(1,512):
+	for i in xrange(1,513):
 		if i<start or i>end: outputFile.write("0\n")
 		elif i in exeptionList: outputFile.write("0\n")
 		else: outputFile.write("1\n")
