@@ -1,11 +1,13 @@
 # script to generate a masking file
 
-import getopt, sys
+import getopt, sys, os
 
 def readExcept(excepFile):
-	with open(excepFile) as f:
+	if os.path.exists(excepFile):
+ 	  with open(excepFile) as f:
 		for line in f:
 			int_exception = [int(i) for i in line.split()]
+	else: int_exception = []
 	return int_exception
 
 if __name__=="__main__":
@@ -24,10 +26,10 @@ if __name__=="__main__":
 			end = int(a)
 
 
-	name = "MambaMasks_"+boardName+".dat"
+	name = os.environ["KEPLERROOT"]+"/../TbUT/options/UT/MambaMasks_"+boardName+".dat"
 	outputFile = open(name,"w")
 	print start,"  ",end
-	exeptionList = readExcept("exceptions"+boardName+".dat")
+	exeptionList = readExcept(os.environ["KEPLERROOT"]+"/../TbUT/options/UT/exceptions"+boardName+".dat")
 	print exeptionList
 	for i in xrange(1,512):
 		if i<start or i>end: outputFile.write("0\n")
