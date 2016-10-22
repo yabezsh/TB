@@ -1,6 +1,7 @@
 //#define AnalysisBase_cxx
 #include "AnalysisBase.h"
 
+
 AnalysisBase::AnalysisBase(TTree *tree) : fChain(0) 
 {
 
@@ -66,7 +67,7 @@ AnalysisBase::AnalysisBase(TTree *tree) : fChain(0)
   yInt2[0] = 3.4; yInt2[1] = 4.1;
   yInt3[0] = 1.0; yInt3[1] = 2.3;   
 
-  if(m_board.Contains("A8")){
+  if(m_board == "A8"){
     z_DUT = 1100.0;
     Rz = -0.0286;
     yInt1[0] = 1.8; yInt1[1] = 2.0;
@@ -87,7 +88,7 @@ AnalysisBase::AnalysisBase(TTree *tree) : fChain(0)
       }      
      
     }    
-  }else if( m_board.Contains("A4")){
+  }else if( m_board == "A4"){
     z_DUT = 381.0;     
     Rz = -0.0238;
     if(m_sector=="3" || m_sector=="6") {
@@ -95,7 +96,7 @@ AnalysisBase::AnalysisBase(TTree *tree) : fChain(0)
     }else{
       channelOffset = -128.0;
     }
-  }else if( m_board.Contains("A6")){
+  }else if( m_board == "A6"){
     yInt1[0] = 2.5; yInt1[1] = 3.1;
     yInt2[0] = 3.1; yInt2[1] = 3.7;
     yInt3[0] = 1.0; yInt3[1] = 2.3;
@@ -104,7 +105,7 @@ AnalysisBase::AnalysisBase(TTree *tree) : fChain(0)
     }else{
       channelOffset = -128.0;
     }    
-  }else if( m_board.Contains("A2") || m_board.Contains("A1")){
+  }else if( m_board == "A2" || m_board == "A1"){
     z_DUT = 310;
     yInt1[0] = -5.0; yInt1[1] = -2.0;
     yInt2[0] = -2.0; yInt2[1] = 1.0;
@@ -116,10 +117,16 @@ AnalysisBase::AnalysisBase(TTree *tree) : fChain(0)
     z_DUT = 343;
     if(m_board.Contains("F1") || m_board.Contains("F2")) polarity = 1.0;  //p-in-n
     if(m_board.Contains("F3") || m_board.Contains("F4")) polarity = -1.0;  //n-in-p
+  }else if( m_board.Contains("A3_") || m_board.Contains("A5_") || m_board.Contains("A6_") || m_board.Contains("A10_") || m_board.Contains("A12_") || m_board.Contains("A13_")){
+    z_DUT = 343;
+    polarity = 1.0;  //p-in-n
+  }else if( m_board.Contains("14_HM1") || m_board.Contains("13_HM1") || m_board.Contains("13_HM2") || m_board.Contains("18_HM1") || m_board.Contains("18_HM2") || m_board.Contains("17_HM2")){
+    z_DUT = 343;
+    polarity = -1.0;  //p-in-n
   }
 
   // Board A1 alignment is really messed up for a few runs! ADHOC here!
-  if(m_board.Contains("A1")){// && (m_bias=="300" || m_bias=="350" || m_bias=="150" || m_bias==")){  
+  if(m_board == "A1"){// && (m_bias=="300" || m_bias=="350" || m_bias=="150" || m_bias==")){  
     dxWin = 1.0;
     correctForZRotation = false;
   }
@@ -875,16 +882,16 @@ void AnalysisBase::setCrossTalkCorr(){
   chargeCorrSlopeEven = 0.0;
   cout << "Bias Value = " << m_bias <<  " " << biasVal << endl;
   
-  if(m_board.Contains("A2") && m_sector=="1" && biasVal < 260){
+  if(m_board == "A2" && m_sector=="1" && biasVal < 260){
     chargeCorrSlopeOdd = 0.435;
     chargeCorrSlopeEven = 0.400;
-  }else if(m_board.Contains("A2") && m_sector=="1" && biasVal > 320){
+  }else if(m_board == "A2" && m_sector=="1" && biasVal > 320){
     chargeCorrSlopeOdd = 0.148;
     chargeCorrSlopeEven = 0.094;
-  }else if(m_board.Contains("A2") && m_sector=="1" && biasVal == 300){
+  }else if(m_board == "A2" && m_sector=="1" && biasVal == 300){
     chargeCorrSlopeOdd = 0.130;
     chargeCorrSlopeEven = 0.088;
-  }else if(m_board.Contains("A2") && m_sector=="2"){
+  }else if(m_board == "A2" && m_sector=="2"){
     chargeCorrSlopeOdd = 0.120;
     chargeCorrSlopeEven = 0.085;
   }

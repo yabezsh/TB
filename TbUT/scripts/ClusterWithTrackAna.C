@@ -1765,7 +1765,7 @@ void ClusterWithTrackAna::Loop()
    addGraphics(h1a, 3, "#DeltaX [mm]", "");
    addGraphics(h1b, 6, "#DeltaX [mm]", "");
    h1->GetXaxis()->SetRangeUser(-0.3,0.3);
-   if(m_board.Contains("A1")) h1->GetXaxis()->SetRangeUser(-1.5,1.5);
+   if(m_board == "A1") h1->GetXaxis()->SetRangeUser(-1.5,1.5);
    h1->SetTitle(0);
    h1->SetMaximum(1.2*h1->GetMaximum());
    h1->Draw();   
@@ -1982,7 +1982,7 @@ void ClusterWithTrackAna::Loop()
    //addGraphics(h1a, 3, "#DeltaX [mm]", "");
    //addGraphics(h1b, 6, "#DeltaX [mm]", "");
    //h1->GetXaxis()->SetRangeUser(-0.3,0.3);
-   //if(m_board.Contains("A1")) h1->GetXaxis()->SetRangeUser(-1.5,1.5);
+   //if(m_board == "A1") h1->GetXaxis()->SetRangeUser(-1.5,1.5);
    //h1->SetMaximum(1.2*h1->GetMaximum());
    //h1->Draw();   
    ////h1z->Draw("same");

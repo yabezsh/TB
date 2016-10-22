@@ -670,7 +670,7 @@ void ClusterTrackAnalysis::Loop(){
    addGraphics(h1a, 3, "#DeltaX [mm]", "");
    addGraphics(h1b, 6, "#DeltaX [mm]", "");
    h1->GetXaxis()->SetRangeUser(-0.3,0.3);
-   if(m_board.Contains("A1")) h1->GetXaxis()->SetRangeUser(-1.5,1.5);
+   if(m_board == "A1") h1->GetXaxis()->SetRangeUser(-1.5,1.5);
    h1->SetMaximum(1.2*h1->GetMaximum());
    h1->Draw();   
    //h1z->Draw("same");
@@ -1226,7 +1226,7 @@ TString ClusterTrackAnalysis::getFileBase(TString scan, TString board, TString b
 
   TString tag = "";
 
-  if(board.Contains("A6")){
+  if(board == "A6"){
     if(sector == "1") {
       if ( bias == "300" ) tag = "B6-A-212-8358";
       if ( bias == "250" ) tag = "B6-A-213-8359";
@@ -1276,7 +1276,7 @@ TString ClusterTrackAnalysis::getFileBase(TString scan, TString board, TString b
       if ( bias == "75" )  tag = "B6-A-413-8528";
       if ( bias == "50" )  tag = "B6-A-414-8529";
     }
-  } else if (board.Contains("A4")) {
+  } else if (board == "A4") {
     if(sector == "1") {
       if(bias == "400" ) tag = "B4-A-210-8552";
       if(bias == "350" ) tag = "B4-A-211-8553";
@@ -1339,7 +1339,7 @@ TString ClusterTrackAnalysis::getFileBase(TString scan, TString board, TString b
       if(bias == "50" )  tag = "B4-A-235-8719";
       tag = tag.ReplaceAll("B4","B1");
     }
-  } else if (board.Contains("A8")) {
+  } else if (board == "A8") {
     if(sector == "1"){
       if(bias == "500") tag = "B8-A-296-13332";
       if(bias == "400") tag = "B8-A-297-13333";
@@ -1411,7 +1411,7 @@ TString ClusterTrackAnalysis::getFileBase(TString scan, TString board, TString b
       if(bias == "50")  tag = "B8-A-357-13384";
       tag = tag.ReplaceAll("B8","B1");
     }
-  } else if (board.Contains("D5")) {
+  } else if (board == "D5") {
     if(sector == "1"){
       if(bias == "50") tag = "B5-D-14-13066";
       if(bias == "75") tag = "B5-D-13-13065";
@@ -1479,7 +1479,7 @@ TString ClusterTrackAnalysis::getFileBase(TString scan, TString board, TString b
       if(bias == "400") tag = "B5-D-252-13286";
       if(bias == "500") tag = "B5-D-251-13285";
     }
-  } else if (board.Contains("D7")) {
+  } else if (board == "D7") {
     if(sector == "1"){
       if(bias == "50") tag = "B1-D-347-9360";
       if(bias == "75") tag = "B1-D-346-9359";
@@ -1535,7 +1535,7 @@ TString ClusterTrackAnalysis::getFileBase(TString scan, TString board, TString b
       if(bias == "400") tag = "B1-D-315-9246";
       if(bias == "500") tag = "B1-D-314-9245";
     }
-  } else if (board.Contains("A1")) {
+  } else if (board == "A1") {
     if(sector == "1"){    
       if(bias == "350") tag = "B1-A-1022-13947";
       if(bias == "300") tag = "B1-A-1021-13946";
@@ -1555,7 +1555,7 @@ TString ClusterTrackAnalysis::getFileBase(TString scan, TString board, TString b
       if(bias == "75")  tag = "B1-A-1056-13974";
       if(bias == "50")  tag = "B1-A-1055-13973";
     }    
-  } else if (board.Contains("A2")) {
+  } else if (board == "A2") {
     if(sector == "1"){    
       if(bias == "340") tag = "B2-A-1095-14030";
       if(bias == "325") tag = "B2-A-1094-14029";
