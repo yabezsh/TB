@@ -24,7 +24,12 @@
 
 
 #include <sstream>
-const TString m_fileIndir = TString(getenv("OUTPUTPATH"))+"/"+TString(getenv("BOARD"))+"/"+TString(getenv("RUNPLACE"))+"/output_"+TString(getenv("RUNNUMBER"))+"/";
+
+//if (TString(getenv("RUNPLACE"))==""){
+//	const TString m_fileIndir = TString(getenv("OUTPUTPATH"))+"/"+TString(getenv("BOARD"))+"/output_"+TString(getenv("RUNNUMBER"))+"/";
+//} else{ const TString m_fileIndir = TString(getenv("OUTPUTPATH"))+"/"+TString(getenv("BOARD"))+"/"+TString(getenv("RUNPLACE"))+"/output_"+TString(getenv("RUNNUMBER"))+"/";}
+
+const TString m_fileIndir = TString(getenv("OUTPUTPATH"))+"/"+TString(getenv("BOARD"))+"/output_"+TString(getenv("RUNNUMBER"))+"/";
 const TString m_board   = TString(getenv("BOARD"));
 
 const TString m_runNumb = TString(getenv("DEFRUN"));
@@ -76,3 +81,4 @@ const double k_DeadStrip 				= 0.12;
 
 const double m_minDistFromHole = 0.05;
 const bool removeTracksInHoleDef = false;
+

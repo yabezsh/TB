@@ -103,10 +103,16 @@ class TbUTClusterizator:
         pedestalSubtractor().treningEntry=1
         pedestalMonitor().displayEventNumber=self.eventNumberDisplay
         CMS().ChannelMaskInputLocation= "$KEPLERROOT/../TbUT/options/UT/MambaMasks_$MAMBAMASK.dat"
-        CMS().NoiseOutputFile= os.environ['OUTPUTPATH']+'/'+os.environ['BOARD']+'/'+os.environ['RUNPLACE']+'/output_'+os.environ["RUNNUMBER"]+"/noise_Mamba.dat"
+	if os.environ['RUNPLACE']!="FanIn" and os.environ['RUNPLACE']!="FanUp":        
+		CMS().NoiseOutputFile= os.environ['OUTPUTPATH']+'/'+os.environ['BOARD']+'/output_'+os.environ["RUNNUMBER"]+"/noise_Mamba.dat"
+	else:
+		CMS().NoiseOutputFile= os.environ['OUTPUTPATH']+'/'+os.environ['BOARD']+'/'+os.environ['RUNPLACE']+'/output_'+os.environ["RUNNUMBER"]+"/noise_Mamba.dat"
         CMSMonitor().displayEventNumber=self.eventNumberDisplay
-        ClusterCreator().NoiseInputFile=os.environ['OUTPUTPATH']+'/'+os.environ['BOARD']+'/'+os.environ['RUNPLACE']+'/output_'+os.environ["RUNNUMBER"]+"/noise_Mamba.dat"
-        ClusterCreator().LowThreshold=2.5
+	if os.environ['RUNPLACE']!="FanIn" and os.environ['RUNPLACE']!="FanUp": 
+	        ClusterCreator().NoiseInputFile=os.environ['OUTPUTPATH']+'/'+os.environ['BOARD']+'/output_'+os.environ["RUNNUMBER"]+"/noise_Mamba.dat"
+        else:
+	        ClusterCreator().NoiseInputFile=os.environ['OUTPUTPATH']+'/'+os.environ['BOARD']+'/'+os.environ['RUNPLACE']+'/output_'+os.environ["RUNNUMBER"]+"/noise_Mamba.dat"
+	ClusterCreator().LowThreshold=2.5
         ClusterCreator().HighThreshold=3
         ClusterCreator().sensorType=self.sensorType
         ClusterCreatorMonitor().displayEventNumber=self.eventNumberDisplay

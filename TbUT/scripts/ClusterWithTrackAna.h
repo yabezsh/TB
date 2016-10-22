@@ -61,12 +61,16 @@ ClusterWithTrackAna::ClusterWithTrackAna(int biasVal){
      //   filename = m_fileIndir+"Board"+m_board+"/"+scanType+"_Scan-"+getFileBase("Bias",m_board, m_bias, m_angle,m_sector)+"_Tuple_Tracks.root";  
      cout << "defining file" << endl;
      //filename = "$KEPLERROOT/../TbUT/scripts/AddTrigTracks/out.root";
-
-filename = m_fileIndir+scanType+"_Scan-"+m_board+"-"+runplace+"-"+consR+"-"+m_runNumb+"_Tracks.root";
-
+if(runplace!="FanIn" && runplace!="FanUp"){
+filename = m_fileIndir+scanType+"_Scan-"+runplace+"-"+m_board+"-"+consR+"-"+m_runNumb+"_Tracks.root";
+}
+else{filename = m_fileIndir+scanType+"_Scan-"+m_board+"-"+runplace+"-"+consR+"-"+m_runNumb+"_Tracks.root";}
        if(m_scanType.Contains("Angle")){ 
        scanType = "Run_Angle";
- filename = m_fileIndir+scanType+"_Scan-"+m_board+"-"+runplace+"-"+consR+"-"+m_runNumb+"_Tracks.root";
+if(runplace!="FanIn" && runplace!="FanUp"){ 
+filename = m_fileIndir+scanType+"_Scan-"+runplace+"-"+m_board+"-"+consR+"-"+m_runNumb+"_Tracks.root";
+}
+else{filename = m_fileIndir+scanType+"_Scan-"+m_board+"-"+runplace+"-"+consR+"-"+m_runNumb+"_Tracks.root";}
 //       filename = m_fileIndir+"Board"+m_board+"_Angle/"+scanType+"_Scan-"+getFileBase("Bias",m_board, m_bias, m_angle,m_sector)+"_Tuple_Tracks.root";  
        } 
        // filename="AddTrigTracks/Run_Angle_Scan-M1-FanIn-193-15110_out.root";
