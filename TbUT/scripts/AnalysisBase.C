@@ -1,7 +1,6 @@
 //#define AnalysisBase_cxx
 #include "AnalysisBase.h"
 
-
 AnalysisBase::AnalysisBase(TTree *tree) : fChain(0) 
 {
 
