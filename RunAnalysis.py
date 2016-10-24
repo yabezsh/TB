@@ -73,11 +73,20 @@ def RunAnalysis(board,PA,DUTRun,mode,evts,mask,onlyPlots) :
     print '===================='
     
     # Path to input data.
-    pathToInput = MAMBA+board+'/'+PA+'/'
+    if (testbeam=='October2016'):
+	pathToInput = MAMBA+board+'/'
+    else:
+	pathToInput = MAMBA+board+'/'+PA+'/'
     print 'Path to input: ', pathToInput
 
     # CSV file to be used as input.
-    logbook = 'Logbook/RunLog'+testbeam+'Board'+board+PA+'.csv'
+    if (testbeam=='October2016'):
+	if kazu==1:
+    		logbook = 'Logbook/RunLog'+testbeam+'Board'+board+'KAZU.csv'
+	else:
+		logbook = 'Logbook/RunLog'+testbeam+'Board'+board+'.csv'
+    else:
+	logbook = 'Logbook/RunLog'+testbeam+'Board'+board+PA+'.csv'
     print 'Logbook: ', logbook
 
     logbook_df_san = GetInfoFromLogbook(logbook)
@@ -128,6 +137,14 @@ def RunAnalysis(board,PA,DUTRun,mode,evts,mask,onlyPlots) :
            
         # Assign filenames for physics and pedestal runs.
         for filename in os.listdir(pathToInput) :
+	  if (testbeam=='October2016'):
+		if (fnmatch.fnmatch(filename,'*-'+PA+'-'+board+'-'+str(DUTRun)+'-*.dat')) :
+        	        print 'Filename for physics run:', filename
+                	filenameNoPathPhys = filename
+          	elif (fnmatch.fnmatch(filename,'*-'+PA+'-'+board+'-'+str(ped)+'.dat')) :
+               		print 'Filename for pedestal run:', filename
+                	filenameNoPathPed = filename
+	  else:
             if (fnmatch.fnmatch(filename,'*-'+board+'-'+PA+'-'+str(DUTRun)+'-*.dat')) :
                 print 'Filename for physics run:', filename
                 filenameNoPathPhys = filename
@@ -138,11 +155,17 @@ def RunAnalysis(board,PA,DUTRun,mode,evts,mask,onlyPlots) :
         if (mode == 'batch') :
             # Use qsub
             #command = "qsub -l cput=" + cput + " -v board="+board+",PA="+PA+",DUTRun="+str(DUTRun)+",ped="+str(ped)+",filenameNoPathPhys="+filenameNoPathPhys+    ",filenameNoPathPed="+filenameNoPathPed+" SubmitAnalysis.pbs" # No spaces after ','.
-            if onlyPlots:
-		line_run = "python "+kepler+"/../Analysis_onlyPlots.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
+	    if (testbeam=='October2016'):
+            	if onlyPlots:
+			line_run = "python "+kepler+"/../Analysis_onlyPlots.py -b "+board+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
+	    	else:
+			line_run = "python "+kepler+"/../Analysis.py -b "+board+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
 	    else:
-		line_run = "python "+kepler+"/../Analysis.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
-        
+           	 if onlyPlots:
+               		line_run = "python "+kepler+"/../Analysis_onlyPlots.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
+            	 else:
+                	line_run = "python "+kepler+"/../Analysis.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed        
+
             with open('clusterRun_'+filenameNoPathPhys.split('-')[3]+'.sh','w') as text_file :
                 text_file.write(line_export_path)
                 text_file.write(line_empty)
@@ -160,13 +183,23 @@ def RunAnalysis(board,PA,DUTRun,mode,evts,mask,onlyPlots) :
             subprocess.call(command,shell=True)
             
         elif (mode == 'local') :
+	 if (testbeam=='October2016'):	  
             # Use python directly 
 	    if onlyPlots:            
-		command = "python Analysis_onlyPlots.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
+		command = "python Analysis_onlyPlots.py -b "+board+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
 	    else:
-		command = "python Analysis.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
+		command = "python Analysis.py -b "+board+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
 	    print command
             subprocess.call(command,shell=True)
+	 else:
+            # Use python directly 
+            if onlyPlots:
+                command = "python Analysis_onlyPlots.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
+            else:
+                command = "python Analysis.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed
+            print command
+            subprocess.call(command,shell=True)
+  
 
     return
 
@@ -188,6 +221,7 @@ if __name__ == "__main__" :
     parser.add_argument('--evts',required=False,type=int,help='evts')
     parser.add_argument('--mask',required=False,type=int,choices=[0,1],help='mask')
     parser.add_argument('--onlyPlots',required=False,type=int,choices=[0,1],help='onlyPlots')
+    parser.add_argument('--KAZU',required=False,type=int,choices=[0,1],help='KAZU')
     
     args = parser.parse_args()
 
@@ -196,6 +230,7 @@ if __name__ == "__main__" :
     PA = args.PA
     DUTRun = args.DUTRun
     mode = args.mode
+    kazu = args.KAZU
     if args.evts is None :
         evts = -1
     else :
