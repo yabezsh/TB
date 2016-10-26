@@ -1,0 +1,78 @@
+BOARD A6_LOWER,FANIN,Bias,DUT Run #,Kepler Run #,Stage,Stage,Stage,Bias,Current,Temp,RH,Online Flag,Offline Flag,Note,,,,,,,,
+Sector,Purpose,,Run #,Run #,X (mm),Y (mm),Rot (deg),(V),(uA),( C ),(%),(Good/Bad),(Good/Bad),,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,
+1,Bias Scan,Top,1745,19119,63,7,0,50,11.6,-1.9,1.1,Good,,,,,,,,,,
+1,Pedestal,Top,1746,-,63,7,0,50,11.6,-1.9,1.1,Good,,,,,,,,,,
+1,Bias Scan,Top,1747,19120,63,7,0,100,16.5,-1.9,1.1,Good,,,,,,,,,,
+1,Pedestal,Top,1748,-,63,7,0,100,16.5,-1.9,1.1,Good,,,,,,,,,,
+1,Calibration,Top,1749,-,63,7,0,100,16.5,-1.9,1.1,Good,,,,,,,,,,
+1,Bias Scan,Top,1750,19121,63,7,0,150,19.6,-1.9,1,Good,,,,,,,,,,
+1,Pedestal,Top,1751,-,63,7,0,150,19.6,-1.9,1,Good,,,,,,,,,,
+1,Bias Scan,Top,1752,19122,63,7,0,200,21.1,-1.9,1,Good,,,,,,,,,,
+1,Pedestal,Top,1753,-,63,7,0,200,21.1,-1.9,1,Good,,,,,,,,,,
+1,Calibration,Top,1754,-,63,7,0,200,21.1,-1.9,1,Good,,,,,,,,,,
+1,Bias Scan,Top,1755,19123,63,7,0,250,21.8,-1.9,1,Good,,,,,,,,,,
+1,Pedestal,Top,1756,-,63,7,0,250,21.8,-1.9,1,Good,,,,,,,,,,
+1,Bias Scan,Top,1757,19124,63,7,0,300,22.3,-1.9,1,Good,,,,,,,,,,
+1,Pedestal,Top,1758,-,63,7,0,300,22.3,-1.9,1,Good,,,,,,,,,,
+1,Calibration,Top,1759,-,63,7,0,300,22.3,-1.9,1,Good,,,,,,,,,,
+1,Bias Scan,Top,1760,19125,63,7,0,350,22.7,-1.9,1,Good,,,,,,,,,,
+1,Pedestal,Top,1761,-,63,7,0,350,22.7,-1.9,1,Good,,,,,,,,,,
+1,Bias Scan,Top,1762,19126,63,7,0,400,23.2,-1.9,1,Good,,,,,,,,,,
+1,Pedestal,Top,1763,-,63,7,0,400,23.2,-1.9,1,Good,,,,,,,,,,
+1,Calibration,Top,1764,-,63,7,0,400,23.2,-1.9,1,Good,,,,,,,,,,
+1,Bias Scan,Top,1765,19127,63,7,0,500,24.4,-2,0.9,Good,,Do these after all other runs are done,,,,,,,,
+1,Pedestal,Top,1766,-,63,7,0,500,24.4,-2,0.9,Good,,,,,,,,,,
+1,Calibration,Top,1767,-,63,7,0,500,24.4,-2,0.9,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,
+1,Angle,Top,1768,19128,63,7,0,300,22.3,-2,0.9,Good,,at FD voltage + 50 V,,,,,,,,
+1,Pedestal,Top,1769,-,63,7,0,300,22.3,-2,0.8,Good,,,,,,,,,,
+1,Angle,Top,1770,19129,63,7,5,300,22.3,-2,0.8,Good,,,,,,,,,,
+1,Pedestal,Top,1771,-,63,7,5,300,22.3,-2,0.8,Good,,,,,,,,,,
+1,Angle,Top,1772,19130,63,7,10,300,22.3,-2,0.8,Good,,,,,,,,,,
+1,Pedestal,Top,1773,-,63,7,10,300,22.3,-2,0.8,Good,,,,,,,,,,
+1,Angle,Top,1774,19131,63,7,20,300,22.2,-2,0.8,Good,,,,,,,,,,
+1,Pedestal,Top,1775,-,63,7,20,300,22.2,-2,0.8,Good,,,,,,,,,,
+1,Angle,Top,1776,19132,63,7,-10,300,22.1,-2,0.8,Good,,,,,,,,,,
+1,Pedestal,Top,1777,,63,7,-10,300,22.1,-2,0.8,Good,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,
+2,Bias Scan,Top,1778,19133,70,7,0,50,11.4,-2,0.8,Good,,,"Files saved with wrong board name, need to change",,,,Check angles on these,,,Fixed NOW
+2,Pedestal,Top,1779,-,70,7,0,50,11.4,-2,0.8,Good,,,"Files saved with wrong board name, need to change",,,,Check angles on these,,,Fixed NOW
+2,Bias Scan,Top,1780,19134,70,7,0,100,16.2,-2,0.8,Good,,,"Files saved with wrong board name, need to change",,,,Check angles on these,,,Fixed NOW
+2,Pedestal,Top,1781,-,70,7,0,100,16.2,-2,0.8,Good,,,"Files saved with wrong board name, need to change",,,,Check angles on these,,,Fixed NOW
+2,Calibration,Top,1782,-,70,7,0,100,16.2,-2,0.8,Good,,,"Files saved with wrong board name, need to change",,,,Check angles on these,,,Fixed NOW
+2,Bias Scan,Top,1783,19135,70,7,0,150,19.3,-2,0.8,Good,,,"Files saved with wrong board name, need to change",,,,Check angles on these,,,Fixed NOW
+2,Pedestal,Top,1784,-,70,7,0,150,19.4,-2,0.8,Good,,,"Files saved with wrong board name, need to change",,,,Check angles on these,,,Fixed NOW
+2,Bias Scan,Top,1785,19136,70,7,0,200,20.9,-2,0.8,Good,,,"Files saved with wrong board name, need to change",,,,Check angles on these,,,Fixed NOW
+2,Pedestal,Top,1786,-,70,7,0,200,20.9,-2,0.8,Good,,,"Files saved with wrong board name, need to change",,,,Check angles on these,,,Fixed NOW
+2,Calibration,Top,1787,-,70,7,0,200,20.9,-2,0.8,Good,,,"Files saved with wrong board name, need to change",,,,Check angles on these,,,Fixed NOW
+2,Bias Scan,Top,1788,19137,70,7,0,250,21.6,-2,0.8,Good,,,"Files saved with wrong board name, need to change",,,,Check angles on these,,,Fixed NOW
+2,Pedestal,Top,1789,-,70,7,0,250,21.6,-2,0.8,Good,,,"Files saved with wrong board name, need to change",,,,Check angles on these,,,Fixed NOW
+2,Bias Scan,Top,1791,19138,70,7,0,300,22,-2,0.8,Good,,"Accidently did pedestal first, run numbers are switched for these two","Files saved with wrong board name, need to change",,,,Check angles on these,,,Fixed NOW
+2,Pedestal,Top,1790,-,70,7,0,300,22,-2,0.8,Good,,"Accidently did pedestal first, run numbers are switched for these two","Files saved with wrong board name, need to change",,,,Check angles on these,,,Fixed NOW
+2,Calibration,Top,1792,-,70,7,0,300,22.1,-2,0.8,Good,,,"Files saved with wrong board name, need to change",,,,Check angles on these,,,Fixed NOW
+2,Bias Scan,Top,1793,19139,70,7,0,350,22.5,-2,0.8,Good,,,"Files saved with wrong board name, need to change",,,,Check angles on these,,,Fixed NOW
+2,Pedestal,Top,1794,-,70,7,0,350,22.5,-2,0.8,Good,,,"Files saved with wrong board name, need to change",,,,Check angles on these,,,Fixed NOW
+2,Bias Scan,Top,1795,19140,70,7,0,400,23,-2,0.8,Good,,,,,,,Check angles on these,,,Fixed NOW
+2,Pedestal,Top,1796,-,70,7,0,400,23,-2,0.8,Good,,,,,,,Check angles on these,,,Fixed NOW
+2,Calibration,Top,1797,-,70,7,0,400,23,-2,0.8,Good,,,,,,,Check angles on these,,,Fixed NOW
+2,Bias Scan,Top,1798,19141,70,7,0,500,24.2,-2,0.8,Good,,Do these after all other runs are done,,,,,Check angles on these,,,Fixed NOW
+2,Pedestal,Top,1799,-,70,7,0,500,24.2,-2,0.8,Good,,,,,,,Check angles on these,,,Fixed NOW
+2,Calibration,Top,1780,-,70,7,0,500,24.2,-2,0.8,Good,,,,,,,Check angles on these,,,Fixed NOW
+,,,,,,,,,,,,,,,,,,,,,,
+2,Test,,1803,19144,,,,300,,,,,,test readout,,,,,,,,
+2,Pedestal,,1804,,,,,300,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,
+2,Angle,Top,1806,19146,70,7,0,300,25,-1.6,2,Good,,at FD voltage + 50 V,,,,,,,,
+2,Pedestal,Top,1807,,70,7,0,300,25,-1.6,2,Good,,,,,,,,,,
+2,Angle,Top,1808,19147,70,7,5,300,25,-1.6,2,Good,,,,,,,,,,
+2,Pedestal,Top,1809,,70,7,5,300,25,-1.6,2,Good,,,,,,,,,,
+2,Angle,Top,1810,19148,70,7,10,300,25,-1.5,1.6,Good,,,,,,,,,,
+2,Pedestal,Top,1811,,70,7,10,300,25,-1.5,1.6,Good,,,,,,,,,,
+2,Angle,Top,1812,19149,70,7,20,300,25,-1.5,1.6,Good,,,,,,,,,,
+2,Pedestal,Top,1813,,70,7,20,300,25,-1.5,1.6,Good,,,,,,,,,,
+2,Angle,Top,1814,19150,70,7,-10,300,25,-1.5,1.6,Good,,,,,,,,,,
+2,Pedestal,Top,1815,,70,7,-10,300,25,-1.5,1.6,Good,,,,,,,,,,

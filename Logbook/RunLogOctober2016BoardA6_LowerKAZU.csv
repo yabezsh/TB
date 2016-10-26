@@ -1,0 +1,34 @@
+BOARD A6_LOWER,FANIN,Bias,DUT Run #,Kepler Run #,Stage,Stage,Stage,Bias,Current,Temp,RH,Online Flag,Offline Flag,Note,
+Sector,Purpose,,Run #,Run #,X (mm),Y (mm),Rot (deg),(V),(uA),( C ),(%),(Good/Bad),(Good/Bad),,
+1,Bias,Top,1899,19188,64,7,0,100,18,-1.4,1,Good,,,Taken at unknown angle ¬20deg
+1,Pedestal,Top,1900,,64,7,0,100,18,-1.4,1,Good,,,Taken at unknown angle ¬20deg
+1,Bias,Top,1902,19189,64,7,0,200,25,-1.4,1,Good,,,Taken at unknown angle ¬20deg
+1,Pedestal,Top,1903,,64,7,0,200,25,-1.4,1,Good,,,Taken at unknown angle ¬20deg
+1,Bias,Top,1904,19190,64,7,0,300,26,-1.4,1,Good,,,Taken at unknown angle ¬20deg
+1,Pedestal,Top,1905,,64,7,0,300,26,-1.4,1,Good,,,Taken at unknown angle ¬20deg
+1,Bias,Top,1906,19191,64,7,0,400,27,-1.4,1,Good,,,Taken at unknown angle ¬20deg
+1,Pedestal,Top,1907,,64,7,0,400,27,-1.4,1,Good,,,Taken at unknown angle ¬20deg
+2,Bias,Top,1914,19195,70,7,0,100,18,-1.4,1.1,Good,,,Taken at unknown angle ¬20deg
+2,Pedestal,Top,1915,,70,7,0,100,18,-1.4,1.1,Good,,,Taken at unknown angle ¬20deg
+2,Bias,Top,1912,19194,70,7,0,200,24,-1.4,1.1,Good,,,Taken at unknown angle ¬20deg
+2,Pedestal,Top,1913,,70,7,0,200,24,-1.4,1.1,Good,,,Taken at unknown angle ¬20deg
+2,Bias,Top,1910,19193,70,7,0,300,26,-1.4,1.1,Good,,,Taken at unknown angle ¬20deg
+2,Pedestal,Top,1911,,70,7,0,300,26,-1.4,1.1,Good,,,Taken at unknown angle ¬20deg
+2,Bias,Top,1908,19192,70,7,0,400,27,-1.4,1,Good,,,Taken at unknown angle ¬20deg
+2,Pedestal,Top,1909,,70,7,0,400,27,-1.4,1,Good,,,Taken at unknown angle ¬20deg
+1,Bias,Top,1916,19196,63,7,0,100,19.3,-1.2,0.9,Good,,,
+1,Pedestal,Top,1917,-,63,7,0,100,19.3,-1.2,0.9,Good,,,
+1,Bias,Top,1918,19197,63,7,0,200,24.4,-1.2,0.9,Good,,,
+1,Pedestal,Top,1919,-,63,7,0,200,24.4,-1.2,0.9,Good,,,
+1,Bias,Top,1920,19198,63,7,0,300,25.6,-1.3,0.9,Good,,,
+1,Pedestal,Top,1921,-,63,7,0,300,25.6,-1.3,0.9,Good,,,
+1,Bias,Top,1922,19199,63,7,0,400,26.6,-1.3,0.9,Good,,,
+1,Pedestal,Top,1923,-,63,7,0,400,26.6,-1.3,0.9,Good,,,
+2,Bias,Top,1924,19200,70,7,0,100,19,-1.3,1,Good,,,
+2,Pedestal,Top,1925,-,70,7,0,100,19,-1.3,1,Good,,,
+2,Bias,Top,1926,19201,70,7,0,200,24.4,-1.3,1,Good,,,
+2,Pedestal,Top,1927,-,70,7,0,200,24.4,-1.3,1,Good,,,
+2,Bias,Top,1928,19202,70,7,0,300,25.8,-1.3,1,Good,,,
+2,Pedestal,Top,1929,-,70,7,0,300,25.8,-1.3,1,Good,,,
+2,Bias,Top,1931,19203,70,7,0,400,26.8,-1.3,1,Good,,,
+2,Pedestal,Top,1932,-,70,7,0,400,26.8,-1.3,1,Good,,,
