@@ -44,7 +44,6 @@ if __name__=="__main__":
 
 
 #telescopePath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/May2016/TimePix/RootFiles"
-
 telescopePath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/October2016/TelescopeFiles/RootFiles"
 
 if boardName=="M1" or boardName=="M3" or boardName=="M4":
@@ -61,13 +60,8 @@ else:
 #	sys.exit("Input files location is definded for a testbeam in the May 2016. Please go to Analysis.py and change inputPathPedestal and inputPathSignal")
 
 #outputPath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/May2016/DQMTest"
-#outputPath = "/afs/cern.ch/work/i/ibezshyi/public/TESTBEAM/testDel/KeplerDev_v3r0/Tb/output"
 outputPath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/October2016/DQMTest"
 
-#inputFilePedestal = inputPathPedestal+"/"+boardName+"/"+PA+"/"+pedFile
-#inputFileSignal = inputPathSignal+"/"+boardName+"/"+PA+"/"+sigFile
-#print "Input pedestal file:	"+inputFilePedestal
-#print "Input signal file:     "+inputFileSignal
 subprocess.call('source /afs/cern.ch/project/eos/installation/lhcb/etc/setup.sh',shell=True)
 subprocess.call('/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select -b fuse mount $KEPLERROOT/eos_'+str(sigFile.split('-')[3]),shell=True)
 
@@ -104,29 +98,9 @@ else: os.environ['MAMBAMASK'] = os.environ['BOARD']
 
 shFile = open(os.environ["KEPLERROOT"]+"/../run_"+os.environ["RUNNUMBER"]+".sh","w")
 shFile.write('#!/bin/bash\n')
-#shFile.write('cd $KEPLERROOT/../TbUT\n')
-#if PA=="":
-#	shFile.write('python options/TbUTPedestal_conf.py -f '+inputFilePedestal+" -p "+outputPath+'/'+boardName+'/output_'+os.environ["RUNNUMBER"]+"\n")
-#else:
-#        shFile.write('python options/TbUTPedestal_conf.py -f '+inputFilePedestal+" -p "+outputPath+'/'+boardName+'/'+PA+'/output_'+os.environ["RUNNUMBER"]+"\n")
-#if PA=="":
-#	shFile.write('python options/TbUTRun_conf.py -f '+inputFileSignal+" -p "+outputPath+'/'+boardName+'/output_'+os.environ["RUNNUMBER"]+"\n")
-#	shFile.write('mkdir -p '+outputPath+'/'+boardName+'/output_'+os.environ["RUNNUMBER"]+'\n')
-#	shFile.write('cd '+outputPath+'/'+boardName+'/output_'+os.environ["RUNNUMBER"]+'\n')
-#	shFile.write('echo "1 2 3 4" >>' +outputPath+'/'+boardName+'/output_'+os.environ["RUNNUMBER"]+'/noise_Mamba.dat\n')
-#else:
-#	shFile.write('python options/TbUTRun_conf.py -f '+inputFileSignal+" -p "+outputPath+'/'+boardName+'/'+PA+'/output_'+os.environ["RUNNUMBER"]+"\n")
-#	shFile.write('mkdir -p '+outputPath+'/'+boardName+'/'+PA+'/output_'+os.environ["RUNNUMBER"]+'\n')
-#	shFile.write('cd '+outputPath+'/'+boardName+'/'+PA+'/output_'+os.environ["RUNNUMBER"]+'\n')
-#	shFile.write('echo "1 2 3 4" >>' +outputPath+'/'+boardName+'/'+PA+'/output_'+os.environ["RUNNUMBER"]+'/noise_Mamba.dat\n')
-
-#shFile.write('gaudirun.py $KEPLERROOT/../TbUT/options/TbUTPedestal_'+os.environ["RUNNUMBER"]+'.py\n')
-#shFile.write('gaudirun.py $KEPLERROOT/../TbUT/options/TbUTRun_'+os.environ["RUNNUMBER"]+'.py\n')
-#shFile.write('gaudirun.py $KEPLERROOT/../TbUT/options/TbUTRun_'+os.environ["RUNNUMBER"]+'.py\n')
-
-
 shFile.write('. LbLogin.sh -c x86_64-slc6-gcc48-opt\n')
 shFile.write('. SetupProject.sh LHCb v36r2\n')
+# TODO: It is needed to move away tracking from here!!! keep it because we produce files without kepler files initialy
 shFile.write('cd '+os.environ["KEPLERROOT"]+'/../TbUT/scripts/AddTrigTracks\n')
 shFile.write('make\n')
 if PA=="":
@@ -141,8 +115,6 @@ if PA=="":
 	shFile.write('\nmkdir -p '+outputPath+'/'+boardName+'/output_'+os.environ["RUNNUMBER"]+'/Plots')
 else:
         shFile.write('\nmkdir -p '+outputPath+'/'+boardName+'/'+PA+'/output_'+os.environ["RUNNUMBER"]+'/Plots')
-print "before line IARO   ", os.environ["KEPLERROOT"]+'/../TbUT/scripts/AddTrigTracks/combDUTwithTrack -i '+sigFile[:-4]+'_Tuple.root -t '+telescopePath+'/Run'+sigFile.split('-')[4][:-4]+'/Kepler-tuple.root -n '+sigFile[:-4]+'.root -o '+sigFile[:-4]+'_Tracks.root\n'
-
 shFile.write('\nroot -b -q '+os.environ["KEPLERROOT"]+'/../TbUT/scripts/runClusterWithTrackAna.C')
 shFile.close()
 subprocess.call("chmod +x "+os.environ["KEPLERROOT"]+"/../run_"+os.environ["RUNNUMBER"]+".sh",shell=True)

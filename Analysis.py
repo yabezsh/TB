@@ -44,8 +44,7 @@ if __name__=="__main__":
 
 
 #telescopePath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/May2016/TimePix/RootFiles"
-
-telescopePath = "/afs/cern.ch/work/i/ibezshyi/public/TESTBEAM/testDel/KeplerDev_v3r0/Tb/output/TELES"
+telescopePath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/October2016/TelescopeFiles/RootFiles"
 
 if boardName=="M1" or boardName=="M3" or boardName=="M4":
 	inputPathPedestal = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/May2016/MAMBA"
@@ -61,11 +60,8 @@ else:
 #	sys.exit("Input files location is definded for a testbeam in the May 2016. Please go to Analysis.py and change inputPathPedestal and inputPathSignal")
 
 #outputPath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/May2016/DQMTest"
-outputPath = "/afs/cern.ch/work/i/ibezshyi/public/TESTBEAM/testDel/KeplerDev_v3r0/Tb/output"
-inputFilePedestal = inputPathPedestal+"/"+boardName+"/"+PA+"/"+pedFile
-inputFileSignal = inputPathSignal+"/"+boardName+"/"+PA+"/"+sigFile
-print "Input pedestal file:	"+inputFilePedestal
-print "Input signal file:     "+inputFileSignal
+outputPath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/October2016/DQMTest"
+
 subprocess.call('source /afs/cern.ch/project/eos/installation/lhcb/etc/setup.sh',shell=True)
 subprocess.call('/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select -b fuse mount $KEPLERROOT/eos_'+str(sigFile.split('-')[3]),shell=True)
 
@@ -79,6 +75,9 @@ if boardName=="M1" or boardName=="M2" or boardName=="M3" or boardName=="M4" or b
 	os.environ['PEDESTALNUMBER'] = pedFile.split('-')[3][:-4]
 	os.environ['OUTPUTPATH'] = outputPath
 	os.environ['EVENTSNUMBER'] = NEvents
+	inputFilePedestal = inputPathPedestal+"/"+boardName+"/"+PA+"/"+pedFile
+	inputFileSignal = inputPathSignal+"/"+boardName+"/"+PA+"/"+sigFile
+
 else:
         os.environ['OUTPUTFILE'] = sigFile.split('-')[4][:-4]
         os.environ['BOARD'] = sigFile.split('-')[2]
@@ -89,7 +88,10 @@ else:
         os.environ['PEDESTALNUMBER'] = pedFile.split('-')[3][:-4]
         os.environ['OUTPUTPATH'] = outputPath
         os.environ['EVENTSNUMBER'] = NEvents
-
+	inputFilePedestal = inputPathPedestal+"/"+boardName+"/"+pedFile
+	inputFileSignal = inputPathSignal+"/"+boardName+"/"+sigFile
+print "Input pedestal file:     "+inputFilePedestal
+print "Input signal file:     "+inputFileSignal
 
 if mask == 0: os.environ['MAMBAMASK'] = 'No'
 else: os.environ['MAMBAMASK'] = os.environ['BOARD']
@@ -131,8 +133,6 @@ if PA=="":
 	shFile.write('\nmkdir -p '+outputPath+'/'+boardName+'/output_'+os.environ["RUNNUMBER"]+'/Plots')
 else:
         shFile.write('\nmkdir -p '+outputPath+'/'+boardName+'/'+PA+'/output_'+os.environ["RUNNUMBER"]+'/Plots')
-print "before line IARO   ", os.environ["KEPLERROOT"]+'/../TbUT/scripts/AddTrigTracks/combDUTwithTrack -i '+sigFile[:-4]+'_Tuple.root -t '+telescopePath+'/Run'+sigFile.split('-')[4][:-4]+'/Kepler-tuple.root -n '+sigFile[:-4]+'.root -o '+sigFile[:-4]+'_Tracks.root\n'
-
 shFile.write('\nroot -b -q '+os.environ["KEPLERROOT"]+'/../TbUT/scripts/runClusterWithTrackAna.C')
 shFile.close()
 subprocess.call("chmod +x "+os.environ["KEPLERROOT"]+"/../run_"+os.environ["RUNNUMBER"]+".sh",shell=True)
