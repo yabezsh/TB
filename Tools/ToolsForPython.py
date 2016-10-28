@@ -57,7 +57,7 @@ def AssociatePed(df,DUTRun) :
     print 'Rotation (deg):', rotation
     print 'Bias voltage (V):', biasVoltage
    
-    rowPed = df.loc[(df['Biasing scheme'] == biasingScheme) & (df['Bias voltage (V)'] == biasVoltage) & (df['Purpose'] == 'Pedestal')]
+    rowPed = df.loc[(df['Biasing scheme'] == biasingScheme) & (df['Bias voltage (V)'] == biasVoltage) & (df['Purpose'] == 'Pedestal') & (df['Sector'] == sector) & (df['x (mm)'] == x) & (df['y (mm)'] == y)]
     rowPed_i = rowPed.index.tolist()
 
     # !!! What if there's no corresponding pedestal with same biasing scheme?
