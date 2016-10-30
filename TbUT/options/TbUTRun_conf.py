@@ -23,7 +23,11 @@ if __name__=="__main__":
         fileS.write("app.isAType=False\n")
         fileS.write("app.sensorType = '"+os.environ['sensorType']+"'\n")
 	fileS.write("app.eventMax ="+os.environ['EVENTSNUMBER']+"\n")
-	fileS.write('app.pedestalInputData = "'+outputPath+'/Pedestal-'+os.environ["BOARD"]+'-'+os.environ["RUNPLACE"]+'-'+os.environ["PEDESTALNUMBER"]+'.dat"\n')
+	if os.environ['BOARD']=="M1" or os.environ['BOARD']=="M2" or os.environ['BOARD']=="M3" or os.environ['BOARD']=="M4" or os.environ['BOARD']=="F1" or os.environ['BOARD']=="F3":
+		fileS.write('app.pedestalInputData = "'+outputPath+'/Pedestal-'+os.environ["BOARD"]+'-'+os.environ["RUNPLACE"]+'-'+os.environ["PEDESTALNUMBER"]+'.dat"\n')
+	else:		
+		fileS.write('app.pedestalInputData = "'+outputPath+'/Pedestal-'+os.environ["RUNPLACE"]+'-'+os.environ["BOARD"]+'-'+os.environ["PEDESTALNUMBER"]+'.dat"\n')
+	#fileS.write('app.pedestalInputData = "'+outputPath+'/Pedestal-'+os.environ["BOARD"]+'-'+os.environ["RUNPLACE"]+'-'+os.environ["PEDESTALNUMBER"]+'.dat"\n')
 	fileS.write('app.eventNumberDisplay = 100\n')
 	fileS.write('app.runClusterization()\n')
         fileS.close()
