@@ -27,7 +27,6 @@ if __name__=="__main__":
 		fileS.write('app.pedestalInputData = "'+outputPath+'/Pedestal-'+os.environ["BOARD"]+'-'+os.environ["RUNPLACE"]+'-'+os.environ["PEDESTALNUMBER"]+'.dat"\n')
 	else:		
 		fileS.write('app.pedestalInputData = "'+outputPath+'/Pedestal-'+os.environ["RUNPLACE"]+'-'+os.environ["BOARD"]+'-'+os.environ["PEDESTALNUMBER"]+'.dat"\n')
-	#fileS.write('app.pedestalInputData = "'+outputPath+'/Pedestal-'+os.environ["BOARD"]+'-'+os.environ["RUNPLACE"]+'-'+os.environ["PEDESTALNUMBER"]+'.dat"\n')
 	fileS.write('app.eventNumberDisplay = 100\n')
 	fileS.write('app.runClusterization()\n')
         fileS.close()
