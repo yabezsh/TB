@@ -775,22 +775,22 @@ void ClusterWithTrackAna::Loop()
    
 
 
-   TH1F* hcAll = new TH1F("hcAll","Cluster charge",100,0.0,1000.0);
-   TH1F* hcTrk = new TH1F("hcTrk","Cluster charge",100,0.0,1000.0);
-   TH1F* hcTrkCorr = new TH1F("hcTrkCorr","Cluster charge",100,0.0,1000.0);
-   TH1F* hcTrkSeed = new TH1F("hcTrkSeed","Cluster charge",100,0.0,1000.0);
-   TH1F* hcTrkSeed1 = new TH1F("hcTrkSeed1","Cluster charge",100,0.0,1000.0);
-   TH1F* hcTrkSeed2 = new TH1F("hcTrkSeed2","Cluster charge",100,0.0,1000.0);
+   TH1F* hcAll = new TH1F("hcAll","Cluster charge",200,0.0,2000.0);
+   TH1F* hcTrk = new TH1F("hcTrk","Cluster charge",200,0.0,2000.0);
+   TH1F* hcTrkCorr = new TH1F("hcTrkCorr","Cluster charge",200,0.0,2000.0);
+   TH1F* hcTrkSeed = new TH1F("hcTrkSeed","Cluster charge",200,0.0,2000.0);
+   TH1F* hcTrkSeed1 = new TH1F("hcTrkSeed1","Cluster charge",200,0.0,2000.0);
+   TH1F* hcTrkSeed2 = new TH1F("hcTrkSeed2","Cluster charge",200,0.0,2000.0);
    //TH1F* hcTrkY1 = new TH1F("hcTrkY1","Cluster charge",100,0.0,1000.0);
    //TH1F* hcTrkY2 = new TH1F("hcTrkY2","Cluster charge",100,0.0,1000.0);
    //TH1F* hcTrkY3 = new TH1F("hcTrkY3","Cluster charge",100,0.0,1000.0);
    //TH1F* hcTrkY4 = new TH1F("hcTrkY4","Cluster charge",100,0.0,1000.0);
-   TH1F* hcTrkNoTop = new TH1F("hcTrkNoTop","Cluster charge",100,0.0,1000.0);
-   TH1F* hcTrkLowX = new TH1F("hcTrkLowX","Cluster charge",100,0.0,1000.0);
-   TH1F* hcTrkHighX = new TH1F("hcTrkHighX","Cluster charge",100,0.0,1000.0);
-   TH1F* hcTrka = new TH1F("hcTrka","Cluster charge, limited region",100,0.0,1000.0);
-   TH1F* hcTrk1 = new TH1F("hcTrk1","Cluster charge, Size = 1",100,0.0,1000.0);
-   TH1F* hcTrk2 = new TH1F("hcTrk2","Cluster charge, Size = 2",100,0.0,1000.0);
+   TH1F* hcTrkNoTop = new TH1F("hcTrkNoTop","Cluster charge",200,0.0,2000.0);
+   TH1F* hcTrkLowX = new TH1F("hcTrkLowX","Cluster charge",200,0.0,2000.0);
+   TH1F* hcTrkHighX = new TH1F("hcTrkHighX","Cluster charge",200,0.0,2000.0);
+   TH1F* hcTrka = new TH1F("hcTrka","Cluster charge, limited region",200,0.0,2000.0);
+   TH1F* hcTrk1 = new TH1F("hcTrk1","Cluster charge, Size = 1",200,0.0,2000.0);
+   TH1F* hcTrk2 = new TH1F("hcTrk2","Cluster charge, Size = 2",200,0.0,2000.0);
    TProfile *h2p = new TProfile("h2p","Cluster Charge vs TDC time",12,0,12,100,1000);
 
 
