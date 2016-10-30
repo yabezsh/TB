@@ -33,6 +33,7 @@ const TString m_fileIndir = TString(getenv("OUTPUTPATH"))+"/"+TString(getenv("BO
 const TString m_board   = TString(getenv("BOARD"));
 
 const TString m_runNumb = TString(getenv("DEFRUN"));
+const TString maskFile = TString(getenv("KEPLERROOT"))+"/../TbUT/options/UT/MambaMasks_"+m_board+".dat";
 //--------------------------------------------------------------------------------------
 const TString runplace = TString(getenv("RUNPLACE"));
 const TString consR = TString(getenv("RUNNUMBER"));
