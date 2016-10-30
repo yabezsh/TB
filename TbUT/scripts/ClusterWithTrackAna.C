@@ -602,12 +602,12 @@ void ClusterWithTrackAna::Loop()
    //   TH2F* h_eff_xy = new TH2F("h_eff_xy","Efficiency vs. position",100,-8,8,100,-8,8);
 
     // channel range
-    cout << channel_low << endl;
-    cout << channel_hi << endl;
-    int chHi = channel_hi+10;
-    int chLow= channel_low-10;
-    int nbins=chHi-chLow;
-
+   //cout << channel_low << endl;
+   //cout << channel_hi << endl;
+   //int chHi = channel_hi+10;
+   //int chLow= channel_low-10;
+   //int nbins=chHi-chLow;
+   
    TH1F* h0 = new TH1F("h0","#DeltaX between strip hit and track projection (strips)",80,-20.,20.); // Distribution of the delta x between the position of the cluster and the position of the strip expected based on the track information. Distribution not centered in zero and/or not symmetric if the alignment is not properly done.
    TH1F* h1 = new TH1F("h1","#DeltaX",1600,-4.0,4.0);
    TH2F* h1vsx = new TH2F("h1vsx","#DeltaX vs X",50,-5,5,100,-0.2,0.2);
@@ -658,7 +658,7 @@ void ClusterWithTrackAna::Loop()
    TH1F* h6d = new TH1F("h6d","Y position of matched cluster",400,-10.0,10.0);
 
    TProfile *h8 = new TProfile("h8","#DeltaX vs #theta_{trk}",50,-5,5,-1.0,1.0);
-   TProfile *h8b = new TProfile("h8","#DeltaX vs #theta_{trk}",50,-5,5,-1.0,1.0);
+   TProfile *h8b = new TProfile("h8b","#DeltaX vs #theta_{trk}",50,-5,5,-1.0,1.0);
    TProfile *h9 = new TProfile("h9","#DeltaX vs Y_{trk} at DUT",25,-6,6,-1.0,1.0);
    TProfile *h9a = new TProfile("h9a","#DeltaX vs X_{trk} at DUT",25,-6,6,-1.0,1.0);
 
@@ -833,7 +833,7 @@ void ClusterWithTrackAna::Loop()
    tree->SetBranchAddress("clustersSeedCharge", clustersSeedCharge);
    tree->SetBranchAddress("SNR",SNR);
 */
- TMatrixD alpha(512,512);
+   TMatrixD alpha(512,512);
    for(int i=0; i<nChan; i++){
      hnoisePerChannel->Fill(i+0.5,noise[i]);
   }
@@ -894,6 +894,17 @@ void ClusterWithTrackAna::Loop()
         
         transformTrackToDUTFrame(k, x_trk, y_trk, nomStrip, detStrip);
 
+        int idetStrip = detStrip;
+        bool foundBadStrip = false;
+        if(idetStrip>=1 && idetStrip<=nChan-2){
+          if(badStrips[idetStrip]==0 || badStrips[idetStrip-1]==0 || badStrips[idetStrip+1]==0) foundBadStrip = true;
+        }        
+        if(foundBadStrip) {
+          //cout << "Found bad strip - skipping: " << idetStrip << endl;
+          continue;
+        }
+
+
         //if(isInCutoutRegion(x_trk, y_trk)) continue;
         double distToCutout = DistToCutoutRegion(x_trk, y_trk);
         bool awayFromCutout = distToCutout > minDistFromHole;
@@ -918,9 +929,9 @@ void ClusterWithTrackAna::Loop()
         bool goodRegion = true;
         for(int id = 0; id<nDeadRegion; id++){
           if(x_trk>=deadRegionLo[id]  && x_trk<=deadRegionHi[id]) goodRegion = false;  
-	}
-	if(!goodRegion) continue;
-	//h311b->Fill(x_trk,y_trk);
+        }
+        if(!goodRegion) continue;
+        //h311b->Fill(x_trk,y_trk);
         h5a->Fill(x_trk);
         h6a->Fill(y_trk);
         bool goodTrack = false;
@@ -935,19 +946,19 @@ void ClusterWithTrackAna::Loop()
         if(tx>txMin && tx<txMax && ty>tyMin && ty<tyMax) goodTrack = true;        
         bool goodTime =  (clustersTDC >= tdcLo && clustersTDC <= tdcHi);
 
-	if(goodTrack && goodTime && awayFromCutout) {
-	  // 2D tracks
-	  h311b->Fill(x_trk,y_trk);
-	  //hTrkX->Fill(x_trk);
-	  //hTrkY->Fill(y_trk);
-
-	}
+        if(goodTrack && goodTime && awayFromCutout) {
+          // 2D tracks
+          h311b->Fill(x_trk,y_trk);
+          //hTrkX->Fill(x_trk);
+          //hTrkY->Fill(y_trk);
+          
+        }
         if(goodTrack && goodTime && inFiducial) h12od->Fill(distToCutout);
 	
-	if(goodTrack && goodTime && awayFromCutout) {
-	  hTrkX->Fill(x_trk);
-	  hTrkY->Fill(y_trk);
-	}
+        if(goodTrack && goodTime && awayFromCutout) {
+          hTrkX->Fill(x_trk);
+          hTrkY->Fill(y_trk);
+        }
         if(goodTrack && goodTime && inFiducial && awayFromCutout) {
           h3a->Fill(x_trk,y_trk);
 
@@ -971,11 +982,13 @@ void ClusterWithTrackAna::Loop()
           if(polarity*clustersCharge[j] < 0.2*kClusterChargeMin) continue;
           double x_dut = getDUTHitPosition(j);
           x_trk = x_trk0;
-	  //cout << "x_dut = " << x_dut << endl;
-
+          //cout << "x_dut = " << x_dut << endl;
 
           int iPeak = 1;
           if(clustersSeedPosition[j]%2==0) iPeak = 0;
+
+          int iS = clustersSeedPosition[j];
+          if(badStrips[iS]==0) continue;
           
           h1s->Fill(clustersSeedPosition[j]);
           if(clustersSeedPosition[j]<iLo-5 || clustersSeedPosition[j]>iHi+5) continue;
@@ -983,130 +996,126 @@ void ClusterWithTrackAna::Loop()
           double dx = x_dut - x_trk;
           dxh[j] = dx;
 
-	  //if(dx<0.2 && )
-	  // h122->Fill(y_trk);
-	  h123->Fill(y_trk);
+          //if(dx<0.2 && )
+          // h122->Fill(y_trk);
+          h123->Fill(y_trk);
           if(inFiducial && goodTime && awayFromCutout) h12->Fill(y_trk); 
           if(goodTrack && inFiducial && fabs(dx)<dxWin && awayFromCutout) {
             h2p->Fill(clustersTDC+0.1,polarity*clustersCharge[j]);
             h15d->Fill(clustersTDC);          
             if(goodTime) h15e->Fill(clustersTDC);          
           }
-	  int ichan_1 = clustersSeedPosition[j];
-	  Double_t snr = polarity*clustersCharge[j]/noise[ichan_1];
+          int ichan_1 = clustersSeedPosition[j];
+          Double_t snr = polarity*clustersCharge[j]/noise[ichan_1];
 	  
-	  if(goodTrack && goodTime && awayFromCutout) {
-	    hADCperStrip->Fill(ichan_1,polarity*clustersCharge[j]);
-	    hSNRperStrip->Fill(ichan_1,snr);
-	    h311->Fill(x_trk,y_trk);
-	    hSNR->Fill(y_trk,x_trk,snr);
-	    hSNR_1->Fill(snr);
-	  }
-   // tree->GetEntry(jentry);
-     maxSeedCharge=0;
-     maxSeedPos=0;
-     for (int j=0;j<10;j++){
-       if (clustersSeedPosition[j]==0)continue;
-       if (maxSeedCharge<clustersSeedCharge[j]){
-         maxSeedCharge=clustersSeedCharge[j];
-         maxSeedPos=clustersSeedPosition[j];
-       }
-     }
+          if(goodTrack && goodTime && awayFromCutout) {
+            hADCperStrip->Fill(ichan_1,polarity*clustersCharge[j]);
+            hSNRperStrip->Fill(ichan_1,snr);
+            h311->Fill(x_trk,y_trk);
+            hSNR->Fill(y_trk,x_trk,snr);
+            hSNR_1->Fill(snr);
+          }
+          
+          // tree->GetEntry(jentry);
+          maxSeedCharge=0;
+          maxSeedPos=0;
+          for (int jj=0;jj<10;jj++){
+            if (clustersSeedPosition[jj]==0)continue;
+            if (maxSeedCharge<clustersSeedCharge[jj]){
+              maxSeedCharge=clustersSeedCharge[jj];
+              maxSeedPos=clustersSeedPosition[jj];
+            }
+          }
      
-     // ASSUME FOUND MAX -> maxCh
+          // ASSUME FOUND MAX -> maxCh
      
-     if(goodTrack && goodTime && fabs(dx)<dxWin && awayFromCutout){
-       h311a->Fill(x_trk,y_trk);
-       //hEffX->Fill(x_trk);
-       //hEffY->Fill(y_trk);
-       h122->Fill(y_trk);
-       if (SNR[maxSeedPos]!=0){
-	 for(int m=0;m<512;m++){
-	   if(SNR[m]>0) {
-	     double old = hAlpha->GetBinContent(maxSeedPos,m);
-	     alpha[maxSeedPos][m]=SNR[m]/SNR[maxSeedPos];
-	     hAlpha->SetBinContent(maxSeedPos,m,old+alpha[maxSeedPos][m]);
-	   }
-	 }
-       }
-       
-       // if chanMx=clusterPos
-       
-     }
+          if(goodTrack && goodTime && fabs(dx)<dxWin && awayFromCutout){
+            h311a->Fill(x_trk,y_trk);
+            //hEffX->Fill(x_trk);
+            //hEffY->Fill(y_trk);
+            h122->Fill(y_trk);
+            if (SNR[maxSeedPos]!=0){
+              for(int m=0;m<512;m++){
+                if(SNR[m]>0) {
+                  double old = hAlpha->GetBinContent(maxSeedPos,m);
+                  alpha[maxSeedPos][m]=SNR[m]/SNR[maxSeedPos];
+                  hAlpha->SetBinContent(maxSeedPos,m,old+alpha[maxSeedPos][m]);
+                }
+              }
+            }       
+          }
+        
+          if(goodTrack && inFiducial && goodTime && fabs(dx)<dxWin){
+            h3->Fill(x_trk,y_trk);
+          }
      
-     if(goodTrack && inFiducial && goodTime && fabs(dx)<dxWin){
-       h3->Fill(x_trk,y_trk);
-     }
+          if(goodTrack && inFiducial && goodTime && fabs(dx)<dxWin) foundHitNoFid = true;
      
-     if(goodTrack && inFiducial && goodTime && fabs(dx)<dxWin) foundHitNoFid = true;
-     
-     
-     
-     if(goodTrack && inFiducial && goodTime && awayFromCutout) {
-       hcAll->Fill(polarity*clustersCharge[j]);
-       h2->Fill(x_trk, x_dut);
-       h1->Fill(dx);
-       if(clustersSize[j]==1) h1a->Fill(dx);
-       if(clustersSize[j]==2) h1b->Fill(dx);
-       h1w->Fill(dx);
-       if(y_trk>2.5) h1wY->Fill(dx);
-       if(polarity*clustersCharge[j] < 250) h1z->Fill(dx);
-       h11d->Fill(detStrip);        
-       
-       if(fabs(dx)<dxWin) {
-	 int ichan = clustersSeedPosition[j];
-	 h4c->Fill(clustersSeedPosition[j]);
-	 if(ichan>=0 && ichan<=511){
-	   hlandau[ichan]->Fill(polarity*clustersCharge[j]);
-	 }
-         
-	 hnoiseChan->Fill(noise[ichan]);
-	 h18a->Fill(clustersSeedCharge[j]/clustersCharge[j]);
-	 foundHit = true;
-	 if(clustersSize[j]==1) h18b->Fill(fracStrip,dx);
-	 if(clustersSize[j]==2) h18c->Fill(fracStrip,dx);
-	 h18d->Fill(fracStrip,clustersSeedCharge[j]/clustersCharge[j]);
-	 
-	 h12m->Fill(fracStrip,polarity*clustersCharge[j]);
-	 h12n->Fill(fracStrip,clustersSize[j]);
-	 hClusterStrip->Fill(ichan,clustersSize[j]);
-	 h12cc->Fill(clustersSize[j]);
-	 h1vsx->Fill(x_trk,dx);
-	 if(y_trk>yMid&&y_trk<yMax) h10a->Fill(clustersPosition[j],polarity*clustersCharge[j]);
-	 if(y_trk>yMin&&y_trk<yMid) h10b->Fill(clustersPosition[j],polarity*clustersCharge[j]);
-	 if(y_trk>yHi2&&y_trk<yMax) h10c->Fill(clustersPosition[j],polarity*clustersCharge[j]);
-	 h10d->Fill(y_trk,polarity*clustersCharge[j]);
-	 h10e->Fill(x_trk,polarity*clustersCharge[j]);
-	 double chleft = polarity*clustersCharge1StripLeft[j];
-	 double chright = polarity*clustersCharge1StripRight[j];
-	 //double asym = (chleft - chright) / (chleft + chright);
-	 
-	 double rc = -999;
-	 if(detStrip <= clustersSeedPosition[j]) {
-	   if(chleft>0) rc = (chleft/(chleft+clustersSeedCharge[j]));              
-	 }else{ 
-	   if(chright>0) rc = (clustersSeedCharge[j]/(chright+clustersSeedCharge[j]));
-	 }
-	 if( rc>=0 ) {
-	   h17->Fill(rc);
-	   h17a->Fill(fracStrip,rc);
-	   h17b->Fill(fracStrip,rc);
-	 }
-	 h8->Fill(1000*vec_trk_tx->at(k),dx);
-	 h8b->Fill(1000*vec_trk_ty->at(k),dx);
-	 h9->Fill(y_trk,dx);
-	 h9a->Fill(x_trk,dx);
-	 h5b->Fill(x_trk);
-	 h6b->Fill(y_trk);
-	 h5c->Fill(tx);
-	 h6c->Fill(ty);
-	 if(abs(dx<0.2)) h6d->Fill(y_trk);
-	      
+          if(goodTrack && inFiducial && goodTime && awayFromCutout) {
+            hcAll->Fill(polarity*clustersCharge[j]);
+            h2->Fill(x_trk, x_dut);
+            h1->Fill(dx);
+            if(clustersSize[j]==1) h1a->Fill(dx);
+            if(clustersSize[j]==2) h1b->Fill(dx);
+            h1w->Fill(dx);
+            if(y_trk>2.5) h1wY->Fill(dx);
+            if(polarity*clustersCharge[j] < 250) h1z->Fill(dx);
+            h11d->Fill(detStrip);        
+            
+            if(fabs(dx)<dxWin) {
+              int ichan = clustersSeedPosition[j];
+              h4c->Fill(clustersSeedPosition[j]);
+              if(ichan>=0 && ichan<=511){
+                hlandau[ichan]->Fill(polarity*clustersCharge[j]);
+              }
+              
+              hnoiseChan->Fill(noise[ichan]);
+              h18a->Fill(clustersSeedCharge[j]/clustersCharge[j]);
+              foundHit = true;
+              if(clustersSize[j]==1) h18b->Fill(fracStrip,dx);
+              if(clustersSize[j]==2) h18c->Fill(fracStrip,dx);
+              h18d->Fill(fracStrip,clustersSeedCharge[j]/clustersCharge[j]);
+              
+              h12m->Fill(fracStrip,polarity*clustersCharge[j]);
+              h12n->Fill(fracStrip,clustersSize[j]);
+              hClusterStrip->Fill(ichan,clustersSize[j]);
+              h12cc->Fill(clustersSize[j]);
+              h1vsx->Fill(x_trk,dx);
+              if(y_trk>yMid&&y_trk<yMax) h10a->Fill(clustersPosition[j],polarity*clustersCharge[j]);
+              if(y_trk>yMin&&y_trk<yMid) h10b->Fill(clustersPosition[j],polarity*clustersCharge[j]);
+              if(y_trk>yHi2&&y_trk<yMax) h10c->Fill(clustersPosition[j],polarity*clustersCharge[j]);
+              h10d->Fill(y_trk,polarity*clustersCharge[j]);
+              h10e->Fill(x_trk,polarity*clustersCharge[j]);
+              double chleft = polarity*clustersCharge1StripLeft[j];
+              double chright = polarity*clustersCharge1StripRight[j];
+              //double asym = (chleft - chright) / (chleft + chright);
+              
+              double rc = -999;
+              if(detStrip <= clustersSeedPosition[j]) {
+                if(chleft>0) rc = (chleft/(chleft+clustersSeedCharge[j]));              
+              }else{ 
+                if(chright>0) rc = (clustersSeedCharge[j]/(chright+clustersSeedCharge[j]));
+              }
+              if( rc>=0 ) {
+                h17->Fill(rc);
+                h17a->Fill(fracStrip,rc);
+                h17b->Fill(fracStrip,rc);
+              }
+              h8->Fill(1000*vec_trk_tx->at(k),dx);
+              h8b->Fill(1000*vec_trk_ty->at(k),dx);
+              h9->Fill(y_trk,dx);
+              h9a->Fill(x_trk,dx);
+              h5b->Fill(x_trk);
+              h6b->Fill(y_trk);
+              h5c->Fill(tx);
+              h6c->Fill(ty);
+              if(abs(dx<0.2)) h6d->Fill(y_trk);
+              
               h11n->Fill(detStrip);
               hcTrk->Fill(polarity*clustersCharge[j]);
-	      //Double_t snr = polarity*clustersCharge[j]/noise[ichan];
-	      //hSNR->Fill(y_trk,x_trk,snr);
-	      //hSNR->
+              //Double_t snr = polarity*clustersCharge[j]/noise[ichan];
+              //hSNR->Fill(y_trk,x_trk,snr);
+              //hSNR->
               if(clustersSize[j]==1) hcTrkCorr->Fill(polarity*clustersCharge[j]);
               if(clustersSize[j]==2 && iPeak==1) hcTrkCorr->Fill(polarity*clustersCharge[j]*(1.0-chargeCorrSlopeOdd));
               if(clustersSize[j]==2 && iPeak==0) hcTrkCorr->Fill(polarity*clustersCharge[j]*(1.0-chargeCorrSlopeEven));
@@ -1143,16 +1152,16 @@ void ClusterWithTrackAna::Loop()
               double chr2 = clustersCharge2StripRight[j]*polarity;
               double chl2 = clustersCharge2StripLeft[j]*polarity;
               double pch = polarity*clustersSeedCharge[j];
-	      double asym = (chl - chr) / (chl + chr);
+              double asym = (chl - chr) / (chl + chr);
               int ic = pch/50.;
-	      double eta=0;
-	      if(dx<0)
-		eta=(pch-chr)/(pch+chr);
-	      else 
-		eta=(chl-pch)/(pch+chl);
-	      hEta->Fill(clustersSeedPosition[j],eta);
-	      hAsym->Fill(clustersSeedPosition[j],asym);
-	      hEta_dX->Fill(abs(dx),eta);
+              double eta=0;
+              if(dx<0)
+                eta=(pch-chr)/(pch+chr);
+              else 
+                eta=(chl-pch)/(pch+chl);
+              hEta->Fill(clustersSeedPosition[j],eta);
+              hAsym->Fill(clustersSeedPosition[j],asym);
+              hEta_dX->Fill(abs(dx),eta);
               if(ic>=0 && ic<10 && clustersSize[j]<=2 ){
                 
                 if(iPeak==1) h41[ic]->Fill(chl-chr);
@@ -1160,99 +1169,101 @@ void ClusterWithTrackAna::Loop()
                 if(chr2!=0 and chl2!=0){
                   if(iPeak==1) h43[ic]->Fill(chl2-chr2);
                   if(iPeak==0) h44[ic]->Fill(chl2-chr2);
-		}
-		
-	      } 
-	    }
+                }
+                
+              } 
+            }
 	    
-	    double clstrip = getCorrChannel(clustersPosition[j]);
-	    h4->Fill(clstrip);
-	    h4b->Fill(clstrip + channelOffset);
-	    h4a->Fill(clustersPosition[j]);
-	    h0->Fill(detStrip - clstrip);
-	  }
-	}
-	
-	if(inFiducial && goodTrack && goodTime && foundHitNoFid) {
-	  h12on->Fill(distToCutout);
-	}
+            double clstrip = getCorrChannel(clustersPosition[j]);
+            h4->Fill(clstrip);
+            h4b->Fill(clstrip + channelOffset);
+            h4a->Fill(clustersPosition[j]);
+            h0->Fill(detStrip - clstrip);
+          }
+        }
+        
+        if(inFiducial && goodTrack && goodTime && foundHitNoFid) {
+          h12on->Fill(distToCutout);
+        }
 
-	// for 1D eff except outside fid
-	if(goodTrack && goodTime && awayFromCutout) {
-	  if(foundHit) {
-	    hEffX->Fill(x_trk);
-	    hEffY->Fill(y_trk);
-	  }
-	}
-	if(inFiducial && goodTrack && goodTime && awayFromCutout) {
-	  h16c->Fill(dtime);
-	  if(foundHit) {
-	    h3c->Fill(x_trk,y_trk);
-	    for(int j=0; j<min(clusterNumberPerEvent,10); j++){
-	      hcfpa->Fill(polarity*clustersCharge[j]);
-	      if(polarity*clustersCharge[j]>120) h1fpa->Fill(dxh[j]);
-	    }        
-	    h15c->Fill(dtime);
-	    h15b->Fill(clustersTDC+0.1);
-	    h15a->Fill(vec_trk_chi2ndf->at(k));
-	    h12b->Fill(y_trk);
-	    h12dn->Fill(x_trk); 
-	    //h_eff_xy->Fill(x_trk,y_trk);
-	    
-	    if(y_trk>yInt1[0]&&y_trk<yInt1[1]) h12en->Fill(x_trk);
-	    if(y_trk>yInt2[0]&&y_trk<yInt2[1]) h12fn->Fill(x_trk);
-	    if(y_trk>yInt3[0]&&y_trk<yInt3[1]) h12gn->Fill(x_trk);
-	    h12hn->Fill(fracStrip);
-	    if(y_trk>yInt1[0]&&y_trk<yInt1[1] && x_trk>-3.5&&x_trk<2.5) h12in->Fill(fracStrip);
-	    if(y_trk>yInt2[0]&&y_trk<yInt2[1] && x_trk>-3.5&&x_trk<2.5) h12jn->Fill(fracStrip);
-	    if(y_trk>yInt3[0]&&y_trk<yInt3[1] && x_trk>-3.5&&x_trk<2.5) h12kn->Fill(fracStrip);
-	    if(y_trk>yInt1[0] && y_trk < yInt2[1] && x_trk>-3.5&&x_trk<-2.0) {
-	      h14b->Fill(detStrip);
-	      h13fpa->Fill(clusterNumberPerEvent);
-	    }else if(y_trk>yInt3[0] && y_trk < yInt3[1]) {
-	      h13fbpa->Fill(clusterNumberPerEvent);
-	      for(int j=0; j<min(clusterNumberPerEvent,10); j++){
-		h1fbpa->Fill(dxh[j]);
-		hcfbpa->Fill(polarity*clustersCharge[j]);
-	      }
-	    }                
-	  }else{     
-	    h3b->Fill(x_trk,y_trk);          
-	    h13mpa->Fill(clusterNumberPerEvent);
-	    h16a->Fill(vec_trk_chi2ndf->at(k));
-	    h16b->Fill(clustersTDC+0.1);
-	    for(int j=0; j<min(clusterNumberPerEvent,10); j++){
-	      hcmpa->Fill(polarity*clustersCharge[j]);
-	      if(polarity*clustersCharge[j]>120) h1mpa->Fill(dxh[j]);
-	    }            
-	    nPrint++;
-	    if(y_trk>yInt1[0] && y_trk < yInt2[1]) {
-	      h14a->Fill(detStrip);
-	      if(writeEventsWithMissinhHitsToFile) 
-		myfile << jentry << " " << detStrip << " " << x_trk << " " << y_trk << endl;              
-	      //if(nPrint < 100) cout << "Missed hit, event, #clu, nomStrip =  " << jentry << " " 
-	      //                      << clusterNumberPerEvent << " " << nomStrip << endl;
-	      for(int j=0; j<min(clusterNumberPerEvent,10); j++){
-		if(x_trk>-3.5&&x_trk<-2.0) h1mpa1->Fill(dxh[j]);
-		if(x_trk>-2.0&&x_trk<-1.0) h1mpa2->Fill(dxh[j]);
-		if(x_trk>-1.0&&x_trk<0.0) h1mpa3->Fill(dxh[j]);
-		if(x_trk>0.0&&x_trk<1.0)  h1mpa4->Fill(dxh[j]);
-		if(x_trk>1.5&&x_trk<3.5)  h1mpa5->Fill(dxh[j]);
-		if(y_trk<yInt1[1]) h1mpaL->Fill(clustersPosition[j]);                         
-		if(y_trk>=yInt1[1]) h1mpaU->Fill(clustersPosition[j]);
-	      }
-	    }else if(y_trk>yInt3[0] && y_trk < yInt3[1]) {
-	      h13mbpa->Fill(clusterNumberPerEvent);
-	      for(int j=0; j<min(clusterNumberPerEvent,10); j++){              
-		h1mbpa->Fill(dxh[j]);
-		hcmbpa->Fill(polarity*clustersCharge[j]);
-	      }    
-	    }
-	  }
-	} 
+        // for 1D eff except outside fid
+        if(goodTrack && goodTime && awayFromCutout) {
+          if(foundHit) {
+            hEffX->Fill(x_trk);
+            hEffY->Fill(y_trk);
+          }
+        }
+        if(inFiducial && goodTrack && goodTime && awayFromCutout) {
+          h16c->Fill(dtime);
+          if(foundHit) {
+            h3c->Fill(x_trk,y_trk);
+            for(int j=0; j<min(clusterNumberPerEvent,10); j++){
+              hcfpa->Fill(polarity*clustersCharge[j]);
+              if(polarity*clustersCharge[j]>120) h1fpa->Fill(dxh[j]);
+            }        
+            h15c->Fill(dtime);
+            h15b->Fill(clustersTDC+0.1);
+            h15a->Fill(vec_trk_chi2ndf->at(k));
+            h12b->Fill(y_trk);
+            h12dn->Fill(x_trk); 
+            //h_eff_xy->Fill(x_trk,y_trk);
+            
+            if(y_trk>yInt1[0]&&y_trk<yInt1[1]) h12en->Fill(x_trk);
+            if(y_trk>yInt2[0]&&y_trk<yInt2[1]) h12fn->Fill(x_trk);
+            if(y_trk>yInt3[0]&&y_trk<yInt3[1]) h12gn->Fill(x_trk);
+            h12hn->Fill(fracStrip);
+            if(y_trk>yInt1[0]&&y_trk<yInt1[1] && x_trk>-3.5&&x_trk<2.5) h12in->Fill(fracStrip);
+            if(y_trk>yInt2[0]&&y_trk<yInt2[1] && x_trk>-3.5&&x_trk<2.5) h12jn->Fill(fracStrip);
+            if(y_trk>yInt3[0]&&y_trk<yInt3[1] && x_trk>-3.5&&x_trk<2.5) h12kn->Fill(fracStrip);
+            if(y_trk>yInt1[0] && y_trk < yInt2[1] && x_trk>-3.5&&x_trk<-2.0) {
+              h14b->Fill(detStrip);
+              h13fpa->Fill(clusterNumberPerEvent);
+            }else if(y_trk>yInt3[0] && y_trk < yInt3[1]) {
+              h13fbpa->Fill(clusterNumberPerEvent);
+              for(int j=0; j<min(clusterNumberPerEvent,10); j++){
+                h1fbpa->Fill(dxh[j]);
+                hcfbpa->Fill(polarity*clustersCharge[j]);
+              }
+            }                
+          }else{     
+            h3b->Fill(x_trk,y_trk);          
+            h13mpa->Fill(clusterNumberPerEvent);
+            h16a->Fill(vec_trk_chi2ndf->at(k));
+            h16b->Fill(clustersTDC+0.1);
+            for(int j=0; j<min(clusterNumberPerEvent,10); j++){
+              hcmpa->Fill(polarity*clustersCharge[j]);
+              if(polarity*clustersCharge[j]>120) h1mpa->Fill(dxh[j]);
+            }            
+            nPrint++;
+            if(y_trk>yInt1[0] && y_trk < yInt2[1]) {
+              h14a->Fill(detStrip);
+              if(writeEventsWithMissinhHitsToFile) 
+                myfile << jentry << " " << detStrip << " " << x_trk << " " << y_trk << endl;              
+              //if(nPrint < 100) cout << "Missed hit, event, #clu, nomStrip =  " << jentry << " " 
+              //                      << clusterNumberPerEvent << " " << nomStrip << endl;
+              for(int j=0; j<min(clusterNumberPerEvent,10); j++){
+                if(x_trk>-3.5&&x_trk<-2.0) h1mpa1->Fill(dxh[j]);
+                if(x_trk>-2.0&&x_trk<-1.0) h1mpa2->Fill(dxh[j]);
+                if(x_trk>-1.0&&x_trk<0.0) h1mpa3->Fill(dxh[j]);
+                if(x_trk>0.0&&x_trk<1.0)  h1mpa4->Fill(dxh[j]);
+                if(x_trk>1.5&&x_trk<3.5)  h1mpa5->Fill(dxh[j]);
+                if(y_trk<yInt1[1]) h1mpaL->Fill(clustersPosition[j]);                         
+                if(y_trk>=yInt1[1]) h1mpaU->Fill(clustersPosition[j]);
+              }
+            }else if(y_trk>yInt3[0] && y_trk < yInt3[1]) {
+              h13mbpa->Fill(clusterNumberPerEvent);
+              for(int j=0; j<min(clusterNumberPerEvent,10); j++){              
+                h1mbpa->Fill(dxh[j]);
+                hcmbpa->Fill(polarity*clustersCharge[j]);
+              }    
+            }
+          }
+        } 
       }
    }
    if(writeEventsWithMissinhHitsToFile) myfile.close();
+   //return;
+   
 
    int i1 = h1->FindBin(-0.3);
    int i2 = h1->FindBin(0.3);
@@ -1502,7 +1513,7 @@ void ClusterWithTrackAna::Loop()
     effProfY[iX-40]= new TH1F(nameD,"effProfY",100,-5,5);
     effProfY[iX-40]->SetTitle("Y distribution of efficiency and Tracks for X bin № "+ binNx);
     effProfY[iX-40]->SetXTitle("Y");
-    NTrackY[iX-40]= new TH1F("NTrackY","NTrackY",100,-5,5);
+    NTrackY[iX-40]= new TH1F(Form("NTrackY_%d",iX-40),"NTrackY",100,-5,5);
     for(Int_t i=0;i<effProfY[iX-40]->GetNbinsX();i++)
     {
       effProfY[iX-40]->SetBinContent(i+1,h311a->GetBinContent(iX,i+1));
@@ -1531,7 +1542,7 @@ void ClusterWithTrackAna::Loop()
    hex->SetName("hex");
    hex->Divide(h12dn,h12dd,1.0,1.0,"B");
    float bw = 1000*h12dd->GetBinWidth(1);
-   TString yt = Form("#Good DUT hit / #Track ",bw);
+   TString yt = "#Good DUT hit / #Track ";
    addGraphics(hex, "X_{trk}, mm", yt,"DUT Efficiency vs. X_{trk}");
    hex->GetXaxis()->SetRangeUser(xMin-0.5,xMax+0.5);
    hex->GetYaxis()->SetRangeUser(0.95,1.02);
@@ -1546,7 +1557,7 @@ void ClusterWithTrackAna::Loop()
    //float 
    bw = 1000*h12b->GetBinWidth(1);
    //TString 
-   yt = Form("#Good DUT hit / #Track" ,bw);
+   yt = "#Good DUT hit / #Track";
    addGraphics(hey, "Y_{trk}, mm", yt,"DUT Efficiency vs. Y_{trk}");
    hey->GetXaxis()->SetRangeUser(yMin-0.5,yMax+0.5);
    hey->GetYaxis()->SetRangeUser(0.95,1.02);
@@ -2214,7 +2225,8 @@ void ClusterWithTrackAna::Loop()
   //c->Print("Plots/plot_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root");
 
    //return;
- TCanvas *c44 = new TCanvas("c44","Plot 4",800,600);
+   TCanvas *c44 = new TCanvas("c44","Plot 4",800,600);
+   c44->cd();
    addGraphics(h2p, 1, "TDC time / 2.5 ns", "<ADC>");
    h2p->Draw();
    TLine *l1e2 = new TLine(tdcLo,0,tdcLo,h2p->GetMaximum());
@@ -2348,7 +2360,7 @@ void ClusterWithTrackAna::Loop()
     //float 
     bw = 1000*h12b->GetBinWidth(1);
     //TString 
-    yt = Form("#Good DUT hit / # Track" ,bw);
+    yt = "#Good DUT hit / # Track";
     addGraphics(he, 1, "Y_{trk} [mm]", yt);
     he->SetTitle("DUT Efficiency vs Y_{trk}");
     he->GetXaxis()->SetRangeUser(yMin-0.5,yMax+0.5);
@@ -2374,7 +2386,7 @@ void ClusterWithTrackAna::Loop()
     he2->SetName("he2");
     he2->Divide(h12dn,h12dd,1.0,1.0,"B");
     bw = 1000*h12dd->GetBinWidth(1);
-    yt = Form("(#Good DUT hit / # Track) / %3.0f #mum",bw);
+    yt = Form("#Good DUT hit / # Track) / %3.0f #mum",bw);
     addGraphics(he2, 1, "X_{trk} [mm]", yt);
     he2->SetTitle("DUT Efficiency vs X_{trk}");
     he2->GetXaxis()->SetRangeUser(xMin-0.5,xMax+0.5);
@@ -2625,7 +2637,8 @@ void ClusterWithTrackAna::Loop()
 */    
 
 
-    fout->Write();
-
+   fout->Write();
+   return;
+   
 
 }

@@ -130,6 +130,9 @@ class AnalysisBase {
   
   double noise[512];
   double alpha[512][512];
+  int badStrips[512];
+  int nbadStrips;
+
 
   double channelOffset;  
 

@@ -300,7 +300,7 @@ void AnalysisBase::getBeamLocation(TH1F *h, float &lo, float& hi){
   //double dif = 10;
   for(int  j = 0; j<10; j++){
     std::cout << "====> Finding Beam, iteration " << j+1 << std::endl;
-    getRange(h,lo,hi,0.1,1);
+    getRange(h,lo,hi,0.1,3);  // def = 1
     channel_low= h->FindBin(lo);
     channel_hi=h->FindBin(hi);
     int dif = hi - lo + 1;

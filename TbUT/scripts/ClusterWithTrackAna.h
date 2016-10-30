@@ -24,6 +24,7 @@
 // Header file for the classes stored in the TTree if any.
 #include <vector>
 #include <iostream>
+#include <fstream>
 #include <algorithm>
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
@@ -61,19 +62,19 @@ ClusterWithTrackAna::ClusterWithTrackAna(int biasVal){
      //   filename = m_fileIndir+"Board"+m_board+"/"+scanType+"_Scan-"+getFileBase("Bias",m_board, m_bias, m_angle,m_sector)+"_Tuple_Tracks.root";  
      cout << "defining file" << endl;
      //filename = "$KEPLERROOT/../TbUT/scripts/AddTrigTracks/out.root";
-if(runplace!="FanIn" && runplace!="FanUp"){
-filename = m_fileIndir+scanType+"_Scan-"+runplace+"-"+m_board+"-"+consR+"-"+m_runNumb+"_Tracks.root";
-}
-else{filename = m_fileIndir+scanType+"_Scan-"+m_board+"-"+runplace+"-"+consR+"-"+m_runNumb+"_Tracks.root";}
-       if(m_scanType.Contains("Angle")){ 
+     if(runplace!="FanIn" && runplace!="FanUp"){
+       filename = m_fileIndir+scanType+"_Scan-"+runplace+"-"+m_board+"-"+consR+"-"+m_runNumb+"_Tracks.root";
+     }
+     else{filename = m_fileIndir+scanType+"_Scan-"+m_board+"-"+runplace+"-"+consR+"-"+m_runNumb+"_Tracks.root";}
+     if(m_scanType.Contains("Angle")){ 
        scanType = "Run_Angle";
-if(runplace!="FanIn" && runplace!="FanUp"){ 
-filename = m_fileIndir+scanType+"_Scan-"+runplace+"-"+m_board+"-"+consR+"-"+m_runNumb+"_Tracks.root";
-}
-else{filename = m_fileIndir+scanType+"_Scan-"+m_board+"-"+runplace+"-"+consR+"-"+m_runNumb+"_Tracks.root";}
-//       filename = m_fileIndir+"Board"+m_board+"_Angle/"+scanType+"_Scan-"+getFileBase("Bias",m_board, m_bias, m_angle,m_sector)+"_Tuple_Tracks.root";  
+       if(runplace!="FanIn" && runplace!="FanUp"){ 
+         filename = m_fileIndir+scanType+"_Scan-"+runplace+"-"+m_board+"-"+consR+"-"+m_runNumb+"_Tracks.root";
+       }
+       else{filename = m_fileIndir+scanType+"_Scan-"+m_board+"-"+runplace+"-"+consR+"-"+m_runNumb+"_Tracks.root";}
+       //       filename = m_fileIndir+"Board"+m_board+"_Angle/"+scanType+"_Scan-"+getFileBase("Bias",m_board, m_bias, m_angle,m_sector)+"_Tuple_Tracks.root";  
        } 
-       // filename="AddTrigTracks/Run_Angle_Scan-M1-FanIn-193-15110_out.root";
+     // filename="AddTrigTracks/Run_Angle_Scan-M1-FanIn-193-15110_out.root";
      cout << "===> Opening file: " << filename << endl;
      
 
@@ -88,10 +89,9 @@ else{filename = m_fileIndir+scanType+"_Scan-"+m_board+"-"+runplace+"-"+consR+"-"
      TFile *f = new TFile(filename);
      tree = (TTree*)f->Get("Clusters");
      TH1F *hn = (TH1F*)f->Get("hWidthNoise");
-     for(int i=0;i<nChan;i++){
+     for(int i=0; i<nChan; i++){
        noise[i] = hn->GetBinContent(i+1);
      }
-
      //TH2F *hNew = (TH2F*)f->Get("hR_SNR");
      // Get mean noise and width
      hMeanNoise 	= (TH1F*)f->Get("hMeanNoise"); 
@@ -123,6 +123,31 @@ else{filename = m_fileIndir+scanType+"_Scan-"+m_board+"-"+runplace+"-"+consR+"-"
    Init(tree);
    
 
+   // Get mask file and set mask
+   TString badStripFileName = maskFile;
+   ifstream badStripFile;
+
+   int iVal = 0;   
+   int iChan = 0;
+   badStripFile.open(badStripFileName); 
+   for(int i=0; i<nChan; i++){
+     badStrips[i] = 1; // all channels good to start
+   }
+ 
+
+   if(!badStripFile) { // file couldn't be opened
+      cerr << "Error: bad strip file does not exist -- assume all strips are good" << endl;
+   }else{
+     while ( !badStripFile.eof() ) {
+       badStripFile >> iVal;
+       badStrips[iChan] = iVal;
+       if(iVal==0) nbadStrips++;
+       iChan++;
+       if(iChan>=nChan) break;
+       if(iVal==1) cout << "Good Strip, Chan# " << iChan << endl;
+     }
+   }
+   cout << "MaskFile: Found " << nbadStrips << " masked strips" << endl;
 
 }
 
