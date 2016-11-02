@@ -121,34 +121,6 @@ ClusterWithTrackAna::ClusterWithTrackAna(int biasVal){
      }
    }
    Init(tree);
-   
-
-   // Get mask file and set mask
-   TString badStripFileName = maskFile;
-   ifstream badStripFile;
-
-   int iVal = 0;   
-   int iChan = 0;
-   badStripFile.open(badStripFileName); 
-   for(int i=0; i<nChan; i++){
-     badStrips[i] = 1; // all channels good to start
-   }
- 
-
-   if(!badStripFile) { // file couldn't be opened
-      cerr << "Error: bad strip file does not exist -- assume all strips are good" << endl;
-   }else{
-     while ( !badStripFile.eof() ) {
-       badStripFile >> iVal;
-       badStrips[iChan] = iVal;
-       if(iVal==0) nbadStrips++;
-       iChan++;
-       if(iChan>=nChan) break;
-       if(iVal==1) cout << "Good Strip, Chan# " << iChan << endl;
-     }
-   }
-   cout << "MaskFile: Found " << nbadStrips << " masked strips" << endl;
-
 }
 
 ClusterWithTrackAna::~ClusterWithTrackAna()

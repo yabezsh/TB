@@ -647,6 +647,7 @@ void ClusterWithTrackAna::Loop()
    TH1F* h4a = new TH1F("h4a","Electonic Strip # of cluster with track",512,0.0,512);
    TH1F* h4b = new TH1F("h4b","Strip # of cluster with track",1024,0.0,1024);
    TH1F* h4c = new TH1F("h4c","Strip # of cluster with track",1024,0.0,1024);
+   TH1F* h4d = new TH1F("h4d","Strip # of cluster with track",1024,0.0,1024);
    TH1F* h5 = new TH1F("h5","#theta_{X}",500,-5.0,5.0);
    TH1F* h6 = new TH1F("h6","#theta_{Y}",500,-5.0,5.0);
    TH1F* h5c = new TH1F("h5c","#theta_{X}",500,-5.0,5.0);
@@ -893,8 +894,9 @@ void ClusterWithTrackAna::Loop()
         double y_trk = vec_trk_ty->at(k)*z_DUT+vec_trk_y->at(k);
         
         transformTrackToDUTFrame(k, x_trk, y_trk, nomStrip, detStrip);
+        h4d->Fill(nomStrip);
 
-        int idetStrip = detStrip;
+        int idetStrip = detStrip + 0.5;
         bool foundBadStrip = false;
         if(idetStrip>=1 && idetStrip<=nChan-2){
           if(badStrips[idetStrip]==0 || badStrips[idetStrip-1]==0 || badStrips[idetStrip+1]==0) foundBadStrip = true;
@@ -939,6 +941,8 @@ void ClusterWithTrackAna::Loop()
         bool inFiducialY = false;
 
         if(x_trk>xMin && x_trk<xMax) inFiducialX = true;          
+        //if(nomStrip>=iLo-1 || nomStrip<=iHi+1) inFiducialX = true;
+        //if(x_trk>xMin && x_trk<xMax) inFiducialX = true;          
         if(y_trk>yMin && y_trk<yMax) inFiducialY = true;          
         bool inFiducial = inFiducialX && inFiducialY;
         inFiducial = inFiducial && (x_trk<xLeftHole || x_trk>xRightHole);
@@ -2639,6 +2643,7 @@ void ClusterWithTrackAna::Loop()
 
    fout->Write();
    return;
+
    
 
 }

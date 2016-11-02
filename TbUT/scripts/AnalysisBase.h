@@ -25,6 +25,9 @@
 
 // Header file for the classes stored in the TTree if any.
 #include <vector>
+#include <iostream>
+#include <fstream>
+#include <algorithm>
 
 
 
@@ -161,6 +164,7 @@ class AnalysisBase {
   virtual void transformTrackToDUTFrame(int k, double& x_trk, double& y_trk, double& nomStrip, double& detStrip);
   virtual void PrepareDUT();
   virtual Double_t getDUTHitPosition(int j);
+  virtual Float_t getEdgePosition(float x);
   virtual void findCutoutRegion(TH2F* h);
   virtual bool isInCutoutRegion(double xtrk, double ytrk);
   virtual double DistToCutoutRegion(double xtrk, double ytrk);

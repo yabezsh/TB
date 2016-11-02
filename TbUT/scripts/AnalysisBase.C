@@ -37,31 +37,6 @@ AnalysisBase::AnalysisBase(TTree *tree) : fChain(0)
   stripGap[2] = 0;
   stripGap[3] = 0;
   nDeadRegion = 0;
-  if(  m_board.Contains("D")) {
-    stripPitch = 0.095;
-    channelOffset = 512.0;
-    //stripGap[0]=19;     
-    //stripGap[1]=39;     
-    //stripGap[2]=58;     
-    //stripGap[3]=0;     
-
-    stripGap[0]=58;     
-    stripGap[1]=39;     
-    stripGap[2]=19;     
-    stripGap[3]=0;     
-
-    if(m_board.Contains("D5")) {
-      z_DUT = 1100.0;
-      //Rz = -0.0230;  
-    }else if(m_board.Contains("D7")) {
-      z_DUT = 1123.0;
-      if(m_sector=="5") z_DUT = 1087.0;
-      if(m_sector=="1") z_DUT = 1040.0;
-      //Ry = -0.008;  
-    }
-  }
-
-
 
   yInt1[0] = 2.8; yInt1[1] = 3.4;
   yInt2[0] = 3.4; yInt2[1] = 4.1;
@@ -85,8 +60,7 @@ AnalysisBase::AnalysisBase(TTree *tree) : fChain(0)
       } else if(m_angle == "20") {
         Ry = 19*(TMath::Pi()/180.0);
         z_DUT = z_DUT - 18.0;
-      }      
-     
+      }     
     }    
   }else if( m_board == "A4"){
     z_DUT = 381.0;     
@@ -110,6 +84,11 @@ AnalysisBase::AnalysisBase(TTree *tree) : fChain(0)
     yInt1[0] = -5.0; yInt1[1] = -2.0;
     yInt2[0] = -2.0; yInt2[1] = 1.0;
     yInt3[0] = 1.0; yInt3[1] = 5.0;
+    // Board A1 alignment is really messed up for a few runs! ADHOC here!
+    if(m_board == "A1"){// && (m_bias=="300" || m_bias=="350" || m_bias=="150" || m_bias==")){  
+      dxWin = 1.0;
+    correctForZRotation = false;
+    }
   }else if( m_board.Contains("M1") || m_board.Contains("M2") || m_board.Contains("M3") || m_board.Contains("M4") ){
     z_DUT = 343;
     polarity = 1.0;
@@ -123,20 +102,57 @@ AnalysisBase::AnalysisBase(TTree *tree) : fChain(0)
   }else if( m_board.Contains("14_HM1") || m_board.Contains("13_HM1") || m_board.Contains("13_HM2") || m_board.Contains("18_HM1") || m_board.Contains("18_HM2") || m_board.Contains("17_HM2")){
     z_DUT = 343;
     polarity = -1.0;  //p-in-n
+  }else if(  m_board.Contains("D")) {
+    stripPitch = 0.095;
+    channelOffset = 512.0;
+    stripGap[0]=58;     
+    stripGap[1]=39;     
+    stripGap[2]=19;     
+    stripGap[3]=0;
+    if(m_board.Contains("D5")) {
+      z_DUT = 1100.0;
+      //Rz = -0.0230;  
+    }else if(m_board.Contains("D7")) {
+      z_DUT = 1123.0;
+      if(m_sector=="5") z_DUT = 1087.0;
+      if(m_sector=="1") z_DUT = 1040.0;
+      //Ry = -0.008;  
+    }
   }
-
-  // Board A1 alignment is really messed up for a few runs! ADHOC here!
-  if(m_board == "A1"){// && (m_bias=="300" || m_bias=="350" || m_bias=="150" || m_bias==")){  
-    dxWin = 1.0;
-    correctForZRotation = false;
-  }
-   
+  
   holeQuadPar[0] = 0;
   holeQuadPar[1] = 0;
   holeQuadPar[2] = 0;
   removeTracksInHole = removeTracksInHoleDef;
   // Only look to remove tacks from hole area if D-type and in sectors 1, 2, or 3.
   if(!m_board.Contains("D") || !(m_sector=="1" || m_sector=="2" || m_sector=="3") )  removeTracksInHole = false;
+
+
+   // Get mask file and set mask
+   TString badStripFileName = maskFile;
+   ifstream badStripFile;
+
+   int iVal = 0;   
+   int iChan = 0;
+   badStripFile.open(badStripFileName); 
+   for(int i=0; i<nChan; i++){
+     badStrips[i] = 1; // all channels good to start
+   }
+ 
+
+   if(!badStripFile) { // file couldn't be opened
+      cerr << "Error: bad strip file does not exist -- assume all strips are good" << endl;
+   }else{
+     while ( !badStripFile.eof() ) {
+       badStripFile >> iVal;
+       badStrips[iChan] = iVal;
+       if(iVal==0) nbadStrips++;
+       iChan++;
+       if(iChan>=nChan) break;
+       if(iVal==1) cout << "Good Strip, Chan# " << iChan << endl;
+     }
+   }
+   cout << "MaskFile: Found " << nbadStrips << " masked strips" << endl;
 
 
 }
@@ -250,8 +266,11 @@ void AnalysisBase::getRange(TH1 *h, float &lo, float& hi, float thresh, int nSki
   //h->Draw();
   //std::cout << "maxValue = " << iMaxBin << "  " << maxValue << std::endl;
   
+  TString histName = h->GetName();
+  
 
   for(int j=iMaxBin;j>=0;j--){
+    if(histName=="haStrip" && badStrips[j]==0) continue; // exclude bad strips
     double v = h->GetBinContent(j);
     double r = v / maxValue;
     //std::cout << "r = " << r << std::endl;  // Only for debugging
@@ -266,6 +285,7 @@ void AnalysisBase::getRange(TH1 *h, float &lo, float& hi, float thresh, int nSki
 
   nfail = 0;
   for(int j=iMaxBin;j<=h->GetNbinsX();j++){
+    if(histName=="haStrip" && badStrips[j]==0) continue; // exclude bad strips
     double v = h->GetBinContent(j);
     double r = v / maxValue;
     //std::cout << "r = " << r << std::endl;  // Only for debugging
@@ -300,7 +320,7 @@ void AnalysisBase::getBeamLocation(TH1F *h, float &lo, float& hi){
   //double dif = 10;
   for(int  j = 0; j<10; j++){
     std::cout << "====> Finding Beam, iteration " << j+1 << std::endl;
-    getRange(h,lo,hi,0.1,3);  // def = 1
+    getRange(h,lo,hi,0.1,2);  // def = 1
     channel_low= h->FindBin(lo);
     channel_hi=h->FindBin(hi);
     int dif = hi - lo + 1;
@@ -329,7 +349,7 @@ double AnalysisBase::getXOffset(TH1F *h1w){
 
 void AnalysisBase::getBeamLoc(){
 
-  TH1F* ha = new TH1F("ha","Strip # of cluster with track",512,0.0,512);
+  TH1F* haStrip = new TH1F("haStrip","Strip # of cluster with track",512,0.0,512);
   //TH1F* hb = new TH1F("hb","Strip # of cluster with track",512,0.0,512);
   Long64_t nentries = fChain->GetEntriesFast();
   //cout << "nentries " << nentries << endl;
@@ -352,12 +372,12 @@ void AnalysisBase::getBeamLoc(){
       int iChan = clustersSeedPosition[j];
       //if(j<500) cout << "iChan = " << iChan << clustersCharge[j] << " " << 5*noise[iChan] << endl;
       if(polarity*clustersCharge[j]<4*noise[iChan]) continue;
-      if(clustersPosition[j]>0.1&&clustersSize[j]==1) ha->Fill(clustersPosition[j]);
-      if(clustersPosition[j]>0.1&&clustersSize[j]==2) ha->Fill(clustersPosition[j]);
+      if(clustersPosition[j]>0.1&&clustersSize[j]==1) haStrip->Fill(clustersPosition[j]);
+      if(clustersPosition[j]>0.1&&clustersSize[j]==2) haStrip->Fill(clustersPosition[j]);
     }
   }
      
-  int num = ha->GetEntries();
+  int num = haStrip->GetEntries();
   for(int i=0; i<1000; i++){
     //cout << "num is " << num << endl;
     if(num < 1000) continue;
@@ -369,8 +389,8 @@ void AnalysisBase::getBeamLoc(){
     //exit(1);
   }
    
-  //ha->Draw();
-  getBeamLocation(ha,lo,hi);
+  //haStrip->Draw();
+  getBeamLocation(haStrip,lo,hi);
   iLo = lo;
   iHi = hi;
   std::cout << "====> Beam is between strips " << iLo << " -- " << iHi << std::endl;
@@ -510,8 +530,12 @@ void AnalysisBase::findBeamRegionAndAlign(int iPass){
 
     getRange(hthx,txmin,txmax,0.05,2);
     getRange(hthy,tymin,tymax,0.05,2);
-    getRange(hx,xmin,xmax,0.05,2);
+    //getRange(hx,xmin,xmax,0.05,2);
     getRange(hy,ymin,ymax,0.2,2);
+
+    // Use strip numbers to get xMin and xMax, since dead strips make holes in xpos plot
+    xmin = getEdgePosition(iHi);
+    xmax = getEdgePosition(iLo);
     
     xMin = xmin;
     xMax = xmax;
@@ -521,6 +545,8 @@ void AnalysisBase::findBeamRegionAndAlign(int iPass){
     txMax = txmax;
     tyMin = tymin;
     tyMax = tymax;
+
+    // 
     
     float xlo = 0, xhi=0;
     if(iPass==1) getRange(hw,xlo,xhi,0.1,1);
@@ -872,8 +898,16 @@ Double_t AnalysisBase::getDUTHitPosition(int j){
   //double pos = clustersPosition[j];
   double x_dut = (nChan - pos)*stripPitch + xOff;
   x_dut = x_dut + xGloOff;  
-  return x_dut;
-  
+  return x_dut;  
+}
+
+Float_t AnalysisBase::getEdgePosition(float x){
+  double xx = x*1.0;
+  double pos = getCorrChannel(xx);
+  //double pos = clustersPosition[j];
+  float x_dut = (nChan - pos)*stripPitch + xOff;
+  x_dut = x_dut + xGloOff;
+  return x_dut;  
 }
 
 void AnalysisBase::setCrossTalkCorr(){
