@@ -44,7 +44,9 @@ if __name__=="__main__":
 
 
 #telescopePath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/May2016/TimePix/RootFiles"
-telescopePath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/October2016/TelescopeFiles/RootFiles"
+#telescopePath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/October2016/TelescopeFiles/RootFiles"
+telescopePath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TelescopeData/Oct2016/RootFiles"
+
 
 if boardName=="M1" or boardName=="M3" or boardName=="M4":
 	inputPathPedestal = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/May2016/MAMBA"
@@ -61,6 +63,7 @@ else:
 
 #outputPath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/May2016/DQMTest"
 outputPath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/October2016/DQMTest"
+#outputPath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/October2016/DQMTemporary"
 
 subprocess.call('source /afs/cern.ch/project/eos/installation/lhcb/etc/setup.sh',shell=True)
 subprocess.call('/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select -b fuse mount $KEPLERROOT/eos_'+str(sigFile.split('-')[3]),shell=True)
@@ -82,6 +85,8 @@ else:
         os.environ['OUTPUTFILE'] = sigFile.split('-')[4][:-4]
         os.environ['BOARD'] = sigFile.split('-')[2]
         os.environ['RUNPLACE'] = sigFile.split('-')[1]
+        #os.environ['BOARD'] = sigFile.split('-')[1]
+        #os.environ['RUNPLACE'] = sigFile.split('-')[2]
         os.environ['RUNNUMBER'] = sigFile.split('-')[3]
         os.environ['SCANTYPE'] = sigFile.split('-')[0].split('_')[1]
         os.environ['DEFRUN'] = sigFile.split('-')[4][:-4]
@@ -95,6 +100,7 @@ print "Input signal file:     "+inputFileSignal
 
 if mask == 0: os.environ['MAMBAMASK'] = 'No'
 else: os.environ['MAMBAMASK'] = os.environ['BOARD']
+#else: os.environ['MAMBAMASK'] = os.environ['RUNPLACE']
 
 shFile = open(os.environ["KEPLERROOT"]+"/../run_"+os.environ["RUNNUMBER"]+".sh","w")
 shFile.write('#!/bin/bash\n')

@@ -139,7 +139,7 @@ AnalysisBase::AnalysisBase(TTree *tree) : fChain(0)
      badStrips[i] = 1; // all channels good to start
    }
  
-
+   nbadStrips = 0;
    if(!badStripFile) { // file couldn't be opened
       cerr << "Error: bad strip file does not exist -- assume all strips are good" << endl;
    }else{
