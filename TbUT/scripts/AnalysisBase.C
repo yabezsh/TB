@@ -89,10 +89,10 @@ AnalysisBase::AnalysisBase(TTree *tree) : fChain(0)
       dxWin = 1.0;
     correctForZRotation = false;
     }
-  }else if( m_board.Contains("M1") || m_board.Contains("M2") || m_board.Contains("M3") || m_board.Contains("M4") ){
+  }else if( m_board=="M1" || m_board=="M2" || m_board=="M3" || m_board=="M4" ){
     z_DUT = 343;
     polarity = 1.0;
-  }else if( m_board.Contains("F1") || m_board.Contains("F2") || m_board.Contains("F3") ||m_board.Contains("F4") ){
+  }else if( m_board=="F1" || m_board=="F2" || m_board=="F3" ||m_board=="F4" ){
     z_DUT = 343;
     if(m_board.Contains("F1") || m_board.Contains("F2")) polarity = 1.0;  //p-in-n
     if(m_board.Contains("F3") || m_board.Contains("F4")) polarity = -1.0;  //n-in-p
