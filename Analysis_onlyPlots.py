@@ -14,8 +14,14 @@ pedFile = "Pedestal-M1-FanIn-51.dat"
 sigFile = "Run_Bias_Scan-M1-FanIn-50-15027.dat"
 
 if __name__=="__main__":
+
+	# Initialize these environment variables, in case they are not set
+	os.environ['SECTORPOS'] = "0"
+	os.environ['ROTATION'] = "0"
+	os.environ['SENSORBIAS'] = "300"
+
         try:
-                opts,args = getopt.getopt(sys.argv[1:],"p:s:b:r:t:e:m:",["pedestal","signal","board","PA","sensorType","events","mask"])
+                opts,args = getopt.getopt(sys.argv[1:],"p:s:b:r:t:e:m:l:y:v:",["pedestal","signal","board","PA","sensorType","events","mask","sector","rot","bias"])
         except getopt.GetoptError as err:
                 print str(err)
                 usage()
@@ -37,6 +43,15 @@ if __name__=="__main__":
 		if o in('-m','--mask'):
 			if int(a)==0 or int(a)==1: mask = a
 			else: sys.exit("choose right masking option: 0 or 1")
+		if o in('-l','--sector'):
+			if str(a)=="0" or str(a)=="1" or str(a)=="2": os.environ['SECTORPOS'] = str(a)			
+			else: sys.exit("choose a sector: 0, 1 or 2")
+		if o in('-y','--rot'):
+			os.environ['ROTATION'] = str(a)
+		if o in('-v','--bias'):
+			os.environ['SENSORBIAS'] = str(a)
+		
+
 #if PA!="FanIn" and PA!="FanUp":
 #	sys.exit("Wrong PA option! Choose FanIn or FanUp!") 
 #if boardName!="M1" and boardName!="M2" and boardName!="M3" and boardName!="M4" and boardName!="F1" and boardName!="F3":
@@ -44,7 +59,9 @@ if __name__=="__main__":
 
 
 #telescopePath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/May2016/TimePix/RootFiles"
-telescopePath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/October2016/TelescopeFiles/RootFiles"
+#telescopePath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/October2016/TelescopeFiles/RootFiles"
+telescopePath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TelescopeData/Oct2016/RootFiles"
+
 
 if boardName=="M1" or boardName=="M3" or boardName=="M4":
 	inputPathPedestal = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/May2016/MAMBA"
@@ -60,7 +77,8 @@ else:
 #	sys.exit("Input files location is definded for a testbeam in the May 2016. Please go to Analysis.py and change inputPathPedestal and inputPathSignal")
 
 #outputPath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/May2016/DQMTest"
-outputPath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/October2016/DQMTest"
+#outputPath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/October2016/DQMTest"
+outputPath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/October2016/DQMTemporary"
 
 subprocess.call('source /afs/cern.ch/project/eos/installation/lhcb/etc/setup.sh',shell=True)
 subprocess.call('/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select -b fuse mount $KEPLERROOT/eos_'+str(sigFile.split('-')[3]),shell=True)

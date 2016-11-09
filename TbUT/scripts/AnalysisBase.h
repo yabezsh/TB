@@ -128,16 +128,15 @@ class AnalysisBase {
   bool holeSector;
   bool correctForZRotation;
 
-  double chargeCorrSlopeOdd;
-  double chargeCorrSlopeEven;
-  
   double noise[512];
   double alpha[512][512];
   int badStrips[512];
   int nbadStrips;
 
-
   double channelOffset;  
+
+  double xtalkCorrOdd;
+  double xtalkCorrEven;
 
   AnalysisBase(TTree *tree=0);
   virtual ~AnalysisBase();
@@ -169,7 +168,9 @@ class AnalysisBase {
   virtual bool isInCutoutRegion(double xtrk, double ytrk);
   virtual double DistToCutoutRegion(double xtrk, double ytrk);
   virtual void correctForStripGaps();
-
+  virtual void correctCluster(int iClus);
+  virtual void setAngle(TString angle);
+  
 };
 
 #endif

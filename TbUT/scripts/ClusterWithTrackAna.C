@@ -585,10 +585,9 @@ void ClusterWithTrackAna::Loop()
    m_board2 = m_board2.ReplaceAll("_v7","");
    TString f_out = m_fileOutdir + plotdir + "/AnalysisOutput_" + m_board2 + "_" + runplace + "_" + consR +"_"+m_runNumb+".root";
 
-  // TString f_out = m_fileOutdir + plotdir + "/AnalysisOutput_" + m_board2 + "_" + m_bias + "_" + m_sector + ".root";
-   if(m_angle != "0"){
-     f_out			= m_fileOutdir + plotdir + "/AnalysisOutput_" + m_board2 + "_" + m_bias + "_" + m_sector + "_" + m_angle + ".root";
-   }
+   cout << "Cross talk corrections for Board " << m_board << ", Apply Correction? " << applyClusterCorrection << endl;
+   cout << "==> Odd: " << xtalkCorrOdd << ",  Even: " << xtalkCorrEven << endl;
+
    cout << "Will write out file: " << f_out << endl;
    
 
@@ -778,7 +777,6 @@ void ClusterWithTrackAna::Loop()
 
    TH1F* hcAll = new TH1F("hcAll","Cluster charge",200,0.0,2000.0);
    TH1F* hcTrk = new TH1F("hcTrk","Cluster charge",200,0.0,2000.0);
-   TH1F* hcTrkCorr = new TH1F("hcTrkCorr","Cluster charge",200,0.0,2000.0);
    TH1F* hcTrkSeed = new TH1F("hcTrkSeed","Cluster charge",200,0.0,2000.0);
    TH1F* hcTrkSeed1 = new TH1F("hcTrkSeed1","Cluster charge",200,0.0,2000.0);
    TH1F* hcTrkSeed2 = new TH1F("hcTrkSeed2","Cluster charge",200,0.0,2000.0);
@@ -850,8 +848,6 @@ void ClusterWithTrackAna::Loop()
    PrepareDUT();
    //return;
    float biasVal = atof(m_bias);
-   cout << "chargeCorrSlopeOdd, chargeCorrSlopeEven = " << chargeCorrSlopeOdd << " " << chargeCorrSlopeEven << " " 
-        << m_bias << " " << biasVal << endl;
    
 
    std::ofstream myfile;
@@ -983,6 +979,9 @@ void ClusterWithTrackAna::Loop()
         for(int j=0; j<min(clusterNumberPerEvent,10); j++){
           dxh[j] = -999;
           if(clustersPosition[j] < 0.1) continue;
+
+          if(applyClusterCorrection) correctCluster(j);
+
           if(polarity*clustersCharge[j] < 0.2*kClusterChargeMin) continue;
           double x_dut = getDUTHitPosition(j);
           x_trk = x_trk0;
@@ -1120,9 +1119,6 @@ void ClusterWithTrackAna::Loop()
               //Double_t snr = polarity*clustersCharge[j]/noise[ichan];
               //hSNR->Fill(y_trk,x_trk,snr);
               //hSNR->
-              if(clustersSize[j]==1) hcTrkCorr->Fill(polarity*clustersCharge[j]);
-              if(clustersSize[j]==2 && iPeak==1) hcTrkCorr->Fill(polarity*clustersCharge[j]*(1.0-chargeCorrSlopeOdd));
-              if(clustersSize[j]==2 && iPeak==0) hcTrkCorr->Fill(polarity*clustersCharge[j]*(1.0-chargeCorrSlopeEven));
               hcTrkSeed->Fill(polarity*clustersSeedCharge[j]);
               if(clustersSize[j]==1) hcTrkSeed1->Fill(polarity*clustersSeedCharge[j]);
               if(clustersSize[j]==2) hcTrkSeed2->Fill(polarity*clustersSeedCharge[j]);
@@ -1157,7 +1153,7 @@ void ClusterWithTrackAna::Loop()
               double chl2 = clustersCharge2StripLeft[j]*polarity;
               double pch = polarity*clustersSeedCharge[j];
               double asym = (chl - chr) / (chl + chr);
-              int ic = pch/50.;
+              int ic = pch/50. - 4;
               double eta=0;
               if(dx<0)
                 eta=(pch-chr)/(pch+chr);
@@ -1267,7 +1263,7 @@ void ClusterWithTrackAna::Loop()
    }
    if(writeEventsWithMissinhHitsToFile) myfile.close();
    //return;
-   
+
 
    int i1 = h1->FindBin(-0.3);
    int i2 = h1->FindBin(0.3);

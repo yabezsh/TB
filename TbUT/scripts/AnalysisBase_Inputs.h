@@ -32,11 +32,17 @@
 const TString m_fileIndir = TString(getenv("OUTPUTPATH"))+"/"+TString(getenv("BOARD"))+"/output_"+TString(getenv("RUNNUMBER"))+"/";
 const TString m_board   = TString(getenv("BOARD"));
 
+
 const TString m_runNumb = TString(getenv("DEFRUN"));
 const TString maskFile = TString(getenv("KEPLERROOT"))+"/../TbUT/options/UT/MambaMasks_"+m_board+".dat";
 //--------------------------------------------------------------------------------------
 const TString runplace = TString(getenv("RUNPLACE"));
 const TString consR = TString(getenv("RUNNUMBER"));
+
+const TString m_sector   = TString(getenv("SECTORPOS"));
+const TString m_angle   = TString(getenv("ROTATION"));
+const TString m_bias   = TString(getenv("SENSORBIAS"));
+
 //const TString m_fileIndir = TString("../AddTrigTracks/");
 /* const TString m_board   = TString(""); */
 
@@ -48,11 +54,11 @@ const TString consR = TString(getenv("RUNNUMBER"));
 
 
 //-----------------------------------------------------------------------------------------
-TString m_bias  	= "300";
-const TString m_sector	= "PA"; 
+//TString m_bias  	= "300";
+//const TString m_sector	= "PA"; 
 const TString m_scanType = TString(getenv("SCANTYPE"));
 //const TString m_scanType = "Bias";
-const TString m_angle = "0";
+//const TString m_angle = "0";
 
 const TString m_fileOutdir = ""; 
 //>>>>>>> .r204986
@@ -83,3 +89,4 @@ const double k_DeadStrip 				= 0.12;
 const double m_minDistFromHole = 0.05;
 const bool removeTracksInHoleDef = false;
 
+const bool applyClusterCorrection = true;

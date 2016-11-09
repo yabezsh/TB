@@ -51,7 +51,7 @@ ClusterWithTrackAna::ClusterWithTrackAna(int biasVal){
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
   TString filename;
-  if(biasVal != 0) m_bias = Form("%d",biasVal);
+  //if(biasVal != 0) m_bias = Form("%d",biasVal);
   TTree* tree = 0;
   
    if (tree == 0) {

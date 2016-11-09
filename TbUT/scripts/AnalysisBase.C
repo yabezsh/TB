@@ -154,6 +154,9 @@ AnalysisBase::AnalysisBase(TTree *tree) : fChain(0)
    }
    cout << "MaskFile: Found " << nbadStrips << " masked strips" << endl;
 
+   cout << "Setting y rotation angle to: " << m_angle << " degrees" << endl;
+   setAngle(m_angle);
+   
 
 }
 
@@ -354,6 +357,7 @@ void AnalysisBase::getBeamLoc(){
   Long64_t nentries = fChain->GetEntriesFast();
   //cout << "nentries " << nentries << endl;
   float lo = 0, hi = 0;
+  int istrip;
 
   Long64_t nbytes = 0, nb = 0;
   std::cout << "======================================= " << std::endl;
@@ -366,12 +370,11 @@ void AnalysisBase::getBeamLoc(){
     //cout << clusterNumberPerEvent << endl;
     
     for(int j=0; j<min((int)clusterNumberPerEvent,10); j++){
-      //std::cout << clustersPosition[j] << std::endl;
-      //cout << polarity << " " << polarity*clustersCharge[j] << endl;
       if(polarity*clustersCharge[j] < kClusterChargeMin) continue;
       int iChan = clustersSeedPosition[j];
-      //if(j<500) cout << "iChan = " << iChan << clustersCharge[j] << " " << 5*noise[iChan] << endl;
       if(polarity*clustersCharge[j]<4*noise[iChan]) continue;
+      istrip = clustersSeedPosition[j];
+      if(badStrips[istrip]==0) continue; // exclude bad strips
       if(clustersPosition[j]>0.1&&clustersSize[j]==1) haStrip->Fill(clustersPosition[j]);
       if(clustersPosition[j]>0.1&&clustersSize[j]==2) haStrip->Fill(clustersPosition[j]);
     }
@@ -394,8 +397,8 @@ void AnalysisBase::getBeamLoc(){
   iLo = lo;
   iHi = hi;
   std::cout << "====> Beam is between strips " << iLo << " -- " << iHi << std::endl;
+  delete haStrip;
 
-  //delete ha;
   return;
 
 }
@@ -404,6 +407,7 @@ void AnalysisBase::getTDC(){
   TProfile *hb = new TProfile("hb","Cluster Charge vs TDC time",12,0,12,100,1000);
   Long64_t nentries = fChain->GetEntriesFast();
   float lo = 0, hi = 0;
+  int istrip;
 
   Long64_t nbytes = 0, nb = 0;
   std::cout << "============================================" << std::endl;
@@ -416,6 +420,8 @@ void AnalysisBase::getTDC(){
 
     for(int j=0; j<min((int)clusterNumberPerEvent,10); j++){
       //std::cout << "j: " << ", clustersTDC: " << clustersTDC << ", clustersCharge[j]: " << clustersCharge[j] << ", clustersPosition[j]: " << clustersPosition[j] << std::endl; 
+      istrip = clustersSeedPosition[j];
+      if(badStrips[istrip]==0) continue; // exclude bad strips
       if(clustersPosition[j] < 0.1) continue;
       if(polarity*clustersCharge[j] < kClusterChargeMin) continue;
       if(clustersPosition[j]>=iLo && clustersPosition[j]<=iHi && clustersTDC>1.0 && 
@@ -462,7 +468,7 @@ void AnalysisBase::findBeamRegionAndAlign(int iPass){
   hca->Sumw2();
   hcf->Sumw2();
   
-
+  int istrip;
   double nomStrip=0, detStrip = 0;
   Long64_t nbytes = 0, nb = 0;
   Int_t nentries = fChain->GetEntriesFast();
@@ -492,6 +498,9 @@ void AnalysisBase::findBeamRegionAndAlign(int iPass){
         if(clustersPosition[j] < 0.1) continue;
         if(polarity*clustersCharge[j] < kClusterChargeMin) continue;
         bool goodHit = (clustersPosition[j]>iLo && clustersPosition[j]<iHi);
+        istrip = clustersSeedPosition[j];
+        if(badStrips[istrip]==0) continue; // exclude bad strips
+
         double x_dut = getDUTHitPosition(j);
 
         x_trk = x_trk0;
@@ -910,26 +919,62 @@ Float_t AnalysisBase::getEdgePosition(float x){
   return x_dut;  
 }
 
+
 void AnalysisBase::setCrossTalkCorr(){
+
+  if(!applyClusterCorrection) return;
+
   float biasVal = atof(m_bias);
-  chargeCorrSlopeOdd = 0.0;
-  chargeCorrSlopeEven = 0.0;
   cout << "Bias Value = " << m_bias <<  " " << biasVal << endl;
-  
+
+  xtalkCorrOdd = 0.0;
+  xtalkCorrEven = 0.0;
+
   if(m_board == "A2" && m_sector=="1" && biasVal < 260){
-    chargeCorrSlopeOdd = 0.435;
-    chargeCorrSlopeEven = 0.400;
+    xtalkCorrOdd = 0.435;
+    xtalkCorrEven = 0.400;
   }else if(m_board == "A2" && m_sector=="1" && biasVal > 320){
-    chargeCorrSlopeOdd = 0.148;
-    chargeCorrSlopeEven = 0.094;
+    xtalkCorrOdd = 0.148;
+    xtalkCorrEven = 0.094;
   }else if(m_board == "A2" && m_sector=="1" && biasVal == 300){
-    chargeCorrSlopeOdd = 0.130;
-    chargeCorrSlopeEven = 0.088;
+    xtalkCorrOdd = 0.130;
+    xtalkCorrEven = 0.088;
   }else if(m_board == "A2" && m_sector=="2"){
-    chargeCorrSlopeOdd = 0.120;
-    chargeCorrSlopeEven = 0.085;
+    xtalkCorrOdd = 0.120;
+    xtalkCorrEven = 0.085;
   }
   
+  if(m_board=="A3_Lower" && m_sector=="1"){ xtalkCorrOdd = 0.0948; xtalkCorrEven = 0.0601;}
+  if(m_board=="A3_Lower" && m_sector=="2"){ xtalkCorrOdd = 0.1017; xtalkCorrEven = 0.0681;}
+  if(m_board=="A5_Lower" && m_sector=="1"){ xtalkCorrOdd = 0.108; xtalkCorrEven = 0.077;}
+  if(m_board=="A5_Lower" && m_sector=="2"){ xtalkCorrOdd = 0.106; xtalkCorrEven = 0.0749;}
+  if(m_board=="A6_Lower" && m_sector=="1"){ xtalkCorrOdd = 0.0822; xtalkCorrEven = 0.0487;}
+  if(m_board=="A6_Lower" && m_sector=="2"){ xtalkCorrOdd = 0.111; xtalkCorrEven = 0.0778;}
+  if(m_board=="A10_FanIn" && m_sector=="1"){ xtalkCorrOdd = 0.0839; xtalkCorrEven = 0.0600;}
+  if(m_board=="A10_FanIn" && m_sector=="2"){ xtalkCorrOdd = 0.0933; xtalkCorrEven = 0.0596;}
+  if(m_board=="A12_FanIn" && m_sector=="1"){ xtalkCorrOdd = 0.0950; xtalkCorrEven = 0.0644;}
+  if(m_board=="A12_FanIn" && m_sector=="2"){ xtalkCorrOdd = 0.0985; xtalkCorrEven = 0.0649;}
+  if(m_board=="A13_FanIn" && m_sector=="1"){ xtalkCorrOdd = 0.0723; xtalkCorrEven = 0.037;}
+  if(m_board=="A13_FanIn" && m_sector=="2"){ xtalkCorrOdd = 0.0998; xtalkCorrEven = 0.0659;}
+
+  if(m_board=="14_HM1" && m_sector=="1"){ xtalkCorrOdd = 0.0562; xtalkCorrEven = 0.0186;}
+  if(m_board=="14_HM1" && m_sector=="2"){ xtalkCorrOdd = 0.0877; xtalkCorrEven = 0.0513;}
+  if(m_board=="13_HM1" && m_sector=="1"){ xtalkCorrOdd = 0.0694; xtalkCorrEven = 0.0336;}
+  if(m_board=="13_HM1" && m_sector=="2"){ xtalkCorrOdd = 0.0899; xtalkCorrEven = 0.0552;}
+  if(m_board=="13_HM2" && m_sector=="1"){ xtalkCorrOdd = 0.0786; xtalkCorrEven = 0.0352;}
+  if(m_board=="13_HM2" && m_sector=="2"){ xtalkCorrOdd = 0.0830; xtalkCorrEven = 0.0479;}
+  if(m_board=="18_HM1" && m_sector=="1"){ xtalkCorrOdd = 0.0850; xtalkCorrEven = 0.0450;}
+  if(m_board=="18_HM1" && m_sector=="2"){ xtalkCorrOdd = 0.0913; xtalkCorrEven = 0.0560;}
+  if(m_board=="18_HM2" && m_sector=="1"){ xtalkCorrOdd = 0.0753; xtalkCorrEven = 0.0389;}
+  if(m_board=="18_HM2" && m_sector=="2"){ xtalkCorrOdd = 0.0783; xtalkCorrEven = 0.0426;}
+
+  cout << "Cross talk corrections for Board " << m_board << ", Sector = " << m_sector << endl;
+  cout << "==> Odd: " << xtalkCorrOdd << ",  Even: " << xtalkCorrEven << endl;
+  
+
+  return;
+  
+
 }
 
 
@@ -1046,3 +1091,108 @@ void AnalysisBase::correctForStripGaps(){
 }
 
 
+void AnalysisBase::correctCluster(int iClus){
+
+  // Correct charge in neighbor strip based on peak charge;
+  // Assumes here it's the left strip that couples
+  int iStrip = clustersSeedPosition[iClus];
+  double qPeak = clustersSeedCharge[iClus];
+  bool evenStrip = iStrip%2 == 0;
+  double slope = xtalkCorrEven;
+  if(!evenStrip) slope = xtalkCorrOdd;
+  if(fabs(slope) < 0.001) return; // no correction to apply
+  double Corr = qPeak * slope;
+  if(iStrip < 2 || iStrip > nChan - 2) return;
+  double qTot = clustersCharge[iClus];
+  //double pos =  clustersPosition[iClus];
+  double qL = clustersCharge1StripLeft[iClus];
+  double qR = clustersCharge1StripRight[iClus];
+  double difR = clustersCharge[iClus]-(qPeak + qR);
+  double difL = clustersCharge[iClus]-(qPeak + qL);
+
+  // 1-strip cluster, just correct the left strip
+  if(clustersSize[iClus]==1){ 
+    clustersCharge1StripLeft[iClus] = clustersCharge1StripLeft[iClus] - Corr;
+    return; // nothing else to do
+  }
+
+  int strip[5];
+  double ch[5];
+  double chnew[5];
+  double chcomb3[3];
+  double chcomb4[2];
+  
+  strip[0] = clustersSeedPosition[iClus]-2;
+  strip[1] = clustersSeedPosition[iClus]-1;
+  strip[2] = clustersSeedPosition[iClus];
+  strip[3] = clustersSeedPosition[iClus]+1;
+  strip[4] = clustersSeedPosition[iClus]+2;
+  ch[0] = clustersCharge2StripLeft[iClus];
+  ch[1] = clustersCharge1StripLeft[iClus];
+  ch[2] = clustersSeedCharge[iClus];
+  ch[3] = clustersCharge1StripRight[iClus];
+  ch[4] = clustersCharge2StripRight[iClus];
+
+  int ibeg = 4;
+  int iend = 0;
+  if(clustersSize[iClus]==2){
+    if(fabs(difL)<2.0){ // Peak + left side strip
+      ibeg = 2; iend = 1;
+    }else if(fabs(difR)<2.0){ // Peak + right side strip
+      ibeg = 3; iend = 2;
+    }
+  }else if(clustersSize[iClus]==3){
+    chcomb3[0] = ch[2]+ch[1]+ch[3];
+    chcomb3[1] = ch[2]+ch[3]+ch[4];
+    chcomb3[2] = ch[2]+ch[0]+ch[1];
+    if(fabs(chcomb3[0]-clustersCharge[iClus])<2.0){ ibeg = 3; iend = 1;}
+    else if(fabs(chcomb3[1]-clustersCharge[iClus])<2.0){ibeg = 4; iend = 2;}
+    else if(fabs(chcomb3[2]-clustersCharge[iClus])<2.0){ibeg = 2; iend = 0;}
+  }else if(clustersSize[iClus]==4){
+    chcomb4[0] = ch[2]+ch[0]+ch[1]+ch[3];
+    chcomb4[1] = ch[2]+ch[1]+ch[3]+ch[4];
+    if(fabs(chcomb4[0]-clustersCharge[iClus])<2.0){ ibeg = 3; iend = 0;}
+    else if(fabs(chcomb4[1]-clustersCharge[iClus])<2.0){ibeg = 4; iend = 1;}  
+  }  
+
+  int is;
+  double xq = 0;
+  double q = 0;
+  int iSize = 0;
+  // Correct left strip based on charge in right strip
+  chnew[ibeg] = ch[ibeg];
+ for(int i=ibeg; i>iend; i--){ // only go to the end strip + 1
+     is = strip[i];
+    if(badStrips[is]==0) continue; // exclude maske strips
+    if(i!=2 && (polarity*ch[i] > polarity*ch[2])) continue; // no strip should have moer charge than the peak strip
+    if(polarity*ch[i] < 2.5*noise[is]) continue; // don't make any correction, if ADC below side threshold
+    Corr = ch[i] * slope;
+    chnew[i-1] = ch[i-1] - Corr;    
+  }
+  
+  for(int i=ibeg; i>=iend; i--){ //include all strips
+    is = strip[i];
+    if(badStrips[is]==0) continue; // exclude maske strips
+    if(i!=2 && (polarity*ch[i] > polarity*ch[2])) continue; // no strip should have moer charge than the peak strip
+    if(polarity*chnew[i] < 2.5*noise[is]) continue; // don't make any correction, if ADC below side threshold
+    q = q + chnew[i];
+    xq = xq + chnew[i] * strip[i];
+    iSize++;
+  }
+  
+  clustersPosition[iClus] = xq/q;
+  clustersCharge[iClus] = q;
+  clustersSize[iClus] = iSize;
+
+  return;
+  
+ 
+}
+
+
+void AnalysisBase::setAngle(TString angle){  
+  int iv = atoi(angle.Data());
+  float v = iv*1.0;
+  Ry = v*(TMath::Pi()/180.0);
+  return;    
+}
