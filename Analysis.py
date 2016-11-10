@@ -21,7 +21,7 @@ if __name__=="__main__":
 	os.environ['SENSORBIAS'] = "300"
 
 	try:
-                opts,args = getopt.getopt(sys.argv[1:],"p:s:b:r:t:e:m:",["pedestal","signal","board","PA","sensorType","events","mask"])
+                opts,args = getopt.getopt(sys.argv[1:],"p:s:b:r:t:e:m:l:y:v:",["pedestal","signal","board","PA","sensorType","events","mask","sector","rot","bias"])
         except getopt.GetoptError as err:
                 print str(err)
                 usage()
@@ -76,8 +76,8 @@ else:
 #	sys.exit("Input files location is definded for a testbeam in the May 2016. Please go to Analysis.py and change inputPathPedestal and inputPathSignal")
 
 #outputPath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/May2016/DQMTest"
-outputPath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/October2016/DQMTest"
-#outputPath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/October2016/DQMTemporary"
+#outputPath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/October2016/DQMTest"
+outputPath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/October2016/DQMTemporary"
 
 subprocess.call('source /afs/cern.ch/project/eos/installation/lhcb/etc/setup.sh',shell=True)
 subprocess.call('/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select -b fuse mount $KEPLERROOT/eos_'+str(sigFile.split('-')[3]),shell=True)
