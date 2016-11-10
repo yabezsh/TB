@@ -2382,7 +2382,7 @@ void ClusterWithTrackAna::Loop()
     h12dn->Draw("hist,same");
 
     c1->cd(6)->SetLeftMargin(0.13);
-    TH1F *he2 = (TH1F*)h12dn->Clone("he");
+    TH1F *he2 = (TH1F*)h12dn->Clone("he2");
     he2->SetName("he2");
     he2->Divide(h12dn,h12dd,1.0,1.0,"B");
     bw = 1000*h12dd->GetBinWidth(1);
