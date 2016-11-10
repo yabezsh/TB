@@ -657,10 +657,10 @@ void ClusterWithTrackAna::Loop()
    TH1F* h6b = new TH1F("h6b","Y position of matched cluster",400,-10.0,10.0);
    TH1F* h6d = new TH1F("h6d","Y position of matched cluster",400,-10.0,10.0);
 
-   TProfile *h8 = new TProfile("h8","#DeltaX vs #theta_{trk}",50,-5,5,-1.0,1.0);
+   TProfile *h8 = new TProfile("h8","#DeltaX vs #theta_{trk}",500,-5,5,-1.0,1.0);
    TProfile *h8b = new TProfile("h8b","#DeltaX vs #theta_{trk}",50,-5,5,-1.0,1.0);
-   TProfile *h9 = new TProfile("h9","#DeltaX vs Y_{trk} at DUT",25,-6,6,-1.0,1.0);
-   TProfile *h9a = new TProfile("h9a","#DeltaX vs X_{trk} at DUT",25,-6,6,-1.0,1.0);
+   TProfile *h9 = new TProfile("h9","#DeltaX vs Y_{trk} at DUT",24,-6,6,-1.0,1.0);
+   TProfile *h9a = new TProfile("h9a","#DeltaX vs X_{trk} at DUT",24,-6,6,-1.0,1.0);
 
    TProfile *h10a = new TProfile("h10a","<ADC> vs strip",512,0,512,0.0,1000.0);
    TProfile *h10b = new TProfile("h10b","<ADC> vs strip",512,0,512,0.0,1000.0);
