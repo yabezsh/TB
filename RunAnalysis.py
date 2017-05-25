@@ -220,7 +220,7 @@ if __name__ == "__main__" :
     parser = argparse.ArgumentParser(description='Run the analysis of the May 2016 or late May 2016 test beam data.')
 
     parser.add_argument('--board',required=True,choices=boardList,help='board')
-    parser.add_argument('--PA',required=True,choices=PAList,help='PA')
+    parser.add_argument('--PA',required=True,choices=PAList,help='PA or Hybrid name')
     parser.add_argument('--DUTRun',type=int,required=False,help='DUT run (for debugging, to process one DUT run only)')
     parser.add_argument('--mode',required=True,choices=modeList,help='mode')
     parser.add_argument('--evts',required=False,type=int,help='evts')

@@ -70,7 +70,7 @@ typeDict['18_HM2'] = 'np'
 user = os.environ['USER']
 userFirst = user[0]
 
-MAMBA = '/afs/cern.ch/user/'+userFirst+'/'+user+'/eos/lhcb/testbeam/ut/TemporaryData/'+testbeam+'/MAMBA/'
+MAMBA = '/eos/lhcb/testbeam/ut/TemporaryData/'+testbeam+'/MAMBA/'
 #MAMBA = '/afs/cern.ch/user/'+userFirst+'/'+user+'/eos/lhcb/testbeam/ut/OfficialData/'+testbeam+'/MAMBA/'
-DQM = '/afs/cern.ch/user/'+userFirst+'/'+user+'/eos/lhcb/testbeam/ut/TemporaryData/'+testbeam+'/DQM/'
+DQM = '/eos/lhcb/testbeam/ut/TemporaryData/'+testbeam+'/DQM/'
 # DQM = '/afs/cern.ch/user/'+userFirst+'/'+user+'/eos/lhcb/testbeam/ut/TemporaryData/'+testbeam+'/DQMTest/'
