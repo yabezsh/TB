@@ -7,9 +7,10 @@ To use:
 1.  Set up TbUT running environment (https://twiki.cern.ch/twiki/bin/view/LHCb/TbUT)
 2.  Edit this script to point to your current eos mount point and the data dir for current testbeam, or use the command line options
 3.  From Tb/TbUT directory, run scripts/fastAnalysis.py with the following required options:
-    -b board    : Letter+number combination, e.g. 'A8'
-    -p pednum   : run number of the pedestal run to use (UT run number)
-    -r runnum   : run number to analyze (UT run number) -- enter 0 for pedestal analysis only
+    -b --board    : Letter+number combination, e.g. 'A8'
+    -y --hybrid   : Name of hybrid, e.g. TTV2_01
+    -p --pednum   : run number of the pedestal run to use (UT run number)
+    -r --runnum   : run number to analyze (UT run number) -- enter 0 for pedestal analysis only
 4.  These are optional arguments:
     -n nevmax   : number of events to analyze
     -f force    : Force overwrite of any output files existing
@@ -25,8 +26,8 @@ To use:
 ############################################################
 ##Modify this to change defaults: 
 nevdef=100000
-eosmount='/afs/cern.ch/work/m/mrudolph/private/nov_testbeam/eos'
-indir='lhcb/testbeam/ut/OfficialData/October2015'
+eosmount='/eos'
+indir='lhcb/testbeam/ut/TemporaryData/October2016/MAMBA'
 outdir='.'
 ############################################################
 
@@ -145,6 +146,8 @@ parser = argparse.ArgumentParser(
     formatter_class=argparse.ArgumentDefaultsHelpFormatter,)
 parser.add_argument('-b','--board',type=str,required=True,
                     help="Letter+number combination, e.g. 'A8'")
+parser.add_argument('-y','--hybrid',type=str,required=True,
+                    help="Hybrid e.g. TTV2_01")
 parser.add_argument('-p','--pednum',type=int,required=True,
                     help="Run number of the pedestal run to use (UT run number)")
 parser.add_argument('-r','--runnum',type=int,required=True,
@@ -153,7 +156,7 @@ parser.add_argument('-n','--nevmax',type=int,required=False,default=nevdef,
                     help="Max number of events to analyze")
 parser.add_argument('-f','--force',required=False,action='store_true',
                     help="Force overwrite of any output files existing")
-parser.add_argument('-t','--senstype',type=str,required=False,default='PType',
+parser.add_argument('-t','--senstype',type=str,required=False,default='NType',
                     help="Sensor type ('PType' or 'NType')")
 parser.add_argument('-e','--eosmount',type=str,required=False,default=eosmount,
                     help="Eos mount point")
@@ -168,8 +171,8 @@ import os
 import subprocess
 
 #make sure I have places for output
-pedestaldir = args.outdir + '/Pedestal-Board{}-{}'.format( args.board, args.pednum )
-monitordir = args.outdir + '/Monitoring-Board{}-{}'.format( args.board, args.runnum )
+pedestaldir = args.outdir + '/Pedestal-{}-{}'.format( args.board, args.pednum )
+monitordir = args.outdir + '/Monitoring-{}-{}'.format( args.board, args.runnum )
 def ensuredir(dir):
     try: 
         os.makedirs(dir)
@@ -196,17 +199,20 @@ if(args.force or not os.path.isfile("{}/Fast-Pedestal-Board{}-{}.dat".format( pe
                "from TbUTPedestalRunner import TbUTPedestalRunner\n"
                "app=TbUTPedestalRunner()\n"
                "# set parameter\n"
-               "app.inputData= '{}/{}/Board{}/RawData/Pedestal-B{}-{}-{}-.dat'\n"
-               "app.isAType={}\n"
+               "app.inputData= '{}/{}/{}/Pedestal-{}-{}-{}.dat'\n"
+               "app.isAType=False\n"
                "# have to be more than 4k (~10k)\n"
                "app.eventMax={}\n"
                "#  keep the pedestals files in $KEPLERROOT/../TbUT/options/UT/ directory !!!!!\n"
                "app.pedestalOutputData ='{}/Fast-Pedestal-Board{}-{}.dat'\n"
-               "app.runPedestals()\n").format(args.eosmount,args.indir, args.board, args.board[1:], args.board[:1],args.pednum, (args.board[:1]=='A'), args.nevmax, pedestaldir, args.board,args.pednum)
+               "app.runPedestals()\n").format(args.eosmount,args.indir, args.board, args.hybrid, args.board,args.pednum, args.nevmax, pedestaldir, args.board,args.pednum)
 
 
     with open('myTempPedRun.py','w') as ftarget:
         ftarget.write(pedCode)
+
+    
+    os.environ['MAMBAMASK'] = 'No'
 
     ret = subprocess.call(['gaudirun.py','myTempPedRun.py'])
 
@@ -219,7 +225,7 @@ if(args.force or not os.path.isfile("{}/Fast-Pedestal-Board{}-{}.dat".format( pe
 if( args.runnum != 0):
 
     #find the data file by run number
-    dir_to_search = "{}/{}/Board{}/RawData/".format(args.eosmount,args.indir,args.board)
+    dir_to_search = "{}/{}/{}/".format(args.eosmount,args.indir,args.board)
     paths = subprocess.check_output("find {} -iname '*-{}-*.dat'".format(dir_to_search,args.runnum), shell=True).splitlines()
 
     if( len(paths)==0):
@@ -244,12 +250,12 @@ if( args.runnum != 0):
                    "app = TbUTClusterizator()\n"
                    "# set parameters\n"
                    "app.inputData = '{}'\n"
-                   "app.isAType = {}\n"
+                   "app.isAType = False\n"
                    "app.sensorType = '{}'\n"
                    "app.eventMax = {}\n"
                    "app.pedestalInputData = '{}/Fast-Pedestal-Board{}-{}.dat'\n"
                    "app.eventNumberDisplay = 1000\n"
-                   "app.runClusterization()\n").format(inpath,(args.board[:1]=='A'),args.senstype,args.nevmax,pedestaldir,args.board,args.pednum)
+                   "app.runClusterization()\n").format(inpath,args.senstype,args.nevmax,pedestaldir,args.board,args.pednum)
 
 
 

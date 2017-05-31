@@ -68,9 +68,12 @@ if boardName=="M1" or boardName=="M3" or boardName=="M4":
 elif boardName=="F1" or boardName=="F3":
 	inputPathPedestal = "/eos/lhcb/testbeam/ut/TemporaryData/LateMay2016/MAMBA"
 	inputPathSignal = "/eos/lhcb/testbeam/ut/TemporaryData/LateMay2016/MAMBA"
-else:
+elif boardName=='A10_FanIn' or'A13_FanIn' or'A12_FanIn' or'A6_Lower' or'A3_Lower' or'A5_Lower' or'13_HM1' or'13_HM2' or'14_HM1' or'17_HM2' or'18_HM1' or'18_HM2':
 	inputPathPedestal = "/eos/lhcb/testbeam/ut/TemporaryData/October2016/MAMBA"
         inputPathSignal = "/eos/lhcb/testbeam/ut/TemporaryData/October2016/MAMBA" 
+else:
+	inputPathPedestal = "/eos/lhcb/testbeam/ut/TemporaryData/June2017/MAMBA"
+        inputPathSignal = "/eos/lhcb/testbeam/ut/TemporaryData/June2017/MAMBA" 
 
 #else:
 #	sys.exit("Input files location is definded for a testbeam in the May 2016. Please go to Analysis.py and change inputPathPedestal and inputPathSignal")
@@ -156,8 +159,13 @@ if PA=="":
 	shFile.write('\nmkdir -p '+outputPath+'/'+boardName+'/output_'+os.environ["RUNNUMBER"]+'/Plots')
 else:
         shFile.write('\nmkdir -p '+outputPath+'/'+boardName+'/'+PA+'/output_'+os.environ["RUNNUMBER"]+'/Plots')
-shFile.write('\nroot -b -q '+os.environ["KEPLERROOT"]+'/../TbUT/scripts/runClusterWithTrackAna.C')
+
+shFile.write('\ncd ' + os.environ["KEPLERROOT"]+ '/../TbUT/scripts')
+shFile.write('\nroot -b -q runClusterWithTrackAna.C')
 shFile.close()
+
+
+
 subprocess.call("chmod +x "+os.environ["KEPLERROOT"]+"/../run_"+os.environ["RUNNUMBER"]+".sh",shell=True)
 os.system('/$KEPLERROOT/../run_'+os.environ["RUNNUMBER"]+'.sh')
 if PA=="":
