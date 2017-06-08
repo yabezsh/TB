@@ -102,7 +102,11 @@ AnalysisBase::AnalysisBase(TTree *tree) : fChain(0)
   }else if( m_board.Contains("14_HM1") || m_board.Contains("13_HM1") || m_board.Contains("13_HM2") || m_board.Contains("18_HM1") || m_board.Contains("18_HM2") || m_board.Contains("17_HM2")){
     z_DUT = 343;
     polarity = -1.0;  //p-in-n
-  }else if(  m_board.Contains("D")) {
+  }else if (m_board.Contains("N_")) {
+    z_DUT = 290;
+    polarity = 1.0;
+    stripPitch = 0.1875;
+  } else if(  m_board.Contains("D")) {
     stripPitch = 0.095;
     channelOffset = 512.0;
     stripGap[0]=58;     
@@ -154,6 +158,7 @@ AnalysisBase::AnalysisBase(TTree *tree) : fChain(0)
    }
    cout << "MaskFile: Found " << nbadStrips << " masked strips" << endl;
 
+   cout << "Seeting z position to: " << z_DUT << endl;
    cout << "Setting y rotation angle to: " << m_angle << " degrees" << endl;
    setAngle(m_angle);
    
@@ -845,6 +850,8 @@ void AnalysisBase::transformTrackToDUTFrame(int k, double& x_trk, double& y_trk,
 
 void AnalysisBase::PrepareDUT(){
 
+
+  cout << "DEBUG zDUT=" << z_DUT << endl;
    //----------------------------
    // Get Beam Location (Strips)
    //----------------------------
@@ -967,6 +974,8 @@ void AnalysisBase::setCrossTalkCorr(){
   if(m_board=="18_HM1" && m_sector=="2"){ xtalkCorrOdd = 0.0913; xtalkCorrEven = 0.0560;}
   if(m_board=="18_HM2" && m_sector=="1"){ xtalkCorrOdd = 0.0753; xtalkCorrEven = 0.0389;}
   if(m_board=="18_HM2" && m_sector=="2"){ xtalkCorrOdd = 0.0783; xtalkCorrEven = 0.0426;}
+
+  if(m_board=="N_8" && m_sector=="1") { xtalkCorrOdd = 0.0504902; xtalkCorrEven = 0.0200929;}
 
   cout << "Cross talk corrections for Board " << m_board << ", Sector = " << m_sector << endl;
   cout << "==> Odd: " << xtalkCorrOdd << ",  Even: " << xtalkCorrEven << endl;

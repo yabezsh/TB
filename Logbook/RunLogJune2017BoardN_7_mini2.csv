@@ -1,0 +1,45 @@
+BOARD FIM2 -- 25% of max nominal fluence - FanIn design,,,,,,Hybrid,TTV2-07,Sensor,7 mini 2,,,,,
+Board FIM2,FanIn,,DUT Run #,Kepler Run #,Stage,Stage,Stage,Bias,Current,Temp,RH,Online Flag,Offline Flag,Note
+Sector,Purpose,Bias,Run #,Run #,X (mm),Y (mm),Rot (deg),(V),(uA),( C ),(%),(Good/Bad),(Good/Bad),
+1,Bias,Top,596,21391,70,1,0,50,28,2.5,6,good,,
+1,Pedestal,Top,597,0,70,1,0,50,28,2.5,6,good,,
+1,Bias,Top,598,21392,70,1,0,100,37,2.5,6,good,,
+1,Pedestal,Top,599,0,70,1,0,100,37,2.5,6,good,,
+1,Bias,Top,600,21393,70,1,0,150,41,2.5,6,good,,
+1,Pedestal,Top,601,0,70,1,0,150,41,2.5,6,good,,
+1,Bias,Top,602,21394,70,1,0,200,43,2.5,6,good,,
+1,Pedestal,Top,603,0,70,1,0,200,43,2.5,6,good,,
+1,Bias,Top,604,21395,70,1,0,300,45,2.5,6,good,,
+1,Pedestal,Top,605,0,70,1,0,300,45,2.5,6,good,,
+1,Bias,Top,606,21396,70,1,0,400,47,2.5,6,good,,
+1,Pedestal,Top,607,0,70,1,0,400,47,2.5,6,good,,
+1,Bias,Top,608,21397,70,1,0,500,49,2.5,6,good,,low intensity beam
+1,Pedestal,Top,609,0,70,1,0,500,49,2.5,6,good,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+2,Bias,Top,622,21404,63,1,0,50,28,2.5,5.5,good,,
+2,Pedestal,Top,623,0,63,1,0,50,28,2.5,5.5,good,,
+2,Bias,Top,620,21403,63,1,0,100,37,2.5,5.5,good,,
+2,Pedestal,Top,621,0,63,1,0,100,37,2.5,5.5,good,,
+2,Bias,Top,618,21402,63,1,0,150,41.5,2.5,5.5,good,,
+2,Pedestal,Top,619,0,63,1,0,150,41.5,2.5,5.5,good,,
+2,Bias,Top,616,21401,63,1,0,200,43,2.5,5.5,good,,
+2,Pedestal,Top,617,0,63,1,0,200,43,2.5,5.5,good,,
+2,Bias,Top,614,21400,63,1,0,300,45,2.5,5.5,good,,
+2,Pedestal,Top,615,0,63,1,0,300,45,2.5,5.5,good,,
+2,Bias,Top,612,21399,63,1,0,400,47,2.5,5.5,good,,
+2,Pedestal,Top,613,0,63,1,0,400,47,2.5,5.5,good,,
+2,Bias,Top,610,21398,63,1,0,500,49,2.5,6,good,,neglected to include current in Mamba GUI
+2,Pedestal,Top,611,0,63,1,0,500,49,2.5,6,good,,neglected to include current in Mamba GUI
+,,,,,,,,,,,,,,
+1,Pedestal,Top,629,0,70,1,-5,400,46,2.5,5.5,good,,neglected to update the DUT sector to 1 in the Mamba GUI
+1,Angle,Top,630,21409,70,1,-5,400,46,2.5,5.5,good,,neglected to update the DUT sector to 1 in the Mamba GUI
+1,Angle,Top,631,21410,70,1,5,400,46,2.5,5.5,good,,neglected to update the DUT sector to 1 in the Mamba GUI
+1,Angle,Top,632,21411,70,1,10,400,46,2.5,5.5,good,,neglected to update the DUT sector to 1 in the Mamba GUI
+1,Angle,Top,633,21412,70,1,15,400,46,2.5,5.5,good,,neglected to update the DUT sector to 1 in the Mamba GUI
+,,,,,,,,,,,,,,
+2,Pedestal,Top,624,0,63,1,-5,400,46,2.5,5.5,good,,
+2,Angle,Top,625,21405,63,1,-5,400,46,2.5,5.5,good,,
+2,Angle,Top,626,21406,63,1,5,400,46,2.5,5.5,good,,
+2,Angle,Top,627,21407,63,1,10,400,46,2.5,5.5,good,,
+2,Angle,Top,628,21408,63,1,15,400,46,2.5,5.5,good,,

@@ -1,10 +1,14 @@
+*~
 *.pyc
 *.d
 *.so
 *.swp
 
-run_k.sh
-clusterRun.sh
+LSFJOB*
+run_*.sh
+clusterRun*.sh
+TbUTRun_*.py
+TbUTPedestal_*.py
 
 TbUT/options/TbUTPedestal.py
 TbUT/options/TbUTRun.py

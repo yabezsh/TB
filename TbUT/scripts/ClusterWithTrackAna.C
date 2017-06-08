@@ -607,22 +607,24 @@ void ClusterWithTrackAna::Loop()
    //int chLow= channel_low-10;
    //int nbins=chHi-chLow;
    
-   TH1F* h0 = new TH1F("h0","#DeltaX between strip hit and track projection (strips)",80,-20.,20.); // Distribution of the delta x between the position of the cluster and the position of the strip expected based on the track information. Distribution not centered in zero and/or not symmetric if the alignment is not properly done.
-   TH1F* h1 = new TH1F("h1","#DeltaX",1600,-4.0,4.0);
-   TH2F* h1vsx = new TH2F("h1vsx","#DeltaX vs X",50,-5,5,100,-0.2,0.2);
-   TH1F* h1mpa = new TH1F("h1mpa","#DeltaX",400,-20.0,20.0);
-   TH1F* h1mbpa = new TH1F("h1mbpa","#DeltaX",400,-20.0,20.0);
-   TH1F* h1fpa = new TH1F("h1fpa","#DeltaX",400,-20.0,20.0);
-   TH1F* h1fbpa = new TH1F("h1fbpa","#DeltaX",400,-20.0,20.0);
+   TH1F* h0 = new TH1F("delta_nstrips","#DeltaX between strip hit and track projection (strips)",80,-20.,20.); // Distribution of the delta x between the position of the cluster and the position of the strip expected based on the track information. Distribution not centered in zero and/or not symmetric if the alignment is not properly done.
+   TH1F* h1 = new TH1F("delta_x","#DeltaX",1600,-4.0,4.0);
 
-   TH1F* h1mpa1 = new TH1F("h1mpa1","#DeltaX",800,-20.0,20.0);
-   TH1F* h1mpa2 = new TH1F("h1mpa2","#DeltaX",800,-20.0,20.0);
-   TH1F* h1mpa3 = new TH1F("h1mpa3","#DeltaX",800,-20.0,20.0);
-   TH1F* h1mpa4 = new TH1F("h1mpa4","#DeltaX",800,-20.0,20.0);
-   TH1F* h1mpa5 = new TH1F("h1mpa5","#DeltaX",800,-20.0,20.0);
 
-   TH1F* h1mpaL = new TH1F("h1mpaL","Strip# of Missed Hit in Lower PA region",512,0,512);
-   TH1F* h1mpaU = new TH1F("h1mpaU","Strip# of Missed Hit in Upper PA region",512,0,512);
+   //These seem to be delta X for when hit is far away?
+   TH1F* h1mpa = new TH1F("deltax_missing","#DeltaX",400,-20.0,20.0);
+   TH1F* h1mbpa = new TH1F("deltax_missing_ylow","#DeltaX",400,-20.0,20.0);
+   TH1F* h1fpa = new TH1F("deltax_found","#DeltaX",400,-20.0,20.0);
+   TH1F* h1fbpa = new TH1F("deltax_found_ylow","#DeltaX",400,-20.0,20.0);
+
+   TH1F* h1mpa1 = new TH1F("deltax_missing_xbin1","#DeltaX",800,-20.0,20.0);
+   TH1F* h1mpa2 = new TH1F("deltax_missing_xbin2","#DeltaX",800,-20.0,20.0);
+   TH1F* h1mpa3 = new TH1F("deltax_missing_xbin3","#DeltaX",800,-20.0,20.0);
+   TH1F* h1mpa4 = new TH1F("deltax_missing_xbin4","#DeltaX",800,-20.0,20.0);
+   TH1F* h1mpa5 = new TH1F("deltax_missing_xbin5","#DeltaX",800,-20.0,20.0);
+
+   TH1F* h1mpaL = new TH1F("nstrip_missing_lowPA","Strip# of Missed Hit in Lower PA region",512,0,512);
+   TH1F* h1mpaU = new TH1F("nstrip_missing_hiPA","Strip# of Missed Hit in Upper PA region",512,0,512);
 
 
    TH1F* h1s = new TH1F("h1s","Seed strip of cluster",512,0.0,512.0);
@@ -657,10 +659,10 @@ void ClusterWithTrackAna::Loop()
    TH1F* h6b = new TH1F("h6b","Y position of matched cluster",400,-10.0,10.0);
    TH1F* h6d = new TH1F("h6d","Y position of matched cluster",400,-10.0,10.0);
 
-   TProfile *h8 = new TProfile("h8","#DeltaX vs #theta_{trk}",500,-5,5,-1.0,1.0);
-   TProfile *h8b = new TProfile("h8b","#DeltaX vs #theta_{trk}",50,-5,5,-1.0,1.0);
-   TProfile *h9 = new TProfile("h9","#DeltaX vs Y_{trk} at DUT",24,-6,6,-1.0,1.0);
-   TProfile *h9a = new TProfile("h9a","#DeltaX vs X_{trk} at DUT",24,-6,6,-1.0,1.0);
+   TProfile *h8 = new TProfile("deltax_v_thetax","#DeltaX vs #theta_{trk}",500,-5,5,-1.0,1.0);
+   TProfile *h8b = new TProfile("deltax_v_thetay","#DeltaX vs #theta_{trk}",50,-5,5,-1.0,1.0);
+   TProfile *h9 = new TProfile("deltax_v_y","#DeltaX vs Y_{trk} at DUT",24,-6,6,-1.0,1.0);
+   TProfile *h9a = new TProfile("deltax_v_x","#DeltaX vs X_{trk} at DUT",30, -15*stripPitch*2, 15*stripPitch*2,-1.0,1.0);
 
    TProfile *h10a = new TProfile("h10a","<ADC> vs strip",512,0,512,0.0,1000.0);
    TProfile *h10b = new TProfile("h10b","<ADC> vs strip",512,0,512,0.0,1000.0);
@@ -1083,7 +1085,7 @@ void ClusterWithTrackAna::Loop()
               h12n->Fill(fracStrip,clustersSize[j]);
               hClusterStrip->Fill(ichan,clustersSize[j]);
               h12cc->Fill(clustersSize[j]);
-              h1vsx->Fill(x_trk,dx);
+
               if(y_trk>yMid&&y_trk<yMax) h10a->Fill(clustersPosition[j],polarity*clustersCharge[j]);
               if(y_trk>yMin&&y_trk<yMid) h10b->Fill(clustersPosition[j],polarity*clustersCharge[j]);
               if(y_trk>yHi2&&y_trk<yMax) h10c->Fill(clustersPosition[j],polarity*clustersCharge[j]);
@@ -1196,6 +1198,8 @@ void ClusterWithTrackAna::Loop()
         if(inFiducial && goodTrack && goodTime && awayFromCutout) {
           h16c->Fill(dtime);
           if(foundHit) {
+            //OK this is the part with a good track and a found hit
+            //but for some reason we don't know which cluster we used...
             h3c->Fill(x_trk,y_trk);
             for(int j=0; j<min(clusterNumberPerEvent,10); j++){
               hcfpa->Fill(polarity*clustersCharge[j]);

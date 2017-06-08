@@ -41,11 +41,10 @@ if __name__=="__main__":
 		if o in ('-e','--events'):
 			NEvents = str(a)
 		if o in('-m','--mask'):
-			if int(a)==0 or int(a)==1: mask = a
+			if int(a)==0 or int(a)==1: mask = int(a)
 			else: sys.exit("choose right masking option: 0 or 1")
 		if o in('-l','--sector'):
-			if str(a)=="0" or str(a)=="1" or str(a)=="2": os.environ['SECTORPOS'] = str(a)			
-			else: sys.exit("choose a sector: 0, 1 or 2")
+                        os.environ['SECTORPOS'] = str(a)			
 		if o in('-y','--rot'):
 			os.environ['ROTATION'] = str(a)
 		if o in('-v','--bias'):
@@ -60,28 +59,34 @@ if __name__=="__main__":
 
 #telescopePath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/May2016/TimePix/RootFiles"
 #telescopePath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/October2016/TelescopeFiles/RootFiles"
-telescopePath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TelescopeData/Oct2016/RootFiles"
+#telescopePath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TelescopeData/Oct2016/RootFiles"
+telescopePath = "/eos/lhcb/testbeam/ut/TelescopeData/June2017/RootFiles"
 
 
 if boardName=="M1" or boardName=="M3" or boardName=="M4":
-	inputPathPedestal = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/May2016/MAMBA"
-	inputPathSignal = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/May2016/MAMBA"
+	inputPathPedestal = "/eos/lhcb/testbeam/ut/TemporaryData/May2016/MAMBA"
+	inputPathSignal = "/eos/lhcb/testbeam/ut/TemporaryData/May2016/MAMBA"
 elif boardName=="F1" or boardName=="F3":
-	inputPathPedestal = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/LateMay2016/MAMBA"
-	inputPathSignal = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/LateMay2016/MAMBA"
+	inputPathPedestal = "/eos/lhcb/testbeam/ut/TemporaryData/LateMay2016/MAMBA"
+	inputPathSignal = "/eos/lhcb/testbeam/ut/TemporaryData/LateMay2016/MAMBA"
+elif boardName=='A10_FanIn' or boardName=='A13_FanIn' or boardName=='A12_FanIn' or boardName=='A6_Lower' or boardName=='A3_Lower' or boardName=='A5_Lower' or boardName=='13_HM1' or boardName=='13_HM2' or boardName=='14_HM1' or boardName=='17_HM2' or boardName=='18_HM1' or boardName=='18_HM2':
+	inputPathPedestal = "/eos/lhcb/testbeam/ut/TemporaryData/October2016/MAMBA"
+        inputPathSignal = "/eos/lhcb/testbeam/ut/TemporaryData/October2016/MAMBA" 
 else:
-	inputPathPedestal = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/October2016/MAMBA"
-        inputPathSignal = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/October2016/MAMBA" 
+	inputPathPedestal = "/eos/lhcb/testbeam/ut/TemporaryData/June2017/MAMBA"
+        inputPathSignal = "/eos/lhcb/testbeam/ut/TemporaryData/June2017/MAMBA" 
 
 #else:
 #	sys.exit("Input files location is definded for a testbeam in the May 2016. Please go to Analysis.py and change inputPathPedestal and inputPathSignal")
 
 #outputPath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/May2016/DQMTest"
 #outputPath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/October2016/DQMTest"
-outputPath = "/afs/cern.ch/work/m/mrudolph/public/testbeam/ut/TemporaryData/October2016/DQMTemporary"
+#outputPath = "/afs/cern.ch/work/m/mrudolph/public/testbeam/ut/TemporaryData/October2016/DQMTemporary"
+#outputPath = "/eos/lhcb/testbeam/ut/TemporaryData/June2017/DQMTemporary"
+outputPath = "/afs/cern.ch/work/m/mrudolph/public/testbeam/June2017"
 
-subprocess.call('source /afs/cern.ch/project/eos/installation/lhcb/etc/setup.sh',shell=True)
-subprocess.call('/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select -b fuse mount $KEPLERROOT/eos_'+str(sigFile.split('-')[3]),shell=True)
+# subprocess.call('source /afs/cern.ch/project/eos/installation/lhcb/etc/setup.sh',shell=True)
+# subprocess.call('/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select -b fuse mount $KEPLERROOT/eos_'+str(sigFile.split('-')[3]),shell=True)
 
 if boardName=="M1" or boardName=="M2" or boardName=="M3" or boardName=="M4" or boardName=="F1" or boardName=="F3":
 	os.environ['OUTPUTFILE'] = sigFile.split('-')[4][:-4]
@@ -119,20 +124,22 @@ shFile.write('#!/bin/bash\n')
 shFile.write('. LbLogin.sh -c x86_64-slc6-gcc48-opt\n')
 shFile.write('. SetupProject.sh LHCb v36r2\n')
 # TODO: It is needed to move away tracking from here!!! keep it because we produce files without kepler files initialy
-shFile.write('cd '+os.environ["KEPLERROOT"]+'/../TbUT/scripts/AddTrigTracks\n')
-shFile.write('make\n')
-if PA=="":
-	shFile.write('cd '+outputPath+'/'+boardName+'/output_'+os.environ["RUNNUMBER"]+'\n')
-else:
-        shFile.write('cd '+outputPath+'/'+boardName+'/'+PA+'/output_'+os.environ["RUNNUMBER"]+'\n')
-if PA=="":
-	shFile.write(os.environ["KEPLERROOT"]+'/../TbUT/scripts/AddTrigTracks/combDUTwithTrack -i '+sigFile[:-4]+'_Tuple.root -t '+telescopePath+'/Run'+sigFile.split('-')[4][:-4]+'/Kepler-tuple.root -n '+sigFile[:-4]+'.root -o '+sigFile[:-4]+'_Tracks.root\n')
-else:
-	shFile.write(os.environ["KEPLERROOT"]+'/../TbUT/scripts/AddTrigTracks/combDUTwithTrack -i '+sigFile[:-4]+'_Tuple.root -t '+telescopePath+'/Run'+sigFile.split('-')[4][:-4]+'/Kepler-tuple.root -n '+sigFile[:-4]+'.root -o '+sigFile[:-4]+'_Tracks.root\n')
+# shFile.write('cd '+os.environ["KEPLERROOT"]+'/../TbUT/scripts/AddTrigTracks\n')
+# shFile.write('make\n')
+# if PA=="":
+# 	shFile.write('cd '+outputPath+'/'+boardName+'/output_'+os.environ["RUNNUMBER"]+'\n')
+# else:
+#         shFile.write('cd '+outputPath+'/'+boardName+'/'+PA+'/output_'+os.environ["RUNNUMBER"]+'\n')
+# if PA=="":
+# 	shFile.write(os.environ["KEPLERROOT"]+'/../TbUT/scripts/AddTrigTracks/combDUTwithTrack -i '+sigFile[:-4]+'_Tuple.root -t '+telescopePath+'/Run'+sigFile.split('-')[4][:-4]+'/Kepler-tuple.root -n '+sigFile[:-4]+'.root -o '+sigFile[:-4]+'_Tracks.root\n')
+# else:
+# 	shFile.write(os.environ["KEPLERROOT"]+'/../TbUT/scripts/AddTrigTracks/combDUTwithTrack -i '+sigFile[:-4]+'_Tuple.root -t '+telescopePath+'/Run'+sigFile.split('-')[4][:-4]+'/Kepler-tuple.root -n '+sigFile[:-4]+'.root -o '+sigFile[:-4]+'_Tracks.root\n')
+
 if PA=="":
 	shFile.write('\nmkdir -p '+outputPath+'/'+boardName+'/output_'+os.environ["RUNNUMBER"]+'/Plots')
 else:
         shFile.write('\nmkdir -p '+outputPath+'/'+boardName+'/'+PA+'/output_'+os.environ["RUNNUMBER"]+'/Plots')
+shFile.write('\ncd ' +outputPath+'/'+boardName+'/'+PA+'/output_'+os.environ["RUNNUMBER"] )
 shFile.write('\nroot -b -q '+os.environ["KEPLERROOT"]+'/../TbUT/scripts/runClusterWithTrackAna.C')
 shFile.close()
 subprocess.call("chmod +x "+os.environ["KEPLERROOT"]+"/../run_"+os.environ["RUNNUMBER"]+".sh",shell=True)

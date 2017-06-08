@@ -15,12 +15,17 @@ def GetDUTRun(df,DUTRun) :
     """
     Given a pandas dataframe and a DUT run, select and return the corresponding row in the pandas dataframe.
     """
-    rowDUTRun = df.loc[(df['DUT run'] == DUTRun)]
-    rowDUTRun_i = rowDUTRun.index.tolist()[0]
+    print DUTRun
+    print df.head()
+    print df.shape
+    print df['DUT run']
+    print df['DUT run'] == str(DUTRun)
+    rowDUTRun = df.loc[(df['DUT run'] == str(DUTRun))]
     print '=========================='
     print 'Information on physics run'
     print '=========================='
     print rowDUTRun
+    rowDUTRun_i = rowDUTRun.index.tolist()[0]
     print rowDUTRun_i
     print '=========================='
 
@@ -32,7 +37,7 @@ def AssociatePed(df,DUTRun) :
     """
     Given a pandas dataframe and a DUT run, associate and return the row in the pandas dataframe corresponding to the right pedestal. 
     """
-    rowDUTRun = df.loc[(df['DUT run'] == DUTRun)]
+    rowDUTRun = df.loc[(df['DUT run'] == str(DUTRun))]
     rowDUTRun_i = rowDUTRun.index.tolist()[0]
     print '=========================='
     print 'Information on physics run'
@@ -117,8 +122,12 @@ def GetInfoFromLogbook(logbook) :
     logbook_df_san = logbook_df_san.replace('good','Good')
     logbook_df_san = logbook_df_san.replace('BiasScan','Bias scan')
     logbook_df_san = logbook_df_san.replace('Bias Scan','Bias scan')
+    logbook_df_san = logbook_df_san.replace('Bias','Bias scan')
+    logbook_df_san = logbook_df_san.replace('bias','Bias scan')
     logbook_df_san = logbook_df_san.replace('AngleScan','Angle scan')
     logbook_df_san = logbook_df_san.replace('Angle Scan','Angle scan')
+    logbook_df_san = logbook_df_san.replace('Angle','Angle scan')
+    logbook_df_san = logbook_df_san.replace('angle','Angle scan')
     logbook_df_san = logbook_df_san.replace('Top side','Top')
     logbook_df_san = logbook_df_san.replace('Top Side','Top')
     logbook_df_san = logbook_df_san.replace('Back side','Back')

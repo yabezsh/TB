@@ -1,0 +1,46 @@
+BOARD FUM3 -- 0% of max nominal fluence - new FanUp design,,,,,,Hybrid,TTV1-02,Sensor,3 mini 1,,,,,
+Board FUM3,FanUp,,DUT Run #,Kepler Run #,Stage,Stage,Stage,Bias,Current,Temp,RH,Online Flag,Offline Flag,Note
+Sector,Purpose,Bias,Run #,Run #,X (mm),Y (mm),Rot (deg),(V),(uA),( C ),(%),(Good/Bad),(Good/Bad),
+1,Bias,Top,497,21325,67,2,0,50,22,11,4,good,,
+1,Pedestal,Top,498,0,67,2,0,50,22,11,4,good,,
+1,Bias,Top,495,21324,67,2,0,100,29,11,4,good,,
+1,Pedestal,Top,496,0,67,2,0,100,29,11,4,good,,
+1,Bias,Top,493,21323,67,2,0,150,31,11,4,good,,
+1,Pedestal,Top,494,0,67,2,0,150,31,11,4,good,,
+1,Bias,Top,491,21322,67,2,0,200,32,11,4,good,,
+1,Pedestal,Top,492,0,67,2,0,200,32,11,4,good,,
+1,Bias,Top,489,21321,67,2,0,300,34,11,4,good,,
+1,Pedestal,Top,490,0,67,2,0,300,34,11,4,good,,
+1,Bias,Top,487,21320,67,2,0,400,35,11,4,good,,
+1,Pedestal,Top,488,0,67,2,0,400,35,11,4,good,,
+1,Bias,Top,485,21319,67,2,0,500,36,11,4,good,,"runs 484, 21318 accidentally run as angle scan--did not flag as BAD"
+1,Pedestal,Top,486,0,67,2,0,500,36,11,4,good,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+2,Bias,Top,511,21332,61,2,0,50,22,11,3.5,good,,accidentally labeled the x-position as 67 in Mamba GUI
+2,Pedestal,Top,512,0,61,2,0,50,22,11,3.5,good,,accidentally labeled the x-position as 67 in Mamba GUI
+2,Bias,Top,509,21331,61,2,0,100,29,11,3.5,good,,accidentally labeled the x-position as 67 in Mamba GUI
+2,Pedestal,Top,510,0,61,2,0,100,29,11,3.5,good,,accidentally labeled the x-position as 67 in Mamba GUI
+2,Bias,Top,507,21330,61,2,0,150,31,11,3.5,good,,accidentally labeled the x-position as 67 in Mamba GUI
+2,Pedestal,Top,508,0,61,2,0,150,31,11,3.5,good,,accidentally labeled the x-position as 67 in Mamba GUI
+2,Bias,Top,505,21329,61,2,0,200,32,11,3.5,good,,accidentally labeled the x-position as 67 in Mamba GUI
+2,Pedestal,Top,506,0,61,2,0,200,32,11,3.5,good,,accidentally labeled the x-position as 67 in Mamba GUI
+2,Bias,Top,503,21328,61,2,0,300,34,11,3.5,good,,accidentally labeled the x-position as 67 in Mamba GUI
+2,Pedestal,Top,504,0,61,2,0,300,34,11,3.5,good,,accidentally labeled the x-position as 67 in Mamba GUI
+2,Bias,Top,501,21327,61,2,0,400,35,11,3.5,good,,accidentally labeled the x-position as 67 in Mamba GUI
+2,Pedestal,Top,502,0,61,2,0,400,35,11,3.5,good,,accidentally labeled the x-position as 67 in Mamba GUI
+2,Bias,Top,499,21326,61,2,0,500,36,11,3.5,good,,accidentally labeled the x-position as 67 in Mamba GUI
+2,Pedestal,Top,500,,61,2,0,500,36,11,3.5,good,,accidentally labeled the x-position as 67 in Mamba GUI
+,,,,,,,,,,,,,,
+1,Pedestal,Top,518,0,67,2,-5,400,34,11,4,good,,
+1,Angle,Top,519,21337,67,2,-5,400,34,11,4,good,,
+1,Angle,Top,520,21338,67,2,5,400,34,11,4,good,,
+1,Angle,Top,521,21339,67,2,10,400,34,11,4,good,,
+1,Angle,Top,522,21340,67,2,15,400,34,11,4,good,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+2,Pedestal,Top,513,0,61,2,-5,400,34,11,3.5,good,,
+2,Angle,Top,514,21333,61,2,-5,400,34,11,3.5,good,,
+2,Angle,Top,515,21334,61,2,5,400,34,11,3.5,good,,
+2,Angle,Top,516,21335,61,2,10,400,34,11,3.5,good,,
+2,Angle,Top,517,21336,61,2,15,400,34,11,3.5,good,,

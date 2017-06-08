@@ -1,0 +1,177 @@
+BOARD FUP1,,Hybrid:,TTV2-01,Sensor,S10938-5997-9,,,,,,,,,
+,FanUp,,DUT Run #,Kepler Run #,Stage,Stage,Stage,Bias,Current,Temp,RH,Online Flag,Offline Flag,Note
+Sector,Purpose,Bias,Run #,Run #,X (mm),Y (mm),Rot (deg),(V),(uA),( C ),(%),(Good/Bad),(Good/Bad),
+1,Bias,Top,207,21150,73,1,0,50,145,13,3,Good,,
+1,Pedestal,Top,208,-,73,1,0,50,145,13,3,Good,,
+1,Bias,Top,209,21151,73,1,0,100,180,13,3,Good,,
+1,Pedestal,Top,210,-,73,1,0,100,180,13,3,Good,,
+1,Bias,Top,211,21152,73,1,0,150,194,13,3,Bad,,wrong run type set
+1,Bias,Top,212,21153,73,1,0,150,194,13,3,Good,,
+1,Pedestal,Top,213,-,73,1,0,150,194,13,3,Good,,
+1,Bias,Top,214,21154,73,1,0,200,202,13,3,Good,,
+1,Pedestal,Top,215,-,73,1,0,200,202,13,3,Good,,
+1,Bias,Top,216,21155,73,1,0,300,211,13,3,Good,,
+1,Pedestal,Top,217,-,73,1,0,300,211,13,3,Good,,
+1,Bias,Top,218,21156,73,1,0,400,220,13,3,Good,,
+1,Pedestal,Top,219,-,73,1,0,400,220,13,3,Good,,
+1,Bias,Top,220,21157,73,1,0,500,230,14,3,Good,,
+1,Pedestal,Top,221,-,73,1,0,500,230,14,3,Good,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+2,Bias,Top,222,21158,67,1,0,50,150,14,3,Good,,
+2,Pedestal,Top,223,-,67,1,0,50,150,14,3,Good,,
+2,Bias,Top,224,21160,67,1,0,100,186,14,3,Good,,"Kepler numbers double checked and correct (stop run pressed during monitoring phase, so incremented by 1, thus no Kepler run 21159)"
+2,Pedestal,Top,225,-,67,1,0,100,186,14,3,Good,,
+2,Bias,Top,226,21161,67,1,0,150,200,14,3,Good,,
+2,Pedestal,Top,227,-,67,1,0,150,200,14,3,Good,,
+2,Bias,Top,228,21162,67,1,0,200,208,14,3,Good,,
+2,Pedestal,Top,229,-,67,1,0,200,208,14,3,Good,,
+2,Bias,Top,230,21163,67,1,0,300,216,14,3,Good,,
+2,Pedestal,Top,231,-,67,1,0,300,216,14,3,Good,,
+2,Bias,Top,232,21164,67,1,0,400,225,14,3,Good,,
+2,Pedestal,Top,233,-,67,1,0,400,225,14,3,Good,,
+2,Bias,Top,234,21165,67,1,0,500,233,14,3,Good,,
+2,Pedestal,Top,235,-,67,1,0,500,233,14,3,Good,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+3,Bias,Top,236,21166,61,1,0,50,153,14,3,Good,,
+3,Pedestal,Top,237,-,61,1,0,50,153,14,3,Good,,
+3,Bias,Top,238,21167,61,1,0,100,188,14,3,Good,,
+3,Pedestal,Top,239,-,61,1,0,100,188,14,3,Good,,
+3,Bias,Top,240,21168,61,1,0,150,202,14,3,Good,,
+3,Pedestal,Top,241,-,61,1,0,150,202,14,3,Good,,
+3,Bias,Top,242,21169,61,1,0,200,209,14,3,Good,,
+3,Pedestal,Top,243,-,61,1,0,200,209,14,3,Good,,
+3,Bias,Top,244,21170,61,1,0,300,219,14,3,Good,,
+3,Pedestal,Top,245,-,61,1,0,300,219,14,3,Good,,
+3,Bias,Top,246,21171,61,1,0,400,226,14,3,Good,,
+3,Pedestal,Top,247,-,61,1,0,400,226,14,3,Good,,
+3,Bias,Top,248,21172,61,1,0,500,234,14,3,Good,,
+3,Pedestal,Top,249,-,61,1,0,500,234,14,3,Good,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+4,Bias,Top,250,21173,50,1,0,50,153,14,3,Good,,
+4,Pedestal,Top,251,-,50,1,0,50,153,14,3,Good,,
+4,Bias,Top,252,21174,50,1,0,100,189,14,3,Good,,
+4,Pedestal,Top,253,-,50,1,0,100,189,14,3,Good,,
+4,Bias,Top,254,21175,50,1,0,150,202,14,3,Good,,
+4,Pedestal,Top,255,-,50,1,0,150,202,14,3,Good,,
+4,Bias,Top,256,21176,50,1,0,200,209,14,3,Good,,
+4,Pedestal,Top,257,-,50,1,0,200,209,14,3,Good,,
+4,Bias,Top,258,21177,50,1,0,300,217,14,3,Good,,
+4,Pedestal,Top,259,-,50,1,0,300,217,14,3,Good,,
+4,Bias,Top,260,21178,50,1,0,400,226,14,3,Good,,
+4,Pedestal,Top,261,-,50,1,0,400,226,14,3,Good,,
+4,Bias,Top,262,21179,50,1,0,500,235,14,3,Good,,
+4,Pedestal,Top,263,-,50,1,0,500,235,14,3,Good,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+5,Bias,Top,264,21180,40,1,0,50,155,14,3,Good,,
+5,Pedestal,Top,265,-,40,1,0,50,155,14,3,Good,,
+5,Bias,Top,266,21181,40,1,0,100,189,14,3,Good,,
+5,Pedestal,Top,267,-,40,1,0,100,189,14,3,Good,,
+5,Bias,Top,268,21182,40,1,0,150,203,14,3,Good,,
+5,Pedestal,Top,269,-,40,1,0,150,203,14,3,Good,,
+5,Bias,Top,270,21183,40,1,0,200,210,14,3,Good,,
+5,Pedestal,Top,271,-,40,1,0,200,210,14,3,Good,,
+5,Bias,Top,272,21184,40,1,0,300,219,14,3,Good,,
+5,Pedestal,Top,273,-,40,1,0,300,219,14,3,Good,,
+5,Bias,Top,274,21185,40,1,0,400,227,14,3,Good,,
+5,Pedestal,Top,275,-,40,1,0,400,227,14,3,Good,,
+5,Bias,Top,276,21186,40,1,0,500,238,14,3,Good,,
+5,Pedestal,Top,277,-,40,1,0,500,238,14,3,Good,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+6,Bias,Top,278,21187,30,1,0,50,155,14,3,Good,,
+6,Pedestal,Top,279,-,30,1,0,50,155,14,3,Good,,
+6,Bias,Top,280,-,30,1,0,100,190,14,3,Bad,,wrong run type set
+6,Bias,Top,281,21188,30,1,0,100,190,14,3,Good,,
+6,Pedestal,Top,282,-,30,1,0,100,190,14,3,Good,,
+6,Bias,Top,283,21189,30,1,0,150,203,14,3,Good,,
+6,Pedestal,Top,284,-,30,1,0,150,203,14,3,Good,,
+6,Bias,Top,285,21190,30,1,0,200,211,14,3,Good,,
+6,Pedestal,Top,286,-,30,1,0,200,211,14,3,Good,,
+6,Bias,Top,287,21191,30,1,0,300,219,14,3,Good,,
+6,Pedestal,Top,288,-,30,1,0,300,219,14,3,Good,,
+6,Bias,Top,289,21192,30,1,0,400,228,14,3,Good,,
+6,Pedestal,Top,290,-,30,1,0,400,228,14,3,Good,,
+6,Bias,Top,291,21193,30,1,0,500,237,14,3,Good,,
+6,Pedestal,Top,292,-,30,1,0,500,237,14,3,Good,,
+,,,,,,,,,,,,,,
+1,Pedestal,Top,293,-,73,1,-5,400,231,14,3,Bad,,Angle scans probably wrong
+1,Angle,Top,294,21194,73,1,-5,400,231,14,3,Bad,,Angle scans probably wrong
+1,Angle,Top,295,21195,73,1,5,400,231,14,3,Bad,,Angle scans probably wrong
+1,Angle,Top,296,21196,73,1,10,400,231,14,3,Bad,,Angle scans probably wrong
+1,Angle,Top,297,21197,73,1,15,400,231,14,3,Bad,,Angle scans probably wrong
+,,,,,,,,,,,,,,
+2,Pedestal,Top,298,-,67,1,-5,400,231,14,3,Bad,,Angle scans probably wrong
+2,Angle,Top,299,21198,67,1,-5,400,231,14,3,Bad,,Angle scans probably wrong
+2,Angle,Top,300,21199,67,1,5,400,231,14,3,Bad,,Angle scans probably wrong
+2,Angle,Top,301,21200,67,1,10,400,231,14,3,Bad,,Angle scans probably wrong
+2,Angle,Top,302,21201,67,1,15,400,231,14,3,Bad,,Angle scans probably wrong
+,,,,,,,,,,,,,,
+3,Pedestal,Top,303,-,61,1,-5,400,235,14,3,Bad,,Angle scans probably wrong
+3,Angle,Top,304,21202,61,1,-5,400,235,14,3,Bad,,Angle scans probably wrong
+3,Angle,Top,305,21203,61,1,5,400,235,14,3,Bad,,Angle scans probably wrong
+3,Angle,Top,306,21204,61,1,10,400,235,14,3,Bad,,Angle scans probably wrong
+3,Angle,Top,307,21205,61,1,15,400,235,14,3,Bad,,Angle scans probably wrong
+,,,,,,,,,,,,,,
+4,Pedestal,Top,308,-,50,1,-5,400,235,14,3,Bad,,Angle scans probably wrong
+4,Angle,Top,309,21206,50,1,-5,400,235,14,3,Bad,,Angle scans probably wrong
+4,Angle,Top,310,21207,50,1,5,400,235,14,3,Bad,,Angle scans probably wrong
+4,Angle,Top,311,21208,50,1,10,400,235,14,3,Bad,,Angle scans probably wrong
+4,Angle,Top,312,21209,50,1,15,400,235,14,3,Bad,,Angle scans probably wrong
+,,,,,,,,,,,,,,
+5,Pedestal,Top,313,-,40,1,-5,400,236,14,3,Bad,,Angle scans probably wrong
+5,Angle,Top,314,21210,40,1,-5,400,236,14,3,Bad,,Angle scans probably wrong
+5,Angle,Top,315,21211,40,1,5,400,236,14,3,Bad,,Angle scans probably wrong
+5,Angle,Top,316,21212,40,1,10,400,236,14,3,Bad,,Angle scans probably wrong
+5,Angle,Top,317,21213,40,1,15,400,236,14,3,Bad,,Angle scans probably wrong
+,,,,,,,,,,,,,,
+6,Pedestal,Top,318,-,30,1,-5,400,236,14,3,Bad,,Angle scans probably wrong
+6,Angle,Top,319,21214,30,1,-5,400,236,14,3,Bad,,Angle scans probably wrong
+6,Angle,Top,320,21215,30,1,5,400,236,14,3,Bad,,Angle scans probably wrong
+6,Angle,Top,321,21216,30,1,10,400,236,14,3,Bad,,Angle scans probably wrong
+6,Angle,Top,322,21217,30,1,15,400,236,14,3,Bad,,Angle scans probably wrong
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+1,Pedestal,Top,323,0,72,1,-5,400,239,13.5,3,,,
+1,Angle,Top,324,21218,72,1,-5,400,239,13.5,3,,,
+1,Angle,Top,325,21219,72,1,5,400,239,13.5,3,,,
+1,Angle,Top,326,21220,72,1,10,400,239,13.5,3,,,
+1,Angle,Top,327,21221,72,1,15,400,239,13.5,3,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+2,Pedestal,Top,328,0,66,1,-5,400,239,13.5,3,,,
+2,Angle,Top,329,21222,66,1,-5,400,239,13.5,3,,,
+2,Angle,Top,330,21223,66,1,5,400,239,13.5,3,,,
+2,Angle,Top,331,21224,66,1,10,400,239,13.5,3,,,
+2,Angle,Top,332,21225,66,1,15,400,239,13.5,3,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+3,Pedestal,Top,333,0,60,1,-5,400,266,13.5,3,,,
+3,Angle,Top,334,21226,60,1,-5,400,266,13.5,3,,,
+3,Angle,Top,335,21227,60,1,5,400,266,13.5,3,,,
+3,Angle,Top,336,21228,60,1,10,400,266,13.5,3,,,
+3,Angle,Top,337,21229,60,1,15,400,266,13.5,3,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+4,Pedestal,Top,338,0,46,1,-5,400,265,13.5,3,,,
+4,Angle,Top,339,21230,46,1,-5,400,265,13.5,3,,,
+4,Angle,Top,340,21231,46,1,5,400,265,13.5,3,,,
+4,Angle,Top,341,21232,46,1,10,400,265,13.5,3,,,
+4,Angle,Top,342,21233,46,1,15,400,265,13.5,3,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+5,Pedestal,Top,346,0,38,1,-5,400,261,13.5,3,,,
+5,Angle,Top,347,21234,38,1,-5,400,261,13.5,3,,,
+5,Angle,Top,348,21235,38,1,5,400,261,13.5,3,,,
+5,Angle,Top,351,21238,38,1,10,400,261,13.5,3,,,
+5,Angle,Top,352,21239,38,1,15,400,261,13.5,3,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+6,Pedestal,Top,353,0,30,1,-5,400,261,13.5,3,,,
+6,Angle,Top,354,21240,30,1,-5,400,261,13.5,3,,,
+6,Angle,Top,355,21241,30,1,5,400,261,13.5,3,,,
+6,Angle,Top,356,21242,30,1,10,400,261,13.5,3,,,
+6,Angle,Top,357,21243,30,1,15,400,261,13.5,3,,,

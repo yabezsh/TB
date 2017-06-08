@@ -13,18 +13,18 @@ import os
 
 # testbeam = 'May2016'
 #testbeam = 'LateMay2016'
-testbeam = 'October2016'
-#testbeam = 'June2017'
+#testbeam = 'October2016'
+testbeam = 'June2017'
 testbeamList = ['May2016','LateMay2016','October2016','June2017']
 
 boardListDict = {}
 boardListDict['May2016'] = ['M1','M3','M4']
 boardListDict['LateMay2016'] = ['F1','F3']
 boardListDict['October2016'] = ['A10_FanIn','A13_FanIn','A12_FanIn','A6_Lower','A3_Lower','A5_Lower','13_HM1','13_HM2','14_HM1','17_HM2','18_HM1','18_HM2']
-boardListDict['June2017'] = ['FUP1', 'FUP2', 'FUM1_0', 'FUM1_25', 'FUM2_25', 'FUM2_100', 'FUM3_100', 'FUM3_0', 'FIM1_0', 'FIM1_25', 'FIM2_25', 'FIM2_100', 'FIM3_100', 'FIM3_0',]
+boardListDict['June2017'] = ['N_8', 'N_9', 'N_4_mini6', 'N_4_mini1', 'N_6_mini1', 'N_6_mini6', 'N_3_mini6', 'N_3_mini1', 'N_6_mini7', 'N_6_mini2', 'N_7_mini2', 'N_4_mini7', 'N_3_mini7', 'N_3_mini2',]
 
 boardList = boardListDict[testbeam]
-PAList = ['FanIn','FanUp','TTV2_01','TTV2_02','TTV2_03','TTV2_06','TTV2_07','TTV2_08']
+PAList = ['FanIn','FanUp','TTV1_01','TTV1_02','TTV2_01','TTV2_02','TTV2_03','TTV2_06','TTV2_07','TTV2_08']
 BSList = ['Top','Back','Both']
 
 modeList = ['local','batch']
@@ -48,20 +48,20 @@ PADict['14_HM1'] = ['TTV2_06']
 PADict['17_HM2'] = ['TTV2_08']
 PADict['18_HM1'] = ['TTV2_07']
 PADict['18_HM2'] = ['TTV2_08']
-PADict['FUP1'] = ['TTV2_01']
-PADict['FUP2'] = ['TTV2_01']
-PADict['FUM1_0'] = ['TTV2_01']
-PADict['FUM1_25'] = ['TTV2_01']
-PADict['FUM2_25'] = ['TTV2_01']
-PADict['FUM2_100'] = ['TTV2_01']
-PADict['FUM3_100'] = ['TTV2_01']
-PADict['FUM3_0'] = ['TTV2_01']
-PADict['FIM1_0'] = ['TTV2_01']
-PADict['FIM1_25'] = ['TTV2_01']
-PADict['FIM2_25'] = ['TTV2_01']
-PADict['FIM2_100'] = ['TTV2_01']
-PADict['FIM3_100'] = ['TTV2_01']
-PADict['FIM3_0'] = ['TTV2_01']
+PADict['N_8'] = ['TTV2_02']
+PADict['N_9'] = ['TTV2_01']
+PADict['N_4_mini6'] = ['TTV1_01']
+PADict['N_4_mini1'] = ['TTV1_01']
+PADict['N_6_mini1'] = ['TTV2_06']
+PADict['N_6_mini6'] = ['TTV2_06']
+PADict['N_3_mini6'] = ['TTV1_02']
+PADict['N_3_mini1'] = ['TTV1_02']
+PADict['N_6_mini7'] = ['TTV2_08']
+PADict['N_6_mini2'] = ['TTV2_08']
+PADict['N_7_mini2'] = ['TTV2_07']
+PADict['N_4_mini7'] = ['TTV2_07']
+PADict['N_3_mini7'] = ['TTV2_03']
+PADict['N_3_mini2'] = ['TTV2_03']
 
 # Type of sensor: p-in-n or n-in-p.
 typeDict = {}
@@ -82,20 +82,20 @@ typeDict['14_HM1'] = 'np'
 typeDict['17_HM2'] = 'np'
 typeDict['18_HM1'] = 'np'
 typeDict['18_HM2'] = 'np'
-typeDict['FUP1'] = 'pn'
-typeDict['FUP2'] = 'pn'
-typeDict['FUM1_0'] = 'pn'
-typeDict['FUM1_25'] = 'pn'
-typeDict['FUM2_25'] = 'pn'
-typeDict['FUM2_100'] = 'pn'
-typeDict['FUM3_100'] = 'pn'
-typeDict['FUM3_0'] = 'pn'
-typeDict['FIM1_0'] = 'pn'
-typeDict['FIM1_25'] = 'pn'
-typeDict['FIM2_25'] = 'pn'
-typeDict['FIM2_100'] = 'pn'
-typeDict['FIM3_100'] = 'pn'
-typeDict['FIM3_0'] = 'pn'
+typeDict['N_8'] = 'pn'
+typeDict['N_9'] = 'pn'
+typeDict['N_4_mini6'] = 'pn'
+typeDict['N_4_mini1'] = 'pn'
+typeDict['N_6_mini1'] = 'pn'
+typeDict['N_6_mini6'] = 'pn'
+typeDict['N_3_mini6'] = 'pn'
+typeDict['N_3_mini1'] = 'pn'
+typeDict['N_6_mini7'] = 'pn'
+typeDict['N_6_mini2'] = 'pn'
+typeDict['N_7_mini2'] = 'pn'
+typeDict['N_4_mini7'] = 'pn'
+typeDict['N_3_mini7'] = 'pn'
+typeDict['N_3_mini2'] = 'pn'
 
 
 user = os.environ['USER']

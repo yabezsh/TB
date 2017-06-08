@@ -71,7 +71,8 @@ const TString plotdir 	= "Plots";
 //=======
 //>>>>>>> .r204986
 const double nChan 			= 512.0;
-const double stripPitch = 0.190;
+const int inChan = 512;
+const double stripPitch = 0.1875;
 
 const bool writeEventsWithMissinhHitsToFile = false;   // flag to write events to file with missing DUT hit
 

@@ -1,0 +1,47 @@
+BOARD FUM3 -- 100% of max nominal fluence - new FanUp design,,,,,,Hybrid,TTV1-02,Sensor,3 mini 6,,,,,
+Board FUM3,FanUp,,DUT Run #,Kepler Run #,Stage,Stage,Stage,Bias,Current,Temp,RH,Online Flag,Offline Flag,Note
+Sector,Purpose,Bias,Run #,Run #,X (mm),Y (mm),Rot (deg),(V),(uA),( C ),(%),(Good/Bad),(Good/Bad),
+1,Bias,Top,441,21293,39,2,0,50,20,10,5,good,,
+1,Pedestal,Top,442,0,39,2,0,50,20,10,5,good,,
+1,Bias,Top,443,21294,39,2,0,100,26,10,5,good,,
+1,Pedestal,Top,444,0,39,2,0,100,26,10,5,good,,
+1,Bias,Top,445,21295,39,2,0,150,28,10,5,good,,
+1,Pedestal,Top,446,0,39,2,0,150,28,10,5,good,,
+1,Bias,Top,447,21296,39,2,0,200,29,10,5,good,,
+1,Pedestal,Top,448,0,39,2,0,200,29,10,5,good,,
+1,Bias,Top,449,21297,39,2,0,300,30,10,5,good,,
+1,Pedestal,Top,450,0,39,2,0,300,30,10,5,good,,
+1,Bias,Top,451,21298,39,2,0,400,32,10,5,bad,,abort due to long time no beam
+1,Bias,Top,452,21299,39,2,0,400,32,10,5,good,,
+1,Pedestal,Top,453,0,39,2,0,400,32,10,5,good,,
+1,Bias,Top,455,21301,39,2,0,500,35,11,3,good,,
+1,Pedestal,Top,456,,39,2,0,500,35,11,3,good,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+2,Bias,Top,459,21303,34,2,0,50,11,11,3,good,,Some mistakes were made entering parameters on the Mamba GUI and a couple bad runs were taken. I think this is the correct DUT run # but I could be wrong.
+2,Pedestal,Top,460,0,34,2,0,50,11,11,3,good,,
+2,Bias,Top,461,21304,34,2,0,100,28,11,3,good,,
+2,Pedestal,Top,462,0,34,2,0,100,28,11,3,good,,
+2,Bias,Top,463,21305,34,2,0,150,30,11,3,good,,
+2,Pedestal,Top,464,0,34,2,0,150,30,11,3,good,,
+2,Bias,Top,465,21306,34,2,0,200,31,11,3,good,,
+2,Pedestal,Top,466,0,34,2,0,200,31,11,3,good,,
+2,Bias,Top,467,21307,34,2,0,300,33,11,3,good,,
+2,Pedestal,Top,468,0,34,2,0,300,33,11,3,good,,
+2,Bias,Top,470,21308,34,2,0,400,34,11,3,good,,
+2,Pedestal,Top,471,0,34,2,0,400,34,11,3,good,,
+2,Bias,Top,472,21309,34,2,0,500,36,11,3,good,,
+2,Pedestal,Top,473,,34,2,0,500,36,11,3,good,,
+,,,,,,,,,,,,,,
+1,Pedestal,Top,479,0,39,2,-5,400,35,11,3,good,,got doc wrong in Mamba GUI--said DUT sector 2 when it should say sector 1
+1,Angle,Top,480,21314,39,2,-5,400,35,11,3,good,,got doc wrong in Mamba GUI--said DUT sector 2 when it should say sector 1
+1,Angle,Top,481,21315,39,2,5,400,35,11,3,good,,got doc wrong in Mamba GUI--said DUT sector 2 when it should say sector 1
+1,Angle,Top,482,21316,39,2,10,400,35,11,3,good,,got doc wrong in Mamba GUI--said DUT sector 2 when it should say sector 1
+1,Angle,Top,483,21317,39,2,15,400,35,11,3,good,,got doc wrong in Mamba GUI--said DUT sector 2 when it should say sector 1
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+2,Pedestal,Top,474,0,34,2,-5,400,35,11,3,good,,
+2,Angle,Top,475,21310,34,2,-5,400,35,11,3,good,,angle documentation wrong in Mamba GUI (says 0)
+2,Angle,Top,476,21311,34,2,5,400,35,11,3,good,,
+2,Angle,Top,477,21312,34,2,10,400,35,11,3,good,,
+2,Angle,Top,478,21313,34,2,15,400,35,11,3,good,,

@@ -1,0 +1,54 @@
+BOARD FUM1 -- 0% of max nominal fluence - new FanUp design,,,,,,Hybrid,TTV1-01,Sensor,4 mini 6,,,,,
+BOARD FUM1,FanUp,,DUT Run #,Kepler Run #,Stage,Stage,Stage,Bias,Current,Temp,RH,Online Flag,Offline Flag,Note
+Sector,Purpose,Bias,Run #,Run #,X (mm),Y (mm),Rot (deg),(V),(uA),( C ),(%),(Good/Bad),(Good/Bad),
+1,Bias,Top,17,21027,40,3,0,50,4.5,5,3,,,
+1,Pedestal,Top,18,0,40,3,0,50,4.5,5,3,,,
+1,Bias,Top,19,21028,40,3,0,100,6.5,5,3,,,
+1,Pedestal,Top,20,0,40,3,0,100,6.5,5,3,,,
+1,Bias,Top,21,21029,40,3,0,150,8.1,5,3,bad,,"Lost beam, aborting run"
+1,Bias,Top,22,21030,40,3,0,150,8.1,5,3,bad,,"Constantin and Adam taking over, first beam down, then connectivity issues"
+1,Bias,Top,23,21031,40,3,0,150,8.1,5,3,bad,,Were not in beam
+1,Bias,Top,24,21032,40,3,0,150,8.3,5,3,good,,
+1,Pedestal,Top,25,0,40,3,0,150,8.3,5,3,good,,
+1,Pedestal,Top,26,21033,40,3,0,200,9,5,3,good,,did pedastal first by mistake
+1,Bias,Top,27,21034,40,3,0,200,9,5,3,good,,
+1,Pedestal,Top,28,0,40,3,0,200,9,5,3,good,,
+1,Bias,Top,29,21035,40,3,0,300,9.4,5,3,good,,
+1,Pedestal,Top,30,0,40,3,0,300,9.4,5,3,good,,
+1,Bias,Top,31,21036,40,3,0,400,9.7,5,3,good,,
+1,Pedestal,Top,32,0,40,3,0,400,9.7,5,3,good,,
+1,Bias,Top,33,21037,40,3,0,500,10,5,3,good,,
+1,Pedestal,Top,34,0,40,3,0,500,10,5,3,good,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+2,Bias,Top,4,21021,34,3,0,50,4.3,4.6,4,good,,999999 evts on mamba gui?
+2,Pedestal,Top,5,0,34,3,0,50,4.3,4.6,4,good,,
+2,Bias,Top,6,21022,34,3,0,100,6.3,4.6,4,good,,999999 evts on mamba gui?
+2,Pedestal,Top,7,0,34,3,0,100,6.3,4.6,4,good,,
+2,Bias,Top,8,21023,34,3,0,150,7.8,4.6,4,good,,100K only
+2,Pedestal,Top,,,34,3,0,150,7.8,4.6,4,good,,
+2,Bias,Top,11,21024,34,3,0,150,7.8,4.6,4,good,,
+2,Pedestal,Top,12,0,34,3,0,150,7.8,4.6,4,good,,
+2,Bias,Top,13,21025,34,3,0,200,8.5,4.6,4,good,,
+2,Pedestal,Top,14,,34,3,0,200,8.5,4.6,4,good,,
+2,Bias,Top,15,21026,34,3,0,300,9,4.6,4,good,,
+2,Pedestal,Top,16,0,34,3,0,300,9,4.6,4,good,,
+2,Bias,Top,0,21019,34,3,0,400,0.5,9,4,good,,999999 evts on mamba gui?
+2,Pedestal,Top,1,0,34,3,0,400,0.5,9,4,good,,
+2,Bias,Top,2,21020,34,3,0,500,8.7,9,4,good,,999999 evts on mamba gui?
+2,Pedestal,Top,3,0,34,3,0,500,8.7,9,4,good,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+1,Pedestal,Top,35,0,40,3,0,400,9.7,5,4,good,,
+1,Angle,Top,36,21038,40,3,-5,400,9.7,5,4,good,,in mamba gui entered 21037 and not 21038
+1,Angle,Top,37,21039,40,3,5,400,9.7,5,4,good,,in mamba gui entered 21038 and not 21039
+1,Angle,Top,38,21040,40,3,10,400,9.7,5,4,good,,
+1,Angle,Top,39,21041,40,3,15,400,9.7,5,4,good,,
+,,,,,,,,,,,,,,
+2,Pedestal,Top,40,0,34,3,0,400,8,4,4,good,,
+2,Angle,Top,41,21045,34,3,-5,400,8,4,4,good,,
+2,Angle,Top,42,21046,34,3,5,400,8,4,4,good,,
+2,Angle,Top,43,21047,34,3,10,400,8,4,4,good,,
+2,Angle,Top,44,21048,34,3,15,400,8,4,4,good,,

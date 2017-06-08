@@ -41,11 +41,10 @@ if __name__=="__main__":
 		if o in ('-e','--events'):
 			NEvents = str(a)
 		if o in('-m','--mask'):
-			if int(a)==0 or int(a)==1: mask = a
+			if int(a)==0 or int(a)==1: mask = int(a)
 			else: sys.exit("choose right masking option: 0 or 1")
 		if o in('-l','--sector'):
-			if str(a)=="0" or str(a)=="1" or str(a)=="2": os.environ['SECTORPOS'] = str(a)			
-			else: sys.exit("choose a sector: 0, 1 or 2")
+			os.environ['SECTORPOS'] = str(a)			
 		if o in('-y','--rot'):
 			os.environ['ROTATION'] = str(a)
 		if o in('-v','--bias'):
@@ -59,7 +58,8 @@ if __name__=="__main__":
 
 #telescopePath = "/eos/lhcb/testbeam/ut/TemporaryData/May2016/TimePix/RootFiles"
 #telescopePath = "/eos/lhcb/testbeam/ut/TemporaryData/October2016/TelescopeFiles/RootFiles"
-telescopePath = "/eos/lhcb/testbeam/ut/TelescopeData/Oct2016/RootFiles"
+#telescopePath = "/eos/lhcb/testbeam/ut/TelescopeData/Oct2016/RootFiles"
+telescopePath = "/eos/lhcb/testbeam/ut/TelescopeData/June2017/RootFiles"
 
 
 if boardName=="M1" or boardName=="M3" or boardName=="M4":
@@ -68,7 +68,7 @@ if boardName=="M1" or boardName=="M3" or boardName=="M4":
 elif boardName=="F1" or boardName=="F3":
 	inputPathPedestal = "/eos/lhcb/testbeam/ut/TemporaryData/LateMay2016/MAMBA"
 	inputPathSignal = "/eos/lhcb/testbeam/ut/TemporaryData/LateMay2016/MAMBA"
-elif boardName=='A10_FanIn' or'A13_FanIn' or'A12_FanIn' or'A6_Lower' or'A3_Lower' or'A5_Lower' or'13_HM1' or'13_HM2' or'14_HM1' or'17_HM2' or'18_HM1' or'18_HM2':
+elif boardName=='A10_FanIn' or boardName=='A13_FanIn' or boardName=='A12_FanIn' or boardName=='A6_Lower' or boardName=='A3_Lower' or boardName=='A5_Lower' or boardName=='13_HM1' or boardName=='13_HM2' or boardName=='14_HM1' or boardName=='17_HM2' or boardName=='18_HM1' or boardName=='18_HM2':
 	inputPathPedestal = "/eos/lhcb/testbeam/ut/TemporaryData/October2016/MAMBA"
         inputPathSignal = "/eos/lhcb/testbeam/ut/TemporaryData/October2016/MAMBA" 
 else:
@@ -80,7 +80,7 @@ else:
 
 #outputPath = "/eos/lhcb/testbeam/ut/TemporaryData/May2016/DQMTest"
 #outputPath = "/eos/lhcb/testbeam/ut/TemporaryData/October2016/DQMTest"
-outputPath = "/afs/cern.ch/work/m/mrudolph/public/testbeam/ut/TemporaryData/October2016/DQMTemporary"
+outputPath = "/eos/lhcb/testbeam/ut/TemporaryData/June2017/DQMTemporary"
 
 # subprocess.call('source /afs/cern.ch/project/eos/installation/lhcb/etc/setup.sh',shell=True)
 # subprocess.call('/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select -b fuse mount $KEPLERROOT/eos_'+str(sigFile.split('-')[3]),shell=True)
@@ -160,8 +160,8 @@ if PA=="":
 else:
         shFile.write('\nmkdir -p '+outputPath+'/'+boardName+'/'+PA+'/output_'+os.environ["RUNNUMBER"]+'/Plots')
 
-shFile.write('\ncd ' + os.environ["KEPLERROOT"]+ '/../TbUT/scripts')
-shFile.write('\nroot -b -q runClusterWithTrackAna.C')
+shFile.write('\ncd ' +outputPath+'/'+boardName+'/'+PA+'/output_'+os.environ["RUNNUMBER"] )
+shFile.write('\nroot -b -q ' +os.environ["KEPLERROOT"]+ '/../TbUT/scripts/runClusterWithTrackAna.C')
 shFile.close()
 
 

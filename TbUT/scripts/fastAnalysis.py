@@ -27,8 +27,8 @@ To use:
 ##Modify this to change defaults: 
 nevdef=100000
 eosmount='/eos'
-indir='lhcb/testbeam/ut/TemporaryData/October2016/MAMBA'
-outdir='.'
+indir='lhcb/testbeam/ut/TemporaryData/June2017/MAMBA'
+outdir='/afs/cern.ch/work/m/mrudolph/public/testbeam/June2017'
 ############################################################
 
 
@@ -126,11 +126,11 @@ def post_tdc_prof( pad, tree, hist ):
 ##Make sure for each command if you specify anything about the histogram to draw to, give it a unique name!
 ## Fiducial adc name is "fidadc", noise are called "meanNoise" and "widthNoise"
 drawcommands = [ draw_command("clusterNumberPerEvent","","","Number of clusters;N_{clusters};Events"),
-                 draw_command("clustersCharge>>charge(200,-1200,0)","clustersSize > 0","","Cluster charge;Tot. charge [ADC];Clusters"),
+                 draw_command("abs(clustersCharge)>>charge(200,0,1200)","clustersSize > 0","","Cluster charge;Tot. charge [ADC];Clusters"),
                  draw_command("clustersPosition","clustersSize > 0","","Cluster position;Channel;Clusters",postprocessor=post_clusterpos),
                  draw_command("clustersSize","clustersSize > 0", "","Cluster size;N_{strips};Clusters"),
                  draw_command("clustersTDC>>tdc(10,0.5,10.5)","","","TDC;TDC;Events",postprocessor=post_nostat),
-                 draw_command("clustersCharge:clustersTDC>>tdcp(10,0.5,10.5)","clustersSize > 0","prof","Charge v TDC;TDC;<charge> [ADC]",postprocessor=post_tdc_prof),
+                 draw_command("abs(clustersCharge):clustersTDC>>tdcp(10,0.5,10.5)","clustersSize > 0 && abs(clustersCharge) > 100","prof","Charge v TDC;TDC;<charge> [ADC]",postprocessor=post_tdc_prof),
  ]
 
 ##Should be possible to hook into an external file with TTree::MakeProxy using these commands as well if needed, though it hasn't been tested.
@@ -171,8 +171,22 @@ import os
 import subprocess
 
 #make sure I have places for output
-pedestaldir = args.outdir + '/Pedestal-{}-{}'.format( args.board, args.pednum )
-monitordir = args.outdir + '/Monitoring-{}-{}'.format( args.board, args.runnum )
+# pedestaldir = args.outdir + '/Pedestal-{}-{}'.format( args.board, args.pednum )
+# monitordir = args.outdir + '/Monitoring-{}-{}'.format( args.board, args.runnum )
+
+if args.runnum == -1:
+    pedestaldir = os.path.join(args.outdir, args.board, 'output_{}'.format(args.pednum) )
+else:
+    pedestaldir = os.path.join(args.outdir, args.board, 'output_{}'.format(args.runnum) )
+monitordir = pedestaldir
+
+os.environ['MAMBAMASK'] = 'No'
+os.environ['RUNPLACE'] = ''
+os.environ['OUTPUTPATH'] = args.outdir
+os.environ['BOARD'] = args.board
+os.environ['RUNNUMBER'] = str(args.runnum)
+
+
 def ensuredir(dir):
     try: 
         os.makedirs(dir)
@@ -180,7 +194,7 @@ def ensuredir(dir):
         if not os.path.isdir(dir):
             raise
 ensuredir(pedestaldir)
-if(args.runnum!=0):
+if(args.runnum!=-1):
     ensuredir(monitordir)
 
 #Run pedestal if it does not already exist
@@ -202,27 +216,26 @@ if(args.force or not os.path.isfile("{}/Fast-Pedestal-Board{}-{}.dat".format( pe
                "app.inputData= '{}/{}/{}/Pedestal-{}-{}-{}.dat'\n"
                "app.isAType=False\n"
                "# have to be more than 4k (~10k)\n"
-               "app.eventMax={}\n"
+               "app.eventMax=10000\n"
                "#  keep the pedestals files in $KEPLERROOT/../TbUT/options/UT/ directory !!!!!\n"
                "app.pedestalOutputData ='{}/Fast-Pedestal-Board{}-{}.dat'\n"
-               "app.runPedestals()\n").format(args.eosmount,args.indir, args.board, args.hybrid, args.board,args.pednum, args.nevmax, pedestaldir, args.board,args.pednum)
+               "app.runPedestals()\n").format(args.eosmount,args.indir, args.board, args.hybrid, args.board,args.pednum, pedestaldir, args.board,args.pednum)
 
 
     with open('myTempPedRun.py','w') as ftarget:
         ftarget.write(pedCode)
-
-    
-    os.environ['MAMBAMASK'] = 'No'
 
     ret = subprocess.call(['gaudirun.py','myTempPedRun.py'])
 
     os.remove('myTempPedRun.py')
 
     if(ret!=0):
-        sys.exit("Bad return code from pedestal run")
+        print "WARNING bad return code from pedestal run, checking for file"
+        if not os.path.exists('{}/Fast-Pedestal-Board{}-{}.dat'.format(pedestaldir,args.board,args.pednum)):
+            sys.exit("ERROR: failed to make pedestal")
 
 #Determine if we have a data run to process
-if( args.runnum != 0):
+if( args.runnum != -1):
 
     #find the data file by run number
     dir_to_search = "{}/{}/{}/".format(args.eosmount,args.indir,args.board)
@@ -262,6 +275,9 @@ if( args.runnum != 0):
         with open('myTempRun.py','w') as ftarget:
             ftarget.write(runCode)
 
+        with open( os.path.join( monitordir, 'noise_Mamba.dat'), 'w') as ftarget:
+            ftarget.write('1 2 3 4')
+
         #run twice because of noise input issue...
         ret = subprocess.call(['gaudirun.py','myTempRun.py'])
         ret = subprocess.call(['gaudirun.py','myTempRun.py'])
@@ -271,7 +287,7 @@ if( args.runnum != 0):
             subprocess.call(['mv',outnames[0],monitordir+'/'])
             subprocess.call(['mv',outnames[1],monitordir+'/'])
 
-        os.remove('myTempRun.py')
+        #os.remove('myTempRun.py')
 
         if(ret!=0):
             sys.exit("Bad return code from analysis run")
@@ -321,7 +337,7 @@ if( didPedestal ):
     plotlist += ["{}/pedestal.png".format(pedestaldir)]
 
 #analyze the run
-if( args.runnum != 0 ):
+if( args.runnum != -1 ):
     fhists = TFile("{}/{}".format(monitordir,outnames[0]))
     ftrees = TFile("{}/{}".format(monitordir,outnames[1]))
 
@@ -351,7 +367,7 @@ if( args.runnum != 0 ):
     #hlist_post, however, is a list of functions that create histograms; define some functions for post-draw histograms first:
     def fiducialADC( t, fidcut ):
         print "Use fiducial cut:", fidcut
-        t.Draw("clustersCharge>>fidcharge(200,-1200,0)", fidcut)
+        t.Draw("abs(clustersCharge)>>fidcharge(200,0,1200)", fidcut)
         h = t.GetHistogram()
         h.SetTitle("Fiducial cluster charge;Tot. charge [ADC];Clusters")
         return h
