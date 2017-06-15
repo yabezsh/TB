@@ -117,13 +117,37 @@ with open("MambaMasks_N_7_mini2.dat","w") as f:
     for i in range(448,512):
         f.write("0\n")
 
-#N_4_mini7 -- not final.  need to recheck after run.  will be more aggressive
+#N_4_mini7 -- 130-193
 with open("MambaMasks_N_4_mini7.dat","w") as f:
-    for i in range(110):
+    for i in range(130):
         f.write("0\n")
-    for i in range(110,210):
+    for i in range(130,194):
         f.write("1\n")
-    for i in range(210,512):
+    for i in range(194,512):
         f.write("0\n")
 
+
+#N_6_mini7 -- 137-200. 159, 182 bad
+with open("MambaMasks_N_6_mini7.dat","w") as f:
+    for i in range(137):
+        f.write("0\n")
+    for i in range(137,201):
+        if i==159 or i==182:
+            f.write("0\n")
+        else:
+            f.write("1\n")
+    for i in range(201,512):
+        f.write("0\n")
+
+#N_6_mini2 -- 390-453. 430, 434, 437 bad
+with open("MambaMasks_N_6_mini2.dat","w") as f:
+    for i in range(390):
+        f.write("0\n")
+    for i in range(390,454):
+        if i==430 or i==434 or i==437:
+            f.write("0\n")
+        else:
+            f.write("1\n")
+    for i in range(454,512):
+        f.write("0\n")
 

@@ -103,7 +103,7 @@ AnalysisBase::AnalysisBase(TTree *tree) : fChain(0)
     z_DUT = 343;
     polarity = -1.0;  //p-in-n
   }else if (m_board.Contains("N_")) {
-    z_DUT = 290;
+    z_DUT = 290.13;
     polarity = 1.0;
     stripPitch = 0.1875;
   } else if(  m_board.Contains("D")) {
@@ -975,7 +975,36 @@ void AnalysisBase::setCrossTalkCorr(){
   if(m_board=="18_HM2" && m_sector=="1"){ xtalkCorrOdd = 0.0753; xtalkCorrEven = 0.0389;}
   if(m_board=="18_HM2" && m_sector=="2"){ xtalkCorrOdd = 0.0783; xtalkCorrEven = 0.0426;}
 
-  if(m_board=="N_8" && m_sector=="1") { xtalkCorrOdd = 0.0504902; xtalkCorrEven = 0.0200929;}
+
+  if(m_board=="N_8" && m_sector=="1"){ xtalkCorrOdd = 0.0504902; xtalkCorrEven = 0.0200929;}
+  if(m_board=="N_8" && m_sector=="2"){ xtalkCorrOdd = 0.0435423; xtalkCorrEven = 0.00913597;}
+  if(m_board=="N_8" && m_sector=="3"){ xtalkCorrOdd = 0.0159151; xtalkCorrEven = -0.017964;}
+  if(m_board=="N_8" && m_sector=="4"){ xtalkCorrOdd = 0.0713266; xtalkCorrEven = 0.0389262;}
+  if(m_board=="N_8" && m_sector=="5"){ xtalkCorrOdd = 0.0639464; xtalkCorrEven = 0.0279676;}
+  if(m_board=="N_8" && m_sector=="6"){ xtalkCorrOdd = 0.0328127; xtalkCorrEven = -0.00362204;}
+  if(m_board=="N_9" && m_sector=="1"){ xtalkCorrOdd = 0.065387; xtalkCorrEven = 0.0218302;}
+  if(m_board=="N_9" && m_sector=="2"){ xtalkCorrOdd = 0.0562789; xtalkCorrEven = 0.0122294;}
+  if(m_board=="N_9" && m_sector=="3"){ xtalkCorrOdd = 0.0328721; xtalkCorrEven = 0.00203798;}
+  if(m_board=="N_9" && m_sector=="4"){ xtalkCorrOdd = 0.0814801; xtalkCorrEven = 0.0577388;}
+  if(m_board=="N_9" && m_sector=="5"){ xtalkCorrOdd = 0.0682863; xtalkCorrEven = 0.0339615;}
+  if(m_board=="N_9" && m_sector=="6"){ xtalkCorrOdd = 0.0241857; xtalkCorrEven = -0.0132405;}
+  if(m_board=="N_4_mini1" && m_sector=="1"){ xtalkCorrOdd = 0.00878857; xtalkCorrEven = -0.0257273;}
+  if(m_board=="N_4_mini1" && m_sector=="2"){ xtalkCorrOdd = 0.0192776; xtalkCorrEven = -0.0144454;}
+  if(m_board=="N_4_mini1" && m_sector=="3"){ xtalkCorrOdd = 0.00920914; xtalkCorrEven = -0.026494;}
+  if(m_board=="N_4_mini6" && m_sector=="1"){ xtalkCorrOdd = 0.0513068; xtalkCorrEven = 0.0207491;}
+  if(m_board=="N_4_mini6" && m_sector=="2"){ xtalkCorrOdd = 0.0623695; xtalkCorrEven = 0.0288049;}
+  if(m_board=="N_6_mini1" && m_sector=="2"){ xtalkCorrOdd = 0.0473274; xtalkCorrEven = 0.0114283;}
+  if(m_board=="N_6_mini6" && m_sector=="1"){ xtalkCorrOdd = 0.0593735; xtalkCorrEven = 0.0245298;}
+  if(m_board=="N_6_mini6" && m_sector=="2"){ xtalkCorrOdd = 0.050277; xtalkCorrEven = 0.014992;}
+  if(m_board=="N_3_mini1" && m_sector=="1"){ xtalkCorrOdd = 0.0841085; xtalkCorrEven = 0.0550337;}
+  if(m_board=="N_3_mini1" && m_sector=="2"){ xtalkCorrOdd = 0.0832654; xtalkCorrEven = 0.0515944;}
+  if(m_board=="N_3_mini6" && m_sector=="1"){ xtalkCorrOdd = 0.0775935; xtalkCorrEven = 0.0471884;}
+  if(m_board=="N_3_mini6" && m_sector=="2"){ xtalkCorrOdd = 0.0770928; xtalkCorrEven = 0.0443812;}
+  if(m_board=="N_6_mini2" && m_sector=="1"){ xtalkCorrOdd = 0.0687709; xtalkCorrEven = 0.00977373;}
+  if(m_board=="N_6_mini2" && m_sector=="2"){ xtalkCorrOdd = 0.0271811; xtalkCorrEven = -0.00709809;}
+  if(m_board=="N_6_mini7" && m_sector=="1"){ xtalkCorrOdd = 0.0490757; xtalkCorrEven = 0.0154435;}
+  if(m_board=="N_6_mini7" && m_sector=="2"){ xtalkCorrOdd = 0.0111381; xtalkCorrEven = -0.0238759;}
+
 
   cout << "Cross talk corrections for Board " << m_board << ", Sector = " << m_sector << endl;
   cout << "==> Odd: " << xtalkCorrOdd << ",  Even: " << xtalkCorrEven << endl;

@@ -57,7 +57,7 @@ from ToolsForPython import *
 
 
 
-def RunAnalysis(board,PA,DUTRun,mode,evts,mask,onlyPlots) :
+def RunAnalysis(board,PA,DUTRun,mode,evts,mask) :
     # Check that the specified PA exists for the specified board (it can be that M1 has FanIn only, and so on).
     # print PADict[board]
     if PA not in PADict[board] :
@@ -161,17 +161,14 @@ def RunAnalysis(board,PA,DUTRun,mode,evts,mask,onlyPlots) :
             # Use qsub
             #command = "qsub -l cput=" + cput + " -v board="+board+",PA="+PA+",DUTRun="+str(DUTRun)+",ped="+str(ped)+",filenameNoPathPhys="+filenameNoPathPhys+    ",filenameNoPathPed="+filenameNoPathPed+" SubmitAnalysis.pbs" # No spaces after ','.
 	    if (testbeam=='October2016' or testbeam=='June2017'):
-            	if onlyPlots:
-			line_run = "python "+kepler+"/../Analysis_onlyPlots.py -b "+board+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed + " -l "+str(sector) + " -y "+str(rotation) + " -v "+str(bias)
-	    	else:
-			line_run = "python "+kepler+"/../Analysis.py -b "+board+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed  + " -l "+str(sector) + " -y "+str(rotation) + " -v "+str(bias)
-	    else:
-           	 if onlyPlots:
-               		line_run = "python "+kepler+"/../Analysis_onlyPlots.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed + " -l "+str(sector) + " -y "+str(rotation) + " -v "+str(bias)
-            	 else:
-                	line_run = "python "+kepler+"/../Analysis.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed + " -l "+str(sector) + " -y "+str(rotation) + " -v "+str(bias)        
+			line_run = "python "+kepler+"/../Analysis_summary.py -b "+board+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed + " -l "+str(sector) + " -y "+str(rotation) + " -v "+str(bias)
 
-            with open('clusterRun_'+filenameNoPathPhys.split('-')[3]+'.sh','w') as text_file :
+	    else:
+
+               		line_run = "python "+kepler+"/../Analysis_summary.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed + " -l "+str(sector) + " -y "+str(rotation) + " -v "+str(bias)
+
+
+            with open('summaryRun_'+filenameNoPathPhys.split('-')[3]+'.sh','w') as text_file :
                 text_file.write(line_export_path)
                 text_file.write(line_empty)
                 text_file.write(line_export_ld_library_path)
@@ -179,29 +176,24 @@ def RunAnalysis(board,PA,DUTRun,mode,evts,mask,onlyPlots) :
                 text_file.write(line_run)
                 text_file.closed
             
-            command = 'chmod +x clusterRun_'+filenameNoPathPhys.split('-')[3]+'.sh'
+            command = 'chmod +x summaryRun_'+filenameNoPathPhys.split('-')[3]+'.sh'
             print '>', command
             subprocess.call(command,shell=True,cwd='.')
             
-            command = "bsub -q 8nh -M 10240 clusterRun_"+filenameNoPathPhys.split('-')[3]+".sh"
+            command = "bsub -q 8nh summaryRun_"+filenameNoPathPhys.split('-')[3]+".sh"
             print command
             subprocess.call(command,shell=True)
             
         elif (mode == 'local') :
 	 if (testbeam=='October2016' or testbeam=='June2017'):	  
             # Use python directly 
-	    if onlyPlots:            
-		command = "python Analysis_onlyPlots.py -b "+board+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed + " -l "+str(sector) + " -y "+str(rotation) + " -v "+str(bias)
-	    else:
-		command = "python Analysis.py -b "+board+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed + " -l "+str(sector) + " -y "+str(rotation) + " -v "+str(bias)
+            command = "python Analysis_summary.py -b "+board+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed + " -l "+str(sector) + " -y "+str(rotation) + " -v "+str(bias)
 	    print command
             subprocess.call(command,shell=True)
 	 else:
             # Use python directly 
-            if onlyPlots:
-                command = "python Analysis_onlyPlots.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed + " -l "+str(sector) + " -y "+str(rotation) + " -v "+str(bias)
-            else:
-                command = "python Analysis.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed + " -l "+str(sector) + " -y "+str(rotation) + " -v "+str(bias)
+            command = "python Analysis_summary.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed + " -l "+str(sector) + " -y "+str(rotation) + " -v "+str(bias)
+         
             print command
             subprocess.call(command,shell=True)
   
@@ -225,7 +217,6 @@ if __name__ == "__main__" :
     parser.add_argument('--mode',required=True,choices=modeList,help='mode')
     parser.add_argument('--evts',required=False,type=int,help='evts')
     parser.add_argument('--mask',required=False,type=int,choices=[0,1],help='mask')
-    parser.add_argument('--onlyPlots',required=False,type=int,choices=[0,1],help='onlyPlots')
     parser.add_argument('--KAZU',required=False,type=int,choices=[0,1],help='KAZU')
     
     args = parser.parse_args()
@@ -244,9 +235,5 @@ if __name__ == "__main__" :
         mask = 0
     else :
         mask = args.mask
-    if args.onlyPlots is None :
-	onlyPlots = 0
-    else:
-	onlyPlots = 1
 
-    RunAnalysis(board,PA,DUTRun,mode,evts,mask,onlyPlots)
+    RunAnalysis(board,PA,DUTRun,mode,evts,mask)

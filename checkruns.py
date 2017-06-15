@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-sensor='N_4_mini7'
-hybrid='TTV2_07'
+sensor='N_6_mini2'
+hybrid='TTV2_08'
 rawdir='/eos/lhcb/testbeam/ut/TemporaryData/June2017/MAMBA'
 kepdir='/eos/lhcb/testbeam/ut/TelescopeData/June2017/RootFiles'
 outdir='/eos/lhcb/testbeam/ut/TemporaryData/June2017/DQMTemporary'

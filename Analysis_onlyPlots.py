@@ -145,8 +145,8 @@ shFile.close()
 subprocess.call("chmod +x "+os.environ["KEPLERROOT"]+"/../run_"+os.environ["RUNNUMBER"]+".sh",shell=True)
 os.system('/$KEPLERROOT/../run_'+os.environ["RUNNUMBER"]+'.sh')
 if PA=="":
-	if os.path.exists(os.environ["KEPLERROOT"]+"/../LogRunAnalysis_"+os.environ['BOARD']+"_"+os.environ['RUNPLACE']+".dat"):os.system("mv"+os.environ["KEPLERROOT"]+"/../LogRunAnalysis_"+os.environ['BOARD']+"_"+os.environ['RUNPLACE']+".dat  "+outputPath+'/'+boardName+'/')
+	if os.path.exists(os.environ["KEPLERROOT"]+"/../LogRunAnalysis_"+os.environ['BOARD']+"_"+os.environ['RUNPLACE']+".dat"):os.system("mv "+os.environ["KEPLERROOT"]+"/../LogRunAnalysis_"+os.environ['BOARD']+"_"+os.environ['RUNPLACE']+".dat  "+outputPath+'/'+boardName+'/')
 else:
-	if os.path.exists(os.environ["KEPLERROOT"]+"/../LogRunAnalysis_"+os.environ['BOARD']+"_"+os.environ['RUNPLACE']+".dat"):os.system("mv"+os.environ["KEPLERROOT"]+"/../LogRunAnalysis_"+os.environ['BOARD']+"_"+os.environ['RUNPLACE']+".dat  "+outputPath+'/'+boardName+'/'+PA+'/')
-if os.path.exists(os.environ["KEPLERROOT"]+"/../run_"+os.environ["RUNNUMBER"]+".sh"):os.system("mv"+os.environ["KEPLERROOT"]+"/../run_"+os.environ["RUNNUMBER"]+".sh  "+outputPath+'/'+boardName+'/'+PA+'/output_'+os.environ["RUNNUMBER"]+'/\n')
-if os.path.exists(os.environ["KEPLERROOT"]+"/../clusterRun_"+os.environ["RUNNUMBER"]+".sh"):os.system("mv"+os.environ["KEPLERROOT"]+"/../clusterRun_"+os.environ["RUNNUMBER"]+".sh  "+outputPath+'/'+boardName+'/'+PA+'/output_'+os.environ["RUNNUMBER"]+'/\n')
+	if os.path.exists(os.environ["KEPLERROOT"]+"/../LogRunAnalysis_"+os.environ['BOARD']+"_"+os.environ['RUNPLACE']+".dat"):os.system("mv "+os.environ["KEPLERROOT"]+"/../LogRunAnalysis_"+os.environ['BOARD']+"_"+os.environ['RUNPLACE']+".dat  "+outputPath+'/'+boardName+'/'+PA+'/')
+if os.path.exists(os.environ["KEPLERROOT"]+"/../run_"+os.environ["RUNNUMBER"]+".sh"):os.system("mv "+os.environ["KEPLERROOT"]+"/../run_"+os.environ["RUNNUMBER"]+".sh  "+outputPath+'/'+boardName+'/'+PA+'/output_'+os.environ["RUNNUMBER"]+'/\n')
+if os.path.exists(os.environ["KEPLERROOT"]+"/../clusterRun_"+os.environ["RUNNUMBER"]+".sh"):os.system("mv "+os.environ["KEPLERROOT"]+"/../clusterRun_"+os.environ["RUNNUMBER"]+".sh  "+outputPath+'/'+boardName+'/'+PA+'/output_'+os.environ["RUNNUMBER"]+'/\n')

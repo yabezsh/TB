@@ -139,7 +139,8 @@ else:
 
 shFile.write('gaudirun.py $KEPLERROOT/../TbUT/options/TbUTPedestal_'+os.environ["RUNNUMBER"]+'.py\n')
 shFile.write('echo did pedestal\n')
-shFile.write('gaudirun.py $KEPLERROOT/../TbUT/options/TbUTRun_'+os.environ["RUNNUMBER"]+'.py\n')
+#shFile.write('gaudirun.py $KEPLERROOT/../TbUT/options/TbUTRun_'+os.environ["RUNNUMBER"]+'.py\n')
+shFile.write('valgrind --tool=massif --pages-as-heap=yes --massif-out-file=/afs/cern.ch/user/m/mrudolph/massif.out gaudirun.py $KEPLERROOT/../TbUT/options/TbUTRun_'+os.environ["RUNNUMBER"]+'.py\n')
 shFile.write('echo did run 1\n')
 shFile.write('gaudirun.py $KEPLERROOT/../TbUT/options/TbUTRun_'+os.environ["RUNNUMBER"]+'.py\n')
 shFile.write('echo did run 2\n')

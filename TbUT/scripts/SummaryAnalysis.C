@@ -22,7 +22,7 @@ namespace {
                                         "N_6_mini1", "N_6_mini6", "N_3_mini2", "N_3_mini7", 
                                         "N_7_mini2", "N_4_mini7", "N_6_mini2", "N_6_mini7" };
   //For all sensors, the last channel bonded is also the last on the sensor.
-  double lastChan[NSENSOR] = { 469, 466, 486, 230, 472, 224, 500,243, 511, 255, 511, 255, 511, 255};
+  double lastChan[NSENSOR] = { 469, 466, 486, 230, 478, 224, 500,243, 511, 255, 447, 193, 453, 200};
   
   int getBoardIndex(const TString & boardname ){
     // TObjString * os = (TObjString*) boardname.Tokenize("_")->At(0);
@@ -133,6 +133,8 @@ namespace {
     YMATCH,
     XALL,
     XMATCH,
+    NOMSTRIPALL,
+    NOMSTRIPMATCH,
     NEARADC1ALL,
     NEARADC2ALL,
     NEARADC4ALL,
@@ -171,8 +173,7 @@ void SummaryAnalysis::Loop()
 
    //Create the output file bsaed on environment
    TString myoutdir(getenv("MYOUTPUTPATH"));
-   TString biasv(getenv("BIASV"));
-   TString f_out = myoutdir + "/SummaryAnalysis_" + runplace + "_" + m_board + "_" + biasv + "_" + consR + ".root";
+   TString f_out = myoutdir + "/" + m_board + "/output_" + consR + "/SummaryAnalysis_" + m_board + "_" + consR + ".root";
 
    fout = new TFile(f_out,"RECREATE");
 
@@ -240,8 +241,10 @@ void SummaryAnalysis::Loop()
    inclusivePlots[INTERMATCH] = new TH1F("interMatch","Distance to strip center divided by pitch; #Delta x/P",100,-0.5,0.5);;
    inclusivePlots[YALL] = new TH1F("yAll","All track y; y [mm]",100,-5,5);
    inclusivePlots[YMATCH] = new TH1F("yMatch","Matched track y; y [mm]",100,-5,5);
-   inclusivePlots[XALL] = new TH1F("xAll","All track x; x [mm]",80,-4,4);
-   inclusivePlots[XMATCH] = new TH1F("xMatch","Matched track x; x [mm]",80,-4,4);
+   inclusivePlots[XALL] = new TH1F("xAll","All track x; x [mm]",100, -25.0*stripPitch, 25.0*stripPitch);
+   inclusivePlots[XMATCH] = new TH1F("xMatch","Matched track x; x [mm]",100, -25.0*stripPitch, 25.0*stripPitch);
+   inclusivePlots[NOMSTRIPALL] = new TH1F("stripAll","All trk strip; Channel #",1024, -0.25, 512-0.25);
+   inclusivePlots[NOMSTRIPMATCH] = new TH1F("stripMatch","All trk strip; Channel #",1024, -0.25, 512-0.25);
    unsigned int hi = 0;
    for(; hi < NEARADC1ALL; ++hi)
      outHistos.push_back( inclusivePlots[hi] );
@@ -286,7 +289,8 @@ void SummaryAnalysis::Loop()
    for (unsigned int i =0; i<nRegions; ++i ) {
      //make an output directory
      sprintf(hname,"Region_%i",i);
-     fout->mkdir( hname )->cd();
+     TDirectory * newdir = fout->mkdir( hname );
+     newdir->cd();
 
      vRegionPlots[i].resize( nreghists*(1 + nNoiseScale) );
 
@@ -305,7 +309,8 @@ void SummaryAnalysis::Loop()
    int nStripsInBeam = iHi - iLo;
    int firstStrip = iLo +0.51; //make sure we get the first strip inside the range
    std::vector<std::vector<TH1*> > stripPlots( nStripsInBeam );
-   fout->mkdir( "Strips")->cd();
+   TDirectory * newdir = fout->mkdir( "Strips");
+   newdir->cd();
    for ( int i =0; i < nStripsInBeam; ++i ) {     
      stripPlots[i].resize( NSTRIPPLOT );
      sprintf( hname, "%s_ch%i", stripPlotNames[CHADCALL], firstStrip+i);
@@ -419,6 +424,7 @@ void SummaryAnalysis::Loop()
         if (inTightFiducialY) {
           inclusivePlots[INTERALL]->Fill(dxNom);
           inclusivePlots[XALL]->Fill(x_trk);
+          inclusivePlots[NOMSTRIPALL]->Fill(nomStrip);
         
           if( fCMS != 0  ) {
             nearADC = polarity*fCMS->cmsData[closeStrip];
@@ -448,6 +454,7 @@ void SummaryAnalysis::Loop()
             inclusivePlots[INTERALL + nreghists*(ni+1)]->Fill(dxNom);
             inclusivePlots[YALL + nreghists*(ni+1)]->Fill(y_trk);
             inclusivePlots[XALL + nreghists*(ni+1)]->Fill(x_trk);
+            inclusivePlots[NOMSTRIPALL + nreghists*(ni+1)]->Fill(nomStrip);
             if(fCMS) {
               inclusivePlots[NEARADC1ALL + nreghists*(ni+1)]->Fill( nearADC );
               inclusivePlots[NEARADC2ALL + nreghists*(ni+1)]->Fill( twonearADC );
@@ -558,7 +565,7 @@ void SummaryAnalysis::Loop()
           }
         }
 
-        fillMatchMiss( inclusivePlots, nreghists, foundHit, foundIdx, x_trk, y_trk, dxNom, allDx, nearADC,  twonearADC,  fournearADC,  sumADC);
+        fillMatchMiss( inclusivePlots, nreghists, foundHit, foundIdx, x_trk, y_trk, nomStrip, dxNom, allDx, nearADC,  twonearADC,  fournearADC,  sumADC);
 
         for(unsigned int ri = 0; ri< nRegions; ++ri ) {
           if(! passFiducialCut( ri, x_trk, y_trk, dxNom, nomStrip, yMax ) ) continue;
@@ -566,6 +573,7 @@ void SummaryAnalysis::Loop()
           //Regions automatically have tight fiducial y applied, so don't have to worry
           vRegionPlots[ri][INTERALL]->Fill(dxNom);
           vRegionPlots[ri][XALL]->Fill(x_trk);
+          vRegionPlots[ri][NOMSTRIPALL]->Fill(nomStrip);
           vRegionPlots[ri][YALL]->Fill(y_trk);
           if( fCMS != 0  ) {
 
@@ -580,6 +588,7 @@ void SummaryAnalysis::Loop()
             vRegionPlots[ri][INTERALL + nreghists*(ni+1)]->Fill(dxNom);
             vRegionPlots[ri][YALL + nreghists*(ni+1)]->Fill(y_trk);
             vRegionPlots[ri][XALL + nreghists*(ni+1)]->Fill(x_trk);
+            vRegionPlots[ri][NOMSTRIPALL + nreghists*(ni+1)]->Fill(nomStrip);
             if(fCMS) {
               vRegionPlots[ri][NEARADC1ALL + nreghists*(ni+1)]->Fill( nearADC );
               vRegionPlots[ri][NEARADC2ALL + nreghists*(ni+1)]->Fill( twonearADC );
@@ -589,7 +598,7 @@ void SummaryAnalysis::Loop()
           }
 
 
-          fillMatchMiss( vRegionPlots[ri], nreghists, foundHit, foundIdx, x_trk, y_trk, dxNom,  allDx, nearADC,  twonearADC,  fournearADC,  sumADC);
+          fillMatchMiss( vRegionPlots[ri], nreghists, foundHit, foundIdx, x_trk, y_trk, nomStrip, dxNom,  allDx, nearADC,  twonearADC,  fournearADC,  sumADC);
 
 	} //loop over regions
 
@@ -624,7 +633,7 @@ bool SummaryAnalysis::foundClusterWithScaledNoise( size_t idx, double nScale) {
 
 }
 
-void SummaryAnalysis::fillMatchMiss( const std::vector<TH1*> & vh, unsigned int nhists, bool foundHit, int foundIdx, double x_trk, double y_trk, double dxNom, const std::vector<double> & allDx, double nearADC, double twonearADC, double fournearADC, double sumADC) {
+void SummaryAnalysis::fillMatchMiss( const std::vector<TH1*> & vh, unsigned int nhists, bool foundHit, int foundIdx, double x_trk, double y_trk, double nomStrip, double dxNom, const std::vector<double> & allDx, double nearADC, double twonearADC, double fournearADC, double sumADC) {
 
   //Fill the matching histograms now
   if(foundHit) {
@@ -638,6 +647,7 @@ void SummaryAnalysis::fillMatchMiss( const std::vector<TH1*> & vh, unsigned int 
     if( y_trk < yMax ) {
       vh[INTERMATCH]->Fill(dxNom);
       vh[XMATCH]->Fill(x_trk);
+      vh[NOMSTRIPMATCH]->Fill(nomStrip);
       if (fCMS) {   
         vh[NEARADC1MATCH]->Fill( nearADC );
         vh[NEARADC2MATCH]->Fill( twonearADC );
@@ -668,6 +678,7 @@ void SummaryAnalysis::fillMatchMiss( const std::vector<TH1*> & vh, unsigned int 
         if( y_trk < yMax ) {
           vh[INTERMATCH + nhists*(ni+1)]->Fill(dxNom);
           vh[XMATCH + nhists*(ni+1)]->Fill(x_trk);
+          vh[NOMSTRIPMATCH + nhists*(ni+1)]->Fill(nomStrip);
           if (fCMS) {   
             vh[NEARADC1MATCH + nhists*(ni+1)]->Fill( nearADC );
             vh[NEARADC2MATCH + nhists*(ni+1)]->Fill( twonearADC );
