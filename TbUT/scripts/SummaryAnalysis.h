@@ -43,7 +43,7 @@ public :
   void writeHistos();
 
   bool foundClusterWithScaledNoise(size_t idx, double nScale);
-  void fillMatchMiss( const std::vector<TH1*> & vh, unsigned int nhists, bool foundHit, int foundIdx, double x_trk, double y_trk, double nomStrip, double dxNom, const std::vector<double> & allDx, double nearADC, double twonearADC, double fournearADC, double sumADC);
+  void fillMatchMiss( const std::vector<TH1*> & vh, unsigned int nhists, bool foundHit, int foundIdx, double x_trk, double y_trk, bool tightFidY, double nomStrip, double dxNom, const std::vector<double> & allDx, double nearADC, double twonearADC, double fournearADC, double sumADC);
 };
 
 #endif
@@ -66,7 +66,7 @@ SummaryAnalysis::SummaryAnalysis(TTree *tree)
        noise[i] = hWidthNoise->GetBinContent(i+1);
      }
 
-     TFile * f2 = new TFile(filename.ReplaceAll("_Tracks",""));
+     TFile * f2 = new TFile(filename.ReplaceAll("_Tracks","_Tuple"));
      fCMS=0;
      if(f2) {
        TTree * tree2 = (TTree*) f2->Get("TbUT/CMS");
@@ -83,8 +83,6 @@ SummaryAnalysis::SummaryAnalysis(TTree *tree)
    TString badStripFileName = maskFile;
    ifstream badStripFile;
 
-   int iVal = 0;   
-   int iChan = 0;
    badStripFile.open(badStripFileName); 
    for(int i=0; i<nChan; i++){
      badStrips[i] = 1; // all channels good to start
@@ -94,13 +92,15 @@ SummaryAnalysis::SummaryAnalysis(TTree *tree)
    if(!badStripFile) { // file couldn't be opened
       cerr << "Error: bad strip file does not exist -- assume all strips are good" << endl;
    }else{
+     int iVal = 0;   
+     int iChan = 0;
      while ( !badStripFile.eof() ) {
        badStripFile >> iVal;
        badStrips[iChan] = iVal;
        if(iVal==0) nbadStrips++;
+       if(iVal==1) cout << "Good Strip, Chan# " << iChan << endl;
        iChan++;
        if(iChan>=nChan) break;
-       if(iVal==1) cout << "Good Strip, Chan# " << iChan << endl;
      }
    }
    cout << "MaskFile: Found " << nbadStrips << " masked strips" << endl;

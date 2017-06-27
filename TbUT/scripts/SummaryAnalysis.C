@@ -22,7 +22,7 @@ namespace {
                                         "N_6_mini1", "N_6_mini6", "N_3_mini2", "N_3_mini7", 
                                         "N_7_mini2", "N_4_mini7", "N_6_mini2", "N_6_mini7" };
   //For all sensors, the last channel bonded is also the last on the sensor.
-  double lastChan[NSENSOR] = { 469, 466, 486, 230, 478, 224, 500,243, 511, 255, 447, 193, 453, 200};
+  double lastChan[NSENSOR] = { 469, 466, 486, 230, 478, 224, 500,243, 511, 191, 447, 193, 453, 200};
   
   int getBoardIndex(const TString & boardname ){
     // TObjString * os = (TObjString*) boardname.Tokenize("_")->At(0);
@@ -43,79 +43,71 @@ namespace {
   }
   
   // Make regions
-  // 0 = top edge of sensors
+  // 0 = very top edge of sensors
   // 1 = control region for top edge
-  // 2 = Densest PA region ( traces for fan-up, bond pads for fan-in )
-  // 3 = Control region for 2
-  // 4-7 = region 0-3 and between strips
-  // 8-11 = region 0-3 and under strip
-  const unsigned int nRegions=12;
+  // 2 = close to top edge
+  // 3 = control region for above
+  // 4 = Densest PA region ( traces for fan-up, bond pads for fan-in )
+  // 5 = Control region for 2
+  // 6-11 = region 0-5 and between strips
+  // 12-17 = region 0-5 and under strip
+  const unsigned int nCuts=6;
+  const unsigned int nRegions= 3*nCuts;
   bool passFiducialCut( const int & iCut, const double & xTrk, const double & yTrk, const double &dxNom, const double & nomStrip, const double & yMax ) 
   {
 
     if ( yTrk > yMax ) return false;
 
+    // this defines cut based on dx
+    int dxGroup = iCut / nCuts;   
     bool dxcent = fabs(dxNom) < 0.1;
     bool dxout = fabs(dxNom) > 0.4;
+    if ( dxGroup == 1 && !dxcent ) {
+      return false;
+    } else if (dxGroup == 2 && !dxout) {
+      return false;
+    }
 
+    //Now do the actual regions
+    int myCut = iCut % nCuts;
+    
     double dy = yMax - yTrk;
-    bool inReg0 = (dy<0.5);
-    bool inReg1 = (dy>0.8) && (dy<1.3);
-    if ( iCut == 0 ) {
-      return inReg0; //500 um of edge is where PA traces on new fan-up are
-    } else if ( iCut == 1 ) {
-      return inReg1; //control region for above
-    } else if ( iCut == 4 ) {
-      return inReg0 && dxcent;
-    } else if ( iCut == 8 ) {
-      return inReg0 && dxout;
-    } else if ( iCut == 5 ) {
-      return inReg1 && dxcent;
-    } else if ( iCut == 9 ) {
-      return inReg1 && dxout;
+    bool inReg[nCuts];
+    inReg[0] = (dy<0.02);
+    inReg[1] = (dy>0.8) && (dy<1.3);
+    inReg[2] = (dy > 0.04) && (dy < 0.5);
+    inReg[3] = inReg[1];
+
+    if ( myCut < 4 ) {
+      return inReg[myCut];
     }
     
+    // PA regions take a bit more doing
     int boardIdx = getBoardIndex(m_board);
     bool isMini = (boardIdx > 1);
     double sensorStrip = nomStrip - lastChan[boardIdx]; // negative from right side of sensor
-    bool inReg2 = false;
-    bool inReg3 = false;
     if ( !isMini ) {
       sensorStrip += 511; //now starts from 0
       //Find the thickest part of the PA region
       double r = fmod( sensorStrip, 128 ); //get the remainder after dividing by 128
       bool inPAx = ( r > 24 && r < 48 ) || ( r > 80 && r < 104 );
 
-      inReg2 = (dy < 0.5) && inPAx;
-      inReg3 = (dy > 0.8) && (dy < 1.3) && inPAx;
+      inReg[4] = (dy > 0.04) && (dy < 0.5) && inPAx;
+      inReg[5] = (dy > 0.8) && (dy < 1.3) && inPAx;
       
     } else {
       sensorStrip += 63; //now starts form 0
-      bool isFanin = (boardIdx > 7);
+      bool isFanin = (boardIdx > N6M6);
       if (isFanin) {
-        inReg2 = (dy>0.9) && (dy<1.1) && (sensorStrip < 27 );
-        inReg3 = (dy>1.5) && (dy<1.7) && (sensorStrip < 27 );
+        inReg[4] = (dy>0.9) && (dy<1.1) && (sensorStrip < 27 );
+        inReg[5] = (dy>1.5) && (dy<1.7) && (sensorStrip < 27 );
       } else {
-        inReg2 = (sensorStrip > 24) && (sensorStrip < 48) && (dy<0.5);
-        inReg3 = (sensorStrip > 24) && (sensorStrip < 48) && (dy > 0.8) && (dy<1.3);
+        inReg[4] = (sensorStrip > 24) && (sensorStrip < 48) && (dy > 0.04) && (dy<0.5);
+        inReg[5] = (sensorStrip > 24) && (sensorStrip < 48) && (dy > 0.8) && (dy<1.3);
       }      
     }
-      
-    if ( iCut == 2 ) {
-      return inReg2;
-    } else if ( iCut == 3 ) {
-      return inReg3; //control region for above
-    } else if ( iCut == 6 ) {
-      return inReg2 && dxcent;
-    } else if ( iCut == 10 ) {
-      return inReg2 && dxout;
-    } else if ( iCut == 7 ) {
-      return inReg3 && dxcent;
-    } else if ( iCut == 11 ) {
-      return inReg3 && dxout;
-    }
-    
-    return false;
+
+    return inReg[myCut];
   }
   
   //Region plot enumeration
@@ -158,11 +150,23 @@ namespace {
   };
     
   const char * stripPlotNames[NSTRIPPLOT] = {"adcAll", "adcMatch", "snrAll", "snrMatch", "yAll", "yMatch"};
-  
+ 
   //How many levels of scaled noise to check
   const unsigned int nNoiseScale = 4;
   const double noiseScales[nNoiseScale] = { 4.0/3.0, 2.0, 3.0, 4.0 };
 
+  //strips to investigate their cluster size
+  const int nOddStrips = 7;
+  int oddStrips[nOddStrips] = {414,420,422,424,434,436,449};
+  enum {
+    ODDADC,
+    ODDSIZE,
+    ODDASYMM,
+    ODDPARTNERS,
+    ODDDX,
+    NODD
+  };
+  const char * oddPlotNames[NODD] = {"adc","size","asymm","partners","dx"};
 }
 
 void SummaryAnalysis::Loop()
@@ -175,39 +179,46 @@ void SummaryAnalysis::Loop()
    TString myoutdir(getenv("MYOUTPUTPATH"));
    TString f_out = myoutdir + "/" + m_board + "/output_" + consR + "/SummaryAnalysis_" + m_board + "_" + consR + ".root";
 
-   fout = new TFile(f_out,"RECREATE");
-
-
    //First prepare the run, this sets beam location and some other things
    PrepareDUT();
+
+
+   fout = new TFile(f_out,"RECREATE");
 
 
    //-------------------------------------------------------------------//
    //------------------ Inclusive histograms here ----------------------//
    //-------------------------------------------------------------------//
 
-   TH1F* hXTrk = new TH1F("XTrk","X position of track",400,-10.0,10.0);
-   TH1F* hYTrk = new TH1F("YTrk","Y position of track",400,-10.0,10.0);
-   outHistos.push_back( hXTrk );
-   outHistos.push_back( hYTrk );
-   TH1F* hXTrkMatch = new TH1F("XTrkMatch","X position of track",400,-10.0,10.0);
-   TH1F* hYTrkMatch = new TH1F("YTrkMatch","Y position of track",400,-10.0,10.0);
-   outHistos.push_back( hXTrkMatch );
-   outHistos.push_back( hYTrkMatch );
+   TH1F* hXTrk = new TH1F("XTrk","X position of track; x [mm]",400,-10.0,10.0);
+   TH1F* hYTrk = new TH1F("YTrk","Y position of track; y [mm]",400,-10.0,10.0);
+   //outHistos.push_back( hXTrk );
+   //outHistos.push_back( hYTrk );
+   TH1F* hXTrkMatch = new TH1F("XTrkMatch","X position of track; x [mm]",400,-10.0,10.0);
+   TH1F* hYTrkMatch = new TH1F("YTrkMatch","Y position of track; y [mm]",400,-10.0,10.0);
+   //outHistos.push_back( hXTrkMatch );
+   //outHistos.push_back( hYTrkMatch );
 
+   //Keep an eye on beam shape
+   TH2F* hXYTrk = new TH2F("XYTrk","X,Y position of track; x [mm]; y[mm]",50, -25.0*stripPitch, 25.0*stripPitch, 60, -2, 4);
+   //outHistos.push_back( hXYTrk );
+   TH2F* hStripYTrk = new TH2F("StripYTrk","strip,Y position of track; Channel #; y [mm]", 512,-0.5,511.5, 60, -2,4);
+   //outHistos.push_back( hStripYTrk );
+   
    TH1F * hStrip = new TH1F("clusterStrip","cluster seed strip",512,-0.5,511.5);
-   outHistos.push_back(hStrip);
+   //outHistos.push_back(hStrip);
 
    TH1F* hXDut = new TH1F("XDut","X position of cluster",100, -50.0*stripPitch, 50.0*stripPitch);
-   outHistos.push_back( hXDut);
+   //outHistos.push_back( hXDut);
 
    TH1F * hNomStrip = new TH1F("NomStrip","nominal strip",512,-0.5,511.5);
-   outHistos.push_back(hNomStrip);
+   //outHistos.push_back(hNomStrip);
 
    TProfile * adcvdx = new TProfile("adcvdx","mean adc v. interstrip",95,-0.5,0.5 );
-   outHistos.push_back(adcvdx);
+   //outHistos.push_back(adcvdx);
    TProfile * sizevdx = new TProfile("sizevdx","mean size v. interstrip",95,-0.5,0.5 );
-   outHistos.push_back(sizevdx);
+   TProfile * sizevstrip = new TProfile("sizevstrip","mean size v. channel; Channel; <Cluster size>",512,-0.5,511.5);
+   //outHistos.push_back(sizevdx);
 
    //X-ray graphs inclusive
    TGraph * grMissed = new TGraph();
@@ -215,6 +226,12 @@ void SummaryAnalysis::Loop()
    grMissed->SetTitle( "missed hits");
    grMissed->SetMarkerStyle(1);
    outHistos.push_back(grMissed);
+   
+   TGraph * grMissedStrips = new TGraph();
+   grMissedStrips->SetName("grMissedStrips");
+   grMissedStrips->SetTitle( "missed hits");
+   grMissedStrips->SetMarkerStyle(1);
+   outHistos.push_back(grMissedStrips);
 
    TGraph * grCenters = new TGraph();
    grCenters->SetName("grCenters");
@@ -239,15 +256,15 @@ void SummaryAnalysis::Loop()
    inclusivePlots[DXMISS] = new TH1F("dxMiss","#Delta x (cluster-track) when there is no match;#Deltax [mm]",798,-7.581, 7.581 );;
    inclusivePlots[INTERALL] = new TH1F("interAll","Distance to strip center divided by pitch; #Delta x/P",100,-0.5,0.5);
    inclusivePlots[INTERMATCH] = new TH1F("interMatch","Distance to strip center divided by pitch; #Delta x/P",100,-0.5,0.5);;
-   inclusivePlots[YALL] = new TH1F("yAll","All track y; y [mm]",100,-5,5);
-   inclusivePlots[YMATCH] = new TH1F("yMatch","Matched track y; y [mm]",100,-5,5);
+   inclusivePlots[YALL] = new TH1F("yAll","All track y; y [mm]",320, -4.0,4.0);
+   inclusivePlots[YMATCH] = new TH1F("yMatch","Matched track y; y [mm]",320,-4.0,4.0);
    inclusivePlots[XALL] = new TH1F("xAll","All track x; x [mm]",100, -25.0*stripPitch, 25.0*stripPitch);
    inclusivePlots[XMATCH] = new TH1F("xMatch","Matched track x; x [mm]",100, -25.0*stripPitch, 25.0*stripPitch);
    inclusivePlots[NOMSTRIPALL] = new TH1F("stripAll","All trk strip; Channel #",1024, -0.25, 512-0.25);
    inclusivePlots[NOMSTRIPMATCH] = new TH1F("stripMatch","All trk strip; Channel #",1024, -0.25, 512-0.25);
    unsigned int hi = 0;
-   for(; hi < NEARADC1ALL; ++hi)
-     outHistos.push_back( inclusivePlots[hi] );
+   //for(; hi < NEARADC1ALL; ++hi)
+     //outHistos.push_back( inclusivePlots[hi] );
 
    unsigned int nreghists = NEARADC1ALL;
    if (fCMS) {     
@@ -260,8 +277,8 @@ void SummaryAnalysis::Loop()
      inclusivePlots[NEARADC2MATCH] = new TH1F("nearADC2Match","Match track nearest 2 strip ADC; ADC",110,-100,1000);
      inclusivePlots[NEARADC4MATCH] = new TH1F("nearADC4Match","Match track nearest 4 strip ADC; ADC",110,-100,1000);
      inclusivePlots[NEARADC100MATCH] = new TH1F("nearADC100Match","Match track 100 strip ADC; ADC",200,-500,1500);
-     for(; hi < NREGIONPLOT; ++hi)
-       outHistos.push_back( inclusivePlots[hi] );
+     //for(; hi < NREGIONPLOT; ++hi)
+       //outHistos.push_back( inclusivePlots[hi] );
    }
 
    //Use this to print to for histo names
@@ -279,7 +296,7 @@ void SummaryAnalysis::Loop()
      for( hi=0; hi < nreghists; ++hi ) {
        sprintf(hname,"%s_noise%.1f", inclusivePlots[hi]->GetName(), noiseScales[ni] );
        inclusivePlots[ hi + nreghists*(ni+1) ] = (TH1*) inclusivePlots[hi]->Clone( hname );
-       outHistos.push_back( inclusivePlots[ hi + nreghists*(ni+1)] );
+       //outHistos.push_back( inclusivePlots[ hi + nreghists*(ni+1)] );
      }
 
    }
@@ -294,13 +311,23 @@ void SummaryAnalysis::Loop()
 
      vRegionPlots[i].resize( nreghists*(1 + nNoiseScale) );
 
-     for(unsigned int j=0; j<inclusivePlots.size(); ++j) {
+     for (unsigned int j=0; j<inclusivePlots.size(); ++j) {
        sprintf(hname,"%s_reg%u", inclusivePlots[j]->GetName(), i );
        vRegionPlots[i][ j ] = (TH1*) inclusivePlots[j]->Clone( hname );
-       outHistos.push_back( vRegionPlots[i][j] );
+       //outHistos.push_back( vRegionPlots[i][j] );
      }   
    }
-  
+
+   //Now make a version with a tight cut on track timing
+   std::vector<TH1*> vTightTiming;
+   vTightTiming.resize( nreghists*(1 + nNoiseScale) );
+   TDirectory * tightdir = fout->mkdir( "TightTime");
+   tightdir->cd();
+   for (unsigned int j=0; j<inclusivePlots.size(); ++j) {
+     sprintf(hname,"%s_tightTime", inclusivePlots[j]->GetName() );
+     vTightTiming[ j ] = (TH1*) inclusivePlots[j]->Clone( hname );
+     //outHistos.push_back( vRegionPlots[i][j] );
+   }   
 
    // Make the strip level plots for each channel in the beam location from iLo to iHi
    // these were found in PrepareDUT().  they are floats set to halway between two strips
@@ -326,10 +353,27 @@ void SummaryAnalysis::Loop()
      sprintf( hname, "%s_ch%i", stripPlotNames[CHYMATCH], firstStrip+i);
      stripPlots[i][CHYMATCH] = new TH1F(hname, "Y match for channel; y_{trk} [mm]", 40, -10., 10.); 
      for(unsigned int j=0; j<NSTRIPPLOT; ++j) {
-       outHistos.push_back( stripPlots[i][j] );
+       //outHistos.push_back( stripPlots[i][j] );
      }       
    }
 
+   std::vector<std::vector<TH1*> > oddPlots( nOddStrips );
+   newdir = fout->mkdir( "OddStrips");
+   newdir->cd();
+   for ( int i =0; i < nOddStrips; ++i ) {     
+     oddPlots[i].resize( NODD );
+     sprintf( hname, "%s_ch%i", oddPlotNames[ODDADC], oddStrips[i] );
+     oddPlots[i][ODDADC] = new TH1F(hname,"ADC match for channel; Cluster ADC", 100, 0, 1000);
+     sprintf( hname, "%s_ch%i", oddPlotNames[ODDSIZE], oddStrips[i] );
+     oddPlots[i][ODDSIZE] = new TH1F(hname,"ADC match for channel; N channel", 10, 0.5, 10.5);
+     sprintf( hname, "%s_ch%i", oddPlotNames[ODDASYMM], oddStrips[i] );
+     oddPlots[i][ODDASYMM] = new TH1F(hname,"ADC match for channel; Seed fraction", 100, 0, 1);
+     sprintf( hname, "%s_ch%i", oddPlotNames[ODDPARTNERS], oddStrips[i] );
+     oddPlots[i][ODDPARTNERS] = new TH1F(hname,"ADC match for channel; Partner", 5, -2.5, 2.5);
+     sprintf( hname, "%s_ch%i", oddPlotNames[ODDDX], oddStrips[i] );
+     oddPlots[i][ODDDX] = new TH1F(hname,"DX match for channel; Cluster #DeltaX", 100, -0.250, 0.25);
+   }
+   
    int njump = 10000;   
    if(nentries > 100000) njump = 50000;
    Long64_t nbytes = 0, nb = 0;
@@ -340,8 +384,8 @@ void SummaryAnalysis::Loop()
       nb = fChain->GetEntry(jentry);   nbytes += nb;
       if(jentry%njump==0) cout << "====> At entry = " << jentry << endl;
 
-      //Only consider events with 1 track
-      if(n_tp3_tracks > 1) continue;
+      //Only consider events with 1 track and 10 or less clusters
+      if(n_tp3_tracks > 1 || clusterNumberPerEvent > 10) continue;
 
       //------------- Loop over TPIX tracks in event ---------------//
       //------------------------------------------------------------//
@@ -356,6 +400,7 @@ void SummaryAnalysis::Loop()
 
         hXTrk->Fill(x_trk);
         hYTrk->Fill(y_trk);
+        hXYTrk->Fill(x_trk,y_trk);
 
         double tx = 1000*vec_trk_tx->at(k);
         double ty = 1000*vec_trk_ty->at(k);
@@ -363,7 +408,8 @@ void SummaryAnalysis::Loop()
         
         //Fill the nominal strip track should hit
         hNomStrip->Fill(nomStrip);
-
+        hStripYTrk->Fill(nomStrip,y_trk);
+        
         // nom strip is a float. now we want the interstrip position
         // 0 = halfway between two strips
         // -0.5 lower strip, 0.5 higher strip
@@ -376,7 +422,7 @@ void SummaryAnalysis::Loop()
         //Keep a graph of where the strips are for visualization
         if ( fabs(dxNom) > 0.48 ) grCenters->SetPoint(grCenters->GetN(), x_trk, y_trk );
 
-        if( passFiducialCut( 2,  x_trk, y_trk, dxNom, nomStrip, yMax )  )
+        if( passFiducialCut( 4,  x_trk, y_trk, dxNom, nomStrip, yMax )  )
           grStartBondPads->SetPoint( grStartBondPads->GetN(), x_trk, y_trk);
 
         // Exclude found dead regions
@@ -389,6 +435,8 @@ void SummaryAnalysis::Loop()
 
         //Bad strip cut
         int idetStrip = detStrip + 0.5;
+        
+        
         if(idetStrip>=1 && idetStrip<=nChan-2 && (badStrips[idetStrip]==0 || badStrips[idetStrip-1]==0 || badStrips[idetStrip+1]==0))
           continue;
 
@@ -399,7 +447,7 @@ void SummaryAnalysis::Loop()
         bool inTightFiducialY = false;
         if(x_trk>xMin && x_trk<xMax ) inFiducialX = true;          
         if(y_trk>yMin && y_trk<yMax + 1.) inFiducialY = true;   
-        if(y_trk>yMin && y_trk<yMax) inTightFiducialY = true;
+        if(y_trk>yMin && y_trk<yMax - 0.02) inTightFiducialY = true;
         bool inFiducial = inFiducialX && inFiducialY && (x_trk<xLeftHole || x_trk>xRightHole) && inFiducialRegion(x_trk, y_trk);
         
         //Cuts on track angle
@@ -412,6 +460,8 @@ void SummaryAnalysis::Loop()
 
         //Things to fill for all good tracks, inclusive
         inclusivePlots[YALL]->Fill(y_trk);
+        if ( dtime < 1.0 )
+          vTightTiming[YALL]->Fill(y_trk);
         int stripIdx = closeStrip - firstStrip;
         if( stripIdx >= 0 && stripIdx < nStripsInBeam ) {
           stripPlots[ stripIdx ][CHYALL]->Fill(y_trk);
@@ -425,7 +475,13 @@ void SummaryAnalysis::Loop()
           inclusivePlots[INTERALL]->Fill(dxNom);
           inclusivePlots[XALL]->Fill(x_trk);
           inclusivePlots[NOMSTRIPALL]->Fill(nomStrip);
-        
+
+          if ( dtime < 1.0 ) {
+            vTightTiming[INTERALL]->Fill(dxNom);
+            vTightTiming[XALL]->Fill(x_trk);
+            vTightTiming[NOMSTRIPALL]->Fill(nomStrip);
+          }
+          
           if( fCMS != 0  ) {
             nearADC = polarity*fCMS->cmsData[closeStrip];
             twonearADC = nearADC;
@@ -447,12 +503,18 @@ void SummaryAnalysis::Loop()
             inclusivePlots[NEARADC2ALL]->Fill( twonearADC );
             inclusivePlots[NEARADC4ALL]->Fill( fournearADC );
             inclusivePlots[NEARADC100ALL]->Fill( sumADC );
+            if ( dtime < 1.0 ) {
+              vTightTiming[NEARADC1ALL]->Fill( nearADC );
+              vTightTiming[NEARADC2ALL]->Fill( twonearADC );
+              vTightTiming[NEARADC4ALL]->Fill( fournearADC );
+              vTightTiming[NEARADC100ALL]->Fill( sumADC );
+            }
           }
 
           //Noise variations
           for( unsigned int ni=0; ni < nNoiseScale; ++ni ) {
-            inclusivePlots[INTERALL + nreghists*(ni+1)]->Fill(dxNom);
             inclusivePlots[YALL + nreghists*(ni+1)]->Fill(y_trk);
+            inclusivePlots[INTERALL + nreghists*(ni+1)]->Fill(dxNom);
             inclusivePlots[XALL + nreghists*(ni+1)]->Fill(x_trk);
             inclusivePlots[NOMSTRIPALL + nreghists*(ni+1)]->Fill(nomStrip);
             if(fCMS) {
@@ -460,6 +522,18 @@ void SummaryAnalysis::Loop()
               inclusivePlots[NEARADC2ALL + nreghists*(ni+1)]->Fill( twonearADC );
               inclusivePlots[NEARADC4ALL + nreghists*(ni+1)]->Fill( fournearADC );
               inclusivePlots[NEARADC100ALL + nreghists*(ni+1)]->Fill( sumADC );
+            }
+            if ( dtime < 1.0 ) {
+              vTightTiming[YALL + nreghists*(ni+1)]->Fill(y_trk);
+              vTightTiming[INTERALL + nreghists*(ni+1)]->Fill(dxNom);
+              vTightTiming[XALL + nreghists*(ni+1)]->Fill(x_trk);
+              vTightTiming[NOMSTRIPALL + nreghists*(ni+1)]->Fill(nomStrip);
+              if(fCMS) {
+                vTightTiming[NEARADC1ALL + nreghists*(ni+1)]->Fill( nearADC );
+                vTightTiming[NEARADC2ALL + nreghists*(ni+1)]->Fill( twonearADC );
+                vTightTiming[NEARADC4ALL + nreghists*(ni+1)]->Fill( fournearADC );
+                vTightTiming[NEARADC100ALL + nreghists*(ni+1)]->Fill( sumADC );
+              }
             }
           }
         }
@@ -473,6 +547,8 @@ void SummaryAnalysis::Loop()
         std::vector<double> allDx;
         for(int j=0; j<nClusters; j++){
           if(clustersPosition[j] < 0.1) continue;
+
+          if(applyClusterCorrection) correctCluster(j);
 
           // Load the current cluster information
           double position = clustersPosition[j];
@@ -496,6 +572,10 @@ void SummaryAnalysis::Loop()
 
           inclusivePlots[CLADCALL]->Fill(charge);
           inclusivePlots[CLSNRALL]->Fill(float(charge)/seedNoise);
+          if ( dtime < 1.0 ) {
+            vTightTiming[CLADCALL]->Fill(charge);
+            vTightTiming[CLSNRALL]->Fill(float(charge)/seedNoise);
+          }
           int clusterStripIdx = seedPosition - firstStrip;
           if ( clusterStripIdx >=0 && clusterStripIdx < nStripsInBeam ) {
             stripPlots[clusterStripIdx][CHADCALL]->Fill( charge );
@@ -509,8 +589,12 @@ void SummaryAnalysis::Loop()
           }
             
           for( unsigned int ni=0; ni < nNoiseScale; ++ni ) {
-            if(foundClusterWithScaledNoise( j, noiseScales[ni] ) )
+            if(foundClusterWithScaledNoise( j, noiseScales[ni] ) ) {
               inclusivePlots[CLADCALL + nreghists*(ni+1)]->Fill(charge);
+              if ( dtime < 1.0 ) {
+                vTightTiming[CLADCALL + nreghists*(ni+1)]->Fill(charge);
+              }
+            }
           }
 
 
@@ -540,7 +624,9 @@ void SummaryAnalysis::Loop()
           hYTrkMatch->Fill(y_trk);
           adcvdx->Fill( dxNom, clustersCharge[foundIdx] );
           sizevdx->Fill( dxNom, clustersSize[foundIdx] );
-
+          // fill only if not near a masked channel -- its neighbors only have 2 strip clusters with their other neighbor
+          if( badStrips[clustersSeedPosition[foundIdx]-1] && badStrips[clustersSeedPosition[foundIdx]+1] )
+            sizevstrip->Fill( clustersSeedPosition[foundIdx], clustersSize[foundIdx] );
           if (stripIdx >=0 && stripIdx < nStripsInBeam ) {
             stripPlots[stripIdx][CHYMATCH]->Fill( y_trk );
             stripPlots[stripIdx][CHADCMATCH]->Fill( clustersCharge[foundIdx] );
@@ -555,18 +641,38 @@ void SummaryAnalysis::Loop()
                 vNoiseScaleXray[ni]->SetPoint( vNoiseScaleXray[ni]->GetN(), x_trk, y_trk );
             }
           }
+
+          for (int j=0; j < nOddStrips; ++j ) {
+            if ( oddStrips[j] == clustersSeedPosition[foundIdx] ) {
+              oddPlots[j][ODDADC]->Fill( clustersCharge[foundIdx] );
+              oddPlots[j][ODDSIZE]->Fill( clustersSize[foundIdx] );
+              oddPlots[j][ODDASYMM]->Fill( clustersSeedCharge[foundIdx]/clustersCharge[foundIdx] );
+              oddPlots[j][ODDDX]->Fill( foundDx );
+              if( polarity*clustersCharge2StripLeft[foundIdx] > 2.5*noise[clustersSeedPosition[foundIdx]-2] )
+                oddPlots[j][ODDPARTNERS]->Fill(-2);
+              if( polarity*clustersCharge1StripLeft[foundIdx] > 2.5*noise[clustersSeedPosition[foundIdx]-1] )
+                oddPlots[j][ODDPARTNERS]->Fill(-1);
+              if( polarity*clustersCharge1StripRight[foundIdx] > 2.5*noise[clustersSeedPosition[foundIdx]+1] )
+                oddPlots[j][ODDPARTNERS]->Fill(1);
+              if( polarity*clustersCharge2StripRight[foundIdx] > 2.5*noise[clustersSeedPosition[foundIdx]+2] )
+                oddPlots[j][ODDPARTNERS]->Fill(2);
+            }
+          }
         } else {
           //Fill all the x-ray plots if we don't find it at all
           if (inTightFiducialY) {
             grMissed->SetPoint( grMissed->GetN(), x_trk, y_trk );
+            grMissedStrips->SetPoint( grMissedStrips->GetN(), nomStrip, y_trk );
             for(size_t ni=0; ni < nNoiseScale; ++ni ) {
               vNoiseScaleXray[ni]->SetPoint( vNoiseScaleXray[ni]->GetN(), x_trk, y_trk );
             }
           }
         }
 
-        fillMatchMiss( inclusivePlots, nreghists, foundHit, foundIdx, x_trk, y_trk, nomStrip, dxNom, allDx, nearADC,  twonearADC,  fournearADC,  sumADC);
-
+        fillMatchMiss( inclusivePlots, nreghists, foundHit, foundIdx, x_trk, y_trk, inTightFiducialY, nomStrip, dxNom, allDx, nearADC,  twonearADC,  fournearADC,  sumADC);
+        if ( dtime < 1.0 ) {
+          fillMatchMiss( vTightTiming, nreghists, foundHit, foundIdx, x_trk, y_trk, inTightFiducialY, nomStrip, dxNom, allDx, nearADC,  twonearADC,  fournearADC,  sumADC);
+        }
         for(unsigned int ri = 0; ri< nRegions; ++ri ) {
           if(! passFiducialCut( ri, x_trk, y_trk, dxNom, nomStrip, yMax ) ) continue;
 
@@ -598,7 +704,7 @@ void SummaryAnalysis::Loop()
           }
 
 
-          fillMatchMiss( vRegionPlots[ri], nreghists, foundHit, foundIdx, x_trk, y_trk, nomStrip, dxNom,  allDx, nearADC,  twonearADC,  fournearADC,  sumADC);
+          fillMatchMiss( vRegionPlots[ri], nreghists, foundHit, foundIdx, x_trk, y_trk, true, nomStrip, dxNom,  allDx, nearADC,  twonearADC,  fournearADC,  sumADC);
 
 	} //loop over regions
 
@@ -614,8 +720,11 @@ void SummaryAnalysis::Loop()
 
 
 void SummaryAnalysis::writeHistos() {
+  fout->Write();
 
+  //now outHistos is really all the graphs which don't get a directory by default
   fout->cd();
+  hWidthNoise->Write("noise");
   for ( size_t i=0; i<outHistos.size(); ++i ) {
     outHistos[i]->Write();
   }
@@ -633,7 +742,7 @@ bool SummaryAnalysis::foundClusterWithScaledNoise( size_t idx, double nScale) {
 
 }
 
-void SummaryAnalysis::fillMatchMiss( const std::vector<TH1*> & vh, unsigned int nhists, bool foundHit, int foundIdx, double x_trk, double y_trk, double nomStrip, double dxNom, const std::vector<double> & allDx, double nearADC, double twonearADC, double fournearADC, double sumADC) {
+void SummaryAnalysis::fillMatchMiss( const std::vector<TH1*> & vh, unsigned int nhists, bool foundHit, int foundIdx, double x_trk, double y_trk, bool tightFidY, double nomStrip, double dxNom, const std::vector<double> & allDx, double nearADC, double twonearADC, double fournearADC, double sumADC) {
 
   //Fill the matching histograms now
   if(foundHit) {
@@ -644,7 +753,7 @@ void SummaryAnalysis::fillMatchMiss( const std::vector<TH1*> & vh, unsigned int 
     for(size_t ci=0; ci<allDx.size(); ++ci)
       vh[DXMATCH]->Fill( allDx[ci]);
 
-    if( y_trk < yMax ) {
+    if( tightFidY ) {
       vh[INTERMATCH]->Fill(dxNom);
       vh[XMATCH]->Fill(x_trk);
       vh[NOMSTRIPMATCH]->Fill(nomStrip);

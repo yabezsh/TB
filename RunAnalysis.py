@@ -183,7 +183,7 @@ def RunAnalysis(board,PA,DUTRun,mode,evts,mask,onlyPlots) :
             print '>', command
             subprocess.call(command,shell=True,cwd='.')
             
-            command = "bsub -q 8nh -M 10240 clusterRun_"+filenameNoPathPhys.split('-')[3]+".sh"
+            command = "bsub -q 8nh clusterRun_"+filenameNoPathPhys.split('-')[3]+".sh"
             print command
             subprocess.call(command,shell=True)
             

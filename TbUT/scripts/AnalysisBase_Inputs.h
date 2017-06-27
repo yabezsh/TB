@@ -90,4 +90,4 @@ const double k_DeadStrip 				= 0.12;
 const double m_minDistFromHole = 0.05;
 const bool removeTracksInHoleDef = false;
 
-const bool applyClusterCorrection = true;
+const bool applyClusterCorrection = false;

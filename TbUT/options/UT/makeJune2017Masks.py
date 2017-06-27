@@ -91,7 +91,7 @@ with open("MambaMasks_N_8.dat","w") as f:
     for i in range(137):
         f.write("0\n")
     for i in range(137,256):
-        if i==221 or i==255:
+        if i==230 or i==232:
             f.write("0\n")
         else:
             f.write("1\n")
@@ -151,3 +151,11 @@ with open("MambaMasks_N_6_mini2.dat","w") as f:
     for i in range(454,512):
         f.write("0\n")
 
+#N_3_mini7 -- 128-191, 132-191 good
+with open("MambaMasks_N_3_mini7.dat","w") as f:
+    for i in range(132):
+        f.write("0\n")
+    for i in range(132,192):
+        f.write("1\n")
+    for i in range(192,512):
+        f.write("0\n")

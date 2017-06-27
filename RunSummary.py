@@ -180,7 +180,7 @@ def RunAnalysis(board,PA,DUTRun,mode,evts,mask) :
             print '>', command
             subprocess.call(command,shell=True,cwd='.')
             
-            command = "bsub -q 8nh summaryRun_"+filenameNoPathPhys.split('-')[3]+".sh"
+            command = "bsub -q 1nh summaryRun_"+filenameNoPathPhys.split('-')[3]+".sh"
             print command
             subprocess.call(command,shell=True)
             

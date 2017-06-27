@@ -691,14 +691,14 @@ void ClusterWithTrackAna::Loop()
    TH1F* hTrkY = new TH1F("hTrkY","Y position of track [mm],",100,-6,6);
 
    // ---------------------------------------
-   TH1F* h12dn = new TH1F("h12dn","X position of track",200,-10.0,10.0); h12dn->Sumw2();
-   TH1F* h12en = new TH1F("h12en","X position of track",200,-10.0,10.0);h12en->Sumw2();
-   TH1F* h12fn = new TH1F("h12fn","X position of track",200,-10.0,10.0);h12fn->Sumw2();
-   TH1F* h12gn = new TH1F("h12gn","X position of track",200,-10.0,10.0);h12gn->Sumw2();
-   TH1F* h12dd = new TH1F("h12dd","X position of track",200,-10.0,10.0);h12dd->Sumw2();
-   TH1F* h12ed = new TH1F("h12ed","X position of track",200,-10.0,10.0);h12ed->Sumw2();
-   TH1F* h12fd = new TH1F("h12fd","X position of track",200,-10.0,10.0);h12fd->Sumw2();
-   TH1F* h12gd = new TH1F("h12gd","X position of track",200,-10.0,10.0);h12gd->Sumw2();
+   TH1F* h12dn = new TH1F("h12dn","X position of track",100, -25.0*stripPitch, 25.0*stripPitch); h12dn->Sumw2();
+   TH1F* h12en = new TH1F("h12en","X position of track",100, -25.0*stripPitch, 25.0*stripPitch);h12en->Sumw2();
+   TH1F* h12fn = new TH1F("h12fn","X position of track",100, -25.0*stripPitch, 25.0*stripPitch);h12fn->Sumw2();
+   TH1F* h12gn = new TH1F("h12gn","X position of track",100, -25.0*stripPitch, 25.0*stripPitch);h12gn->Sumw2();
+   TH1F* h12dd = new TH1F("h12dd","X position of track",100, -25.0*stripPitch, 25.0*stripPitch);h12dd->Sumw2();
+   TH1F* h12ed = new TH1F("h12ed","X position of track",100, -25.0*stripPitch, 25.0*stripPitch);h12ed->Sumw2();
+   TH1F* h12fd = new TH1F("h12fd","X position of track",100, -25.0*stripPitch, 25.0*stripPitch);h12fd->Sumw2();
+   TH1F* h12gd = new TH1F("h12gd","X position of track",100, -25.0*stripPitch, 25.0*stripPitch);h12gd->Sumw2();
 
    TH1F* h12hn = new TH1F("h12hn","X position of track",50,-0.5,0.5);h12hn->Sumw2();
    TH1F* h12in = new TH1F("h12in","X position of track",50,-0.5,0.5);h12in->Sumw2();

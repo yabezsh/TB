@@ -39,7 +39,7 @@ AnalysisBase::AnalysisBase(TTree *tree) : fChain(0)
   nDeadRegion = 0;
 
   yInt1[0] = 2.8; yInt1[1] = 3.4;
-  yInt2[0] = 3.4; yInt2[1] = 4.1;
+  yInt2[0] = 3.4; yInt2[1] = 5.0;
   yInt3[0] = 1.0; yInt3[1] = 2.3;   
 
   if(m_board == "A8"){
@@ -537,7 +537,8 @@ void AnalysisBase::findBeamRegionAndAlign(int iPass){
   //hnn->Draw();
 
   if(iPass==4) {
-    findCutoutRegion(hcf);
+    if(removeTracksInHole)
+      findCutoutRegion(hcf);
   }else {  
 
     float xmin=0,xmax=0,ymin=0,ymax=0,txmin=0,txmax=0,tymin=0,tymax=0;
@@ -880,15 +881,6 @@ void AnalysisBase::PrepareDUT(){
 
    //return;
    
-   if(yInt2[1] > yMax){
-     yInt1[0] = yMax-0.8; yInt1[1] = yMax-0.4;
-     yInt2[0] = yMax-0.4; yInt2[1] = yMax;
-     yInt3[0] = yMin; yInt3[1] = yMax-0.8;
-   }
-   cout << "Y Region Definitions:" << endl;
-   cout << " ===> Region 1: " << yInt1[0] << " -- " << yInt1[1] << " mm" << endl;
-   cout << " ===> Region 2: " << yInt2[0] << " -- " << yInt2[1] << " mm" << endl;
-   cout << " ===> Region 3: " << yInt3[0] << " -- " << yInt3[1] << " mm" << endl;
    
    //return;
    // Correct for gaps between Beetle chips
@@ -898,6 +890,17 @@ void AnalysisBase::PrepareDUT(){
    findBeamRegionAndAlign(4);
    findBeamRegionAndAlign(5);
 
+   if(yInt2[1] > yMax){
+     yInt1[0] = yMax-1.3; yInt1[1] = yMax-0.8;
+     yInt2[0] = yMax-0.5; yInt2[1] = yMax;
+     yInt3[0] = yMin; yInt3[1] = yMax-0.8;
+   }
+   cout << "Y Region Definitions:" << endl;
+   cout << " ===> Region 1: " << yInt1[0] << " -- " << yInt1[1] << " mm" << endl;
+   cout << " ===> Region 2: " << yInt2[0] << " -- " << yInt2[1] << " mm" << endl;
+   cout << " ===> Region 3: " << yInt3[0] << " -- " << yInt3[1] << " mm" << endl;
+
+   
    findChipBoundary();
    cout << "====> Hole position: " << xLeftHole << "  " << xRightHole << endl;
    //return;
@@ -1096,7 +1099,7 @@ bool AnalysisBase::isInCutoutRegion(double xtrk, double ytrk){
 
 double AnalysisBase::DistToCutoutRegion(double xtrk, double ytrk){  
   // Some protections here..
-  if(holeQuadPar[0]==0 || holeQuadPar[1]==0 || holeQuadPar[2]==0) return 999.0;
+  if(!removeTracksInHole || holeQuadPar[0]==0 || holeQuadPar[1]==0 || holeQuadPar[2]==0) return 999.0;
   // Ok, looks like we mean to really remove these tracks
   double yhole = holeQuadPar[0]+holeQuadPar[1]*xtrk+holeQuadPar[2]*xtrk*xtrk;
   double a = 2.0*holeQuadPar[2]*xtrk+holeQuadPar[1];

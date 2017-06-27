@@ -80,7 +80,7 @@ else:
 
 #outputPath = "/eos/lhcb/testbeam/ut/TemporaryData/May2016/DQMTest"
 #outputPath = "/eos/lhcb/testbeam/ut/TemporaryData/October2016/DQMTest"
-outputPath = "/eos/lhcb/testbeam/ut/TemporaryData/June2017/DQMTemporary"
+outputPath = "/eos/lhcb/testbeam/ut/TemporaryData/June2017/DQMTest"
 
 # subprocess.call('source /afs/cern.ch/project/eos/installation/lhcb/etc/setup.sh',shell=True)
 # subprocess.call('/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select -b fuse mount $KEPLERROOT/eos_'+str(sigFile.split('-')[3]),shell=True)
@@ -140,7 +140,7 @@ else:
 shFile.write('gaudirun.py $KEPLERROOT/../TbUT/options/TbUTPedestal_'+os.environ["RUNNUMBER"]+'.py\n')
 shFile.write('echo did pedestal\n')
 #shFile.write('gaudirun.py $KEPLERROOT/../TbUT/options/TbUTRun_'+os.environ["RUNNUMBER"]+'.py\n')
-shFile.write('valgrind --tool=massif --pages-as-heap=yes --massif-out-file=/afs/cern.ch/user/m/mrudolph/massif.out gaudirun.py $KEPLERROOT/../TbUT/options/TbUTRun_'+os.environ["RUNNUMBER"]+'.py\n')
+shFile.write('gaudirun.py $KEPLERROOT/../TbUT/options/TbUTRun_'+os.environ["RUNNUMBER"]+'.py\n')
 shFile.write('echo did run 1\n')
 shFile.write('gaudirun.py $KEPLERROOT/../TbUT/options/TbUTRun_'+os.environ["RUNNUMBER"]+'.py\n')
 shFile.write('echo did run 2\n')
