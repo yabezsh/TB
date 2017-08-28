@@ -73,14 +73,14 @@ def RunAnalysis(board,PA,DUTRun,mode,evts,mask,onlyPlots) :
     print '===================='
     
     # Path to input data.
-    if (testbeam=='October2016' or testbeam=='June2017'):
+    if (testbeam=='October2016' or testbeam=='June2017' or testbeam=='August2017'):
 	pathToInput = MAMBA+board+'/'
     else:
 	pathToInput = MAMBA+board+'/'+PA+'/'
     print 'Path to input: ', pathToInput
 
     # CSV file to be used as input.
-    if (testbeam=='October2016' or testbeam=='June2017'):
+    if (testbeam=='October2016' or testbeam=='June2017' or testbeam=='August2017'):
 	if kazu==1:
     		logbook = 'Logbook/RunLog'+testbeam+'Board'+board+'KAZU.csv'
 	else:
@@ -142,7 +142,7 @@ def RunAnalysis(board,PA,DUTRun,mode,evts,mask,onlyPlots) :
            
         # Assign filenames for physics and pedestal runs.
         for filename in os.listdir(pathToInput) :
-	  if (testbeam=='October2016' or testbeam=='June2017'):
+	  if (testbeam=='October2016' or testbeam=='June2017' or testbeam=='August2017'):
 		if (fnmatch.fnmatch(filename,'*-'+PA+'-'+board+'-'+str(DUTRun)+'-*.dat')) :
         	        print 'Filename for physics run:', filename
                 	filenameNoPathPhys = filename
@@ -160,7 +160,7 @@ def RunAnalysis(board,PA,DUTRun,mode,evts,mask,onlyPlots) :
         if (mode == 'batch') :
             # Use qsub
             #command = "qsub -l cput=" + cput + " -v board="+board+",PA="+PA+",DUTRun="+str(DUTRun)+",ped="+str(ped)+",filenameNoPathPhys="+filenameNoPathPhys+    ",filenameNoPathPed="+filenameNoPathPed+" SubmitAnalysis.pbs" # No spaces after ','.
-	    if (testbeam=='October2016' or testbeam=='June2017'):
+	    if (testbeam=='October2016' or testbeam=='June2017' or testbeam=='August2017'):
             	if onlyPlots:
 			line_run = "python "+kepler+"/../Analysis_onlyPlots.py -b "+board+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed + " -l "+str(sector) + " -y "+str(rotation) + " -v "+str(bias)
 	    	else:
@@ -183,12 +183,12 @@ def RunAnalysis(board,PA,DUTRun,mode,evts,mask,onlyPlots) :
             print '>', command
             subprocess.call(command,shell=True,cwd='.')
             
-            command = "bsub -q 8nh clusterRun_"+filenameNoPathPhys.split('-')[3]+".sh"
+            command = "bsub -q 1nd clusterRun_"+filenameNoPathPhys.split('-')[3]+".sh"
             print command
             subprocess.call(command,shell=True)
             
         elif (mode == 'local') :
-	 if (testbeam=='October2016' or testbeam=='June2017'):	  
+	 if (testbeam=='October2016' or testbeam=='June2017' or testbeam=='August2017'):	  
             # Use python directly 
 	    if onlyPlots:            
 		command = "python Analysis_onlyPlots.py -b "+board+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed + " -l "+str(sector) + " -y "+str(rotation) + " -v "+str(bias)

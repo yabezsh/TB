@@ -59,8 +59,8 @@ if __name__=="__main__":
 #telescopePath = "/eos/lhcb/testbeam/ut/TemporaryData/May2016/TimePix/RootFiles"
 #telescopePath = "/eos/lhcb/testbeam/ut/TemporaryData/October2016/TelescopeFiles/RootFiles"
 #telescopePath = "/eos/lhcb/testbeam/ut/TelescopeData/Oct2016/RootFiles"
-telescopePath = "/eos/lhcb/testbeam/ut/TelescopeData/June2017/RootFiles"
-
+#telescopePath = "/eos/lhcb/testbeam/ut/TelescopeData/June2017/RootFiles"
+telescopePath = "/eos/lhcb/testbeam/ut/TelescopeData/August2017/RootFiles"
 
 if boardName=="M1" or boardName=="M3" or boardName=="M4":
 	inputPathPedestal = "/eos/lhcb/testbeam/ut/TemporaryData/May2016/MAMBA"
@@ -71,16 +71,19 @@ elif boardName=="F1" or boardName=="F3":
 elif boardName=='A10_FanIn' or boardName=='A13_FanIn' or boardName=='A12_FanIn' or boardName=='A6_Lower' or boardName=='A3_Lower' or boardName=='A5_Lower' or boardName=='13_HM1' or boardName=='13_HM2' or boardName=='14_HM1' or boardName=='17_HM2' or boardName=='18_HM1' or boardName=='18_HM2':
 	inputPathPedestal = "/eos/lhcb/testbeam/ut/TemporaryData/October2016/MAMBA"
         inputPathSignal = "/eos/lhcb/testbeam/ut/TemporaryData/October2016/MAMBA" 
-else:
+elif boardName in ['N_8','N_9', 'N_4_mini6', 'N_4_mini1', 'N_6_mini1', 'N_6_mini6', 'N_3_mini6', 'N_3_mini1', 'N_6_mini7', 'N_6_mini2', 'N_7_mini2', 'N_4_mini7', 'N_3_mini7', 'N_3_mini2',]:
 	inputPathPedestal = "/eos/lhcb/testbeam/ut/TemporaryData/June2017/MAMBA"
         inputPathSignal = "/eos/lhcb/testbeam/ut/TemporaryData/June2017/MAMBA" 
-
+else:
+	inputPathPedestal = "/eos/lhcb/testbeam/ut/TemporaryData/August2017/MAMBA"
+        inputPathSignal = "/eos/lhcb/testbeam/ut/TemporaryData/August2017/MAMBA" 
 #else:
 #	sys.exit("Input files location is definded for a testbeam in the May 2016. Please go to Analysis.py and change inputPathPedestal and inputPathSignal")
 
 #outputPath = "/eos/lhcb/testbeam/ut/TemporaryData/May2016/DQMTest"
 #outputPath = "/eos/lhcb/testbeam/ut/TemporaryData/October2016/DQMTest"
-outputPath = "/eos/lhcb/testbeam/ut/TemporaryData/June2017/DQMTest"
+#outputPath = "/eos/lhcb/testbeam/ut/TemporaryData/June2017/DQMTest"
+outputPath = "/eos/lhcb/testbeam/ut/TemporaryData/August2017/DQMTemporary"
 
 # subprocess.call('source /afs/cern.ch/project/eos/installation/lhcb/etc/setup.sh',shell=True)
 # subprocess.call('/afs/cern.ch/project/eos/installation/0.3.15/bin/eos.select -b fuse mount $KEPLERROOT/eos_'+str(sigFile.split('-')[3]),shell=True)

@@ -73,14 +73,14 @@ def RunAnalysis(board,PA,DUTRun,mode,evts,mask) :
     print '===================='
     
     # Path to input data.
-    if (testbeam=='October2016' or testbeam=='June2017'):
+    if (testbeam=='October2016' or testbeam=='June2017' or testbeam=='August2017'):
 	pathToInput = MAMBA+board+'/'
     else:
 	pathToInput = MAMBA+board+'/'+PA+'/'
     print 'Path to input: ', pathToInput
 
     # CSV file to be used as input.
-    if (testbeam=='October2016' or testbeam=='June2017'):
+    if (testbeam=='October2016' or testbeam=='June2017' or testbeam=='August2017'):
 	if kazu==1:
     		logbook = 'Logbook/RunLog'+testbeam+'Board'+board+'KAZU.csv'
 	else:
@@ -142,7 +142,7 @@ def RunAnalysis(board,PA,DUTRun,mode,evts,mask) :
            
         # Assign filenames for physics and pedestal runs.
         for filename in os.listdir(pathToInput) :
-	  if (testbeam=='October2016' or testbeam=='June2017'):
+	  if (testbeam=='October2016' or testbeam=='June2017' or testbeam=='August2017'):
 		if (fnmatch.fnmatch(filename,'*-'+PA+'-'+board+'-'+str(DUTRun)+'-*.dat')) :
         	        print 'Filename for physics run:', filename
                 	filenameNoPathPhys = filename
@@ -160,7 +160,7 @@ def RunAnalysis(board,PA,DUTRun,mode,evts,mask) :
         if (mode == 'batch') :
             # Use qsub
             #command = "qsub -l cput=" + cput + " -v board="+board+",PA="+PA+",DUTRun="+str(DUTRun)+",ped="+str(ped)+",filenameNoPathPhys="+filenameNoPathPhys+    ",filenameNoPathPed="+filenameNoPathPed+" SubmitAnalysis.pbs" # No spaces after ','.
-	    if (testbeam=='October2016' or testbeam=='June2017'):
+	    if (testbeam=='October2016' or testbeam=='June2017' or testbeam=='August2017'):
 			line_run = "python "+kepler+"/../Analysis_summary.py -b "+board+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed + " -l "+str(sector) + " -y "+str(rotation) + " -v "+str(bias)
 
 	    else:
@@ -185,7 +185,7 @@ def RunAnalysis(board,PA,DUTRun,mode,evts,mask) :
             subprocess.call(command,shell=True)
             
         elif (mode == 'local') :
-	 if (testbeam=='October2016' or testbeam=='June2017'):	  
+	 if (testbeam=='October2016' or testbeam=='June2017' or testbeam=='August2017'):	  
             # Use python directly 
             command = "python Analysis_summary.py -b "+board+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed + " -l "+str(sector) + " -y "+str(rotation) + " -v "+str(bias)
 	    print command

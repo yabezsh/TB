@@ -1,0 +1,60 @@
+BOARD TTV2_07 -- 500% nominal fluence: P-type mini - new FanIn design,,,,,,Hybrid,TTV2-07,Sensor,4 mini 2,,,,,
+Board TTV2_07,FanUp,,DUT Run #,Kepler Run #,Stage,Stage,Stage,Bias,Current,Temp,RH,Online Flag,Offline Flag,Note
+Sector,Purpose,Bias,Run #,Run #,X (mm),Y (mm),Rot (deg),(V),(uA),( C ),(%),(Good/Bad),(Good/Bad),
+1,Bias,Top,136,24126,74,3,0,-100,113,5.7,2,Good,Bad,"actually bad--Center stage rotation not done correctly--angle at 0, no offset"
+1,Pedestal,Top,137,-,74,3,0,-100,113,5.7,2,Good,Bad,"actually bad--Center stage rotation not done correctly--angle at 0, no offset"
+1,Bias,Top,138,24127,74,3,0,-150,142,5.7,2,Good,Bad,"actually bad--Center stage rotation not done correctly--angle at 0, no offset"
+1,Pedestal,Top,139,-,74,3,0,-150,142,5.7,2,Good,Bad,"actually bad--Center stage rotation not done correctly--angle at 0, no offset"
+1,Bias,Top,140,24128,74,3,0,-200,168,5.7,2,Good,Bad,"bias incorrdectly labeled in MAMBA GUI as -150; actually bad--Center stage rotation not done correctly--angle at 0, no offset"
+1,Pedestal,Top,141,,74,3,0,-200,168,5.7,2,Good,Bad,"actually bad--Center stage rotation not done correctly--angle at 0, no offset"
+1,Bias,Top,142,24129,74,3,0,-250,183,5.7,2,Good,Bad,"actually bad--Center stage rotation not done correctly--angle at 0, no offset"
+1,Pedestal,Top,143,,74,3,0,-250,183,5.7,2,Good,Bad,"actually bad--Center stage rotation not done correctly--angle at 0, no offset"
+1,Bias,Top,144,24130,74,3,0,-270,187,5.7,2,Good,Bad,"actually bad--Center stage rotation not done correctly--angle at 0, no offset"
+1,Pedestal,Top,145,,74,3,0,-270,187,5.7,2,Good,Bad,"actually bad--Center stage rotation not done correctly--angle at 0, no offset"
+1,Bias,Top,146,24131,74,3,0,-100,-113,5.7,2,Good,,
+1,Pedestal,Top,147,,74,3,0,-100,-113,5.7,2,Good,,
+1,Bias,Top,148,24132,74,3,0,-150,-144,5.7,2,Good,,
+1,Pedestal,Top,149,,74,3,0,-150,-144,5.7,2,Good,,
+1,Bias,Top,150,24133,74,3,0,-200,-168,5.7,2,Good,,
+1,Pedestal,Top,151,,74,3,0,-200,-168,5.7,2,Good,,
+1,Bias,Top,152,24134,74,3,0,-250,-182,5.7,2,Good,,
+1,Pedestal,Top,153,,74,3,0,-250,-182,5.7,2,Good,,
+1,Bias,Top,154,24135,74,3,0,-270,-188,5.7,2,Good,,
+1,Pedestal,Top,155,,74,3,0,-270,-188,5.7,2,Good,,
+1,Bias,Top,156,24136,74,3,0,-300,-193,5.7,2,Good,,
+1,Pedestal,Top,157,,74,3,0,-300,-193,5.7,2,Good,,
+1,Bias,Top,158,24137,74,3,0,-400,-208,5.8,2,Good,,Current was actually rising when run started
+1,Pedestal,Top,159,,74,3,0,-400,-216,5.8,2,Good,,
+1,Bias,Top,160,24138,74,3,0,-500,-241,5.8,2,Good,,
+1,Pedestal,Top,161,,74,3,0,-500,-242,5.8,2,Good,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+2,Bias,Top,167,24143,69,3,0,-100,-113,5.7,2,Good,,
+2,Pedestal,Top,168,,69,3,0,-100,-113,5.7,2,Good,,
+2,Bias,Top,169,24144,69,3,0,-150,-144,5.7,2,Good,,
+2,Pedestal,Top,170,,69,3,0,-150,-144,5.7,2,Good,,
+2,Bias,Top,171,24145,69,3,0,-200,-169,5.8,2,Good,,
+2,Pedestal,Top,172,,69,3,0,-200,-169,5.8,2,Good,,
+2,Bias,Top,173,24146,69,3,0,-250,-184,5.8,2,Good,,
+2,Pedestal,Top,174,,69,3,0,-250,-184,5.8,2,Good,,
+2,Bias,Top,175,24147,69,3,0,-270,-189,5.8,2,Good,,
+2,Pedestal,Top,176,,69,3,0,-270,-189,5.8,2,Good,,
+2,Bias,Top,177,24148,69,3,0,-300,-195,5.8,2,Good,,
+2,Pedestal,Top,178,,69,3,0,-300,-195,5.8,2,Good,,
+2,Bias,Top,179,24149,69,3,0,-400,-215,5.8,2,Good,,First telecope plane seemed to have more data collected than the others
+2,Pedestal,Top,180,,69,3,0,-400,-215,5.8,2,Good,,
+2,Bias,Top,181,24150,69,3,0,-500,-236,5.8,2,Good,,First telecope plane seemed to have more data collected than the others
+2,Pedestal,Top,182,,69,3,0,-500,-236,5.8,2,Good,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+1,Pedestal,Top,162,,74,3,-5,-300,-206,5.8,2,Good,,
+1,Angle,Top,163,24139,74,3,-5,-300,-200,5.8,2,Good,,
+1,Angle,Top,164,24140,74,3,5,-300,-197,5.8,2,Good,Bad,Too few triggers in the Timepix
+1,Angle,Top,165,24141,74,3,5,-300,-195,5.8,2,Good,,"MAMBA GUI froze when I clicked ""no"" at the end of the run"
+1,Angle,Top,166,24142,74,3,15,-300,-195,5.7,2,Good,,
+,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,
+2,Pedestal,Top,183,,69,3,-5,-300,-202,5.9,2,Good,,
+2,Angle,Top,184,24151,69,3,-5,-300,-202,5.9,2,Good,,
+2,Angle,Top,185,24152,69,3,5,-300,-197,5.9,2,Good,,
+2,Angle,Top,186,24153,69,3,15,-300,-197,5.9,2,Good,,

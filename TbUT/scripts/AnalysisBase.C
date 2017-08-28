@@ -106,6 +106,11 @@ AnalysisBase::AnalysisBase(TTree *tree) : fChain(0)
     z_DUT = 290.13;
     polarity = 1.0;
     stripPitch = 0.1875;
+  } else if (m_board.Contains("P_")) {
+    z_DUT = 310.;
+    polarity = -1.0;
+    stripPitch = 0.1875;
+    
   } else if(  m_board.Contains("D")) {
     stripPitch = 0.095;
     channelOffset = 512.0;

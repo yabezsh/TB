@@ -17,12 +17,12 @@ namespace {
   // A3 : first channel = 156, y=3.85
   // 
   enum {
-    N8, N9, N3M1, N3M6, N4M1, N4M6, N6M1, N6M6, N3M2, N3M7, N7M2, N4M7, N6M2, N6M7, NSENSOR };
-  const TString boardNames[NSENSOR] = { "N_8", "N_9", "N_3_mini1", "N_3_mini6", "N_4_mini1", "N_4_mini6",
+    N8, N9, P1, N3M1, N3M6, N4M1, N4M6, N6M1, N6M6, N3M2, N3M7, N7M2, N4M7, N6M2, N6M7, NSENSOR };
+  const TString boardNames[NSENSOR] = { "N_8", "N_9", "P_1", "N_3_mini1", "N_3_mini6", "N_4_mini1", "N_4_mini6",
                                         "N_6_mini1", "N_6_mini6", "N_3_mini2", "N_3_mini7", 
                                         "N_7_mini2", "N_4_mini7", "N_6_mini2", "N_6_mini7" };
   //For all sensors, the last channel bonded is also the last on the sensor.
-  double lastChan[NSENSOR] = { 469, 466, 486, 230, 478, 224, 500,243, 511, 191, 447, 193, 453, 200};
+  double lastChan[NSENSOR] = { 469, 466, 383, 486, 230, 478, 224, 500,243, 511, 191, 447, 193, 453, 200};
   
   int getBoardIndex(const TString & boardname ){
     // TObjString * os = (TObjString*) boardname.Tokenize("_")->At(0);
@@ -256,8 +256,8 @@ void SummaryAnalysis::Loop()
    inclusivePlots[DXMISS] = new TH1F("dxMiss","#Delta x (cluster-track) when there is no match;#Deltax [mm]",798,-7.581, 7.581 );;
    inclusivePlots[INTERALL] = new TH1F("interAll","Distance to strip center divided by pitch; #Delta x/P",100,-0.5,0.5);
    inclusivePlots[INTERMATCH] = new TH1F("interMatch","Distance to strip center divided by pitch; #Delta x/P",100,-0.5,0.5);;
-   inclusivePlots[YALL] = new TH1F("yAll","All track y; y [mm]",320, -4.0,4.0);
-   inclusivePlots[YMATCH] = new TH1F("yMatch","Matched track y; y [mm]",320,-4.0,4.0);
+   inclusivePlots[YALL] = new TH1F("yAll","All track y; y [mm]",360, -4.5,4.5);
+   inclusivePlots[YMATCH] = new TH1F("yMatch","Matched track y; y [mm]",360,-4.5,4.5);
    inclusivePlots[XALL] = new TH1F("xAll","All track x; x [mm]",100, -25.0*stripPitch, 25.0*stripPitch);
    inclusivePlots[XMATCH] = new TH1F("xMatch","Matched track x; x [mm]",100, -25.0*stripPitch, 25.0*stripPitch);
    inclusivePlots[NOMSTRIPALL] = new TH1F("stripAll","All trk strip; Channel #",1024, -0.25, 512-0.25);
@@ -552,10 +552,10 @@ void SummaryAnalysis::Loop()
 
           // Load the current cluster information
           double position = clustersPosition[j];
-          int charge = clustersCharge[j]; 
+          int charge = polarity*clustersCharge[j]; 
           int seedPosition = clustersSeedPosition[j];
           int size = clustersSize[j];
-          int seedCharge = clustersSeedCharge[j];
+          int seedCharge = polarity*clustersSeedCharge[j];
           int charge2StripLeft	= polarity*clustersCharge2StripLeft[j];
           int charge1StripLeft	= polarity*clustersCharge1StripLeft[j];
           int charge1StripRight	= polarity*clustersCharge1StripRight[j];
@@ -629,8 +629,8 @@ void SummaryAnalysis::Loop()
             sizevstrip->Fill( clustersSeedPosition[foundIdx], clustersSize[foundIdx] );
           if (stripIdx >=0 && stripIdx < nStripsInBeam ) {
             stripPlots[stripIdx][CHYMATCH]->Fill( y_trk );
-            stripPlots[stripIdx][CHADCMATCH]->Fill( clustersCharge[foundIdx] );
-            stripPlots[stripIdx][CHSNRMATCH]->Fill( float(clustersCharge[foundIdx])/noise[clustersSeedPosition[foundIdx]] );
+            stripPlots[stripIdx][CHADCMATCH]->Fill( polarity*clustersCharge[foundIdx] );
+            stripPlots[stripIdx][CHSNRMATCH]->Fill( polarity*float(clustersCharge[foundIdx])/noise[clustersSeedPosition[foundIdx]] );
           }
 
           if (inTightFiducialY) {
@@ -746,8 +746,8 @@ void SummaryAnalysis::fillMatchMiss( const std::vector<TH1*> & vh, unsigned int 
 
   //Fill the matching histograms now
   if(foundHit) {
-    vh[CLADCMATCH]->Fill(clustersCharge[foundIdx]);
-    vh[CLSNRMATCH]->Fill(float(clustersCharge[foundIdx])/noise[clustersSeedPosition[foundIdx]]);
+    vh[CLADCMATCH]->Fill(polarity*clustersCharge[foundIdx]);
+    vh[CLSNRMATCH]->Fill(polarity*float(clustersCharge[foundIdx])/noise[clustersSeedPosition[foundIdx]]);
     vh[YMATCH]->Fill(y_trk);
             
     for(size_t ci=0; ci<allDx.size(); ++ci)
@@ -776,7 +776,7 @@ void SummaryAnalysis::fillMatchMiss( const std::vector<TH1*> & vh, unsigned int 
 
       } else {
 
-        vh[CLADCMATCH + nhists*(ni+1)]->Fill(clustersCharge[foundIdx]);
+        vh[CLADCMATCH + nhists*(ni+1)]->Fill(polarity*clustersCharge[foundIdx]);
        
         //This plot is still broken until i have a good way of checking the dxlist for passing clusters
         for(size_t ci=0; ci<allDx.size(); ++ci)

@@ -14,14 +14,16 @@ import os
 # testbeam = 'May2016'
 #testbeam = 'LateMay2016'
 #testbeam = 'October2016'
-testbeam = 'June2017'
-testbeamList = ['May2016','LateMay2016','October2016','June2017']
+testbeam = 'August2017'
+testbeamList = ['May2016','LateMay2016','October2016','June2017','August2017']
 
 boardListDict = {}
 boardListDict['May2016'] = ['M1','M3','M4']
 boardListDict['LateMay2016'] = ['F1','F3']
 boardListDict['October2016'] = ['A10_FanIn','A13_FanIn','A12_FanIn','A6_Lower','A3_Lower','A5_Lower','13_HM1','13_HM2','14_HM1','17_HM2','18_HM1','18_HM2']
 boardListDict['June2017'] = ['N_8', 'N_9', 'N_4_mini6', 'N_4_mini1', 'N_6_mini1', 'N_6_mini6', 'N_3_mini6', 'N_3_mini1', 'N_6_mini7', 'N_6_mini2', 'N_7_mini2', 'N_4_mini7', 'N_3_mini7', 'N_3_mini2',]
+boardListDict['August2017'] = ['P_1','P_4','P_1_mini1','P_1_mini2','P_1_mini6','P_1_mini7','P_3_mini1','P_3_mini6','P_3_mini7','P_4_mini1','P_4_mini2','P_4_mini6','P_4_mini7']
+
 
 boardList = boardListDict[testbeam]
 PAList = ['FanIn','FanUp','TTV1_01','TTV1_02','TTV2_01','TTV2_02','TTV2_03','TTV2_06','TTV2_07','TTV2_08']
@@ -62,6 +64,19 @@ PADict['N_7_mini2'] = ['TTV2_07']
 PADict['N_4_mini7'] = ['TTV2_07']
 PADict['N_3_mini7'] = ['TTV2_03']
 PADict['N_3_mini2'] = ['TTV2_03']
+PADict['P_1'] = ['TTV2_01']
+PADict['P_4'] = ['TTV2_02']
+PADict['P_1_mini1'] = ['TTV2_08']
+PADict['P_1_mini2'] = ['TTV1_02']
+PADict['P_1_mini6'] = ['TTV1_01']
+PADict['P_1_mini7'] = ['TTV2_03']
+PADict['P_3_mini1'] = ['TTV2_08']
+PADict['P_3_mini6'] = ['TTV2_06']
+PADict['P_3_mini7'] = ['TTV2_06']
+PADict['P_4_mini1'] = ['TTV1_02']
+PADict['P_4_mini2'] = ['TTV2_07']
+PADict['P_4_mini6'] = ['TTV2_07']
+PADict['P_4_mini7'] = ['TTV1_01']
 
 # Type of sensor: p-in-n or n-in-p.
 typeDict = {}
@@ -96,6 +111,8 @@ typeDict['N_7_mini2'] = 'pn'
 typeDict['N_4_mini7'] = 'pn'
 typeDict['N_3_mini7'] = 'pn'
 typeDict['N_3_mini2'] = 'pn'
+for k in boardListDict['August2017']:
+    typeDict[k] = 'np'
 
 
 user = os.environ['USER']
