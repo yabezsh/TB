@@ -54,6 +54,7 @@ if __name__=="__main__":
 #telescopePath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/May2016/TimePix/RootFiles"
 #telescopePath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/October2016/TelescopeFiles/RootFiles"
 #telescopePath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TelescopeData/Oct2016/RootFiles"
+telescopePath = "/eos/lhcb/testbeam/ut/TelescopeData/June2017/RootFiles"
 telescopePath = "/eos/lhcb/testbeam/ut/TelescopeData/August2017/RootFiles"
 
 
@@ -61,7 +62,8 @@ telescopePath = "/eos/lhcb/testbeam/ut/TelescopeData/August2017/RootFiles"
 #outputPath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/May2016/DQMTest"
 #outputPath = "$KEPLERROOT/eos_"+str(sigFile.split('-')[3])+"/lhcb/testbeam/ut/TemporaryData/October2016/DQMTest"
 #outputPath = "/afs/cern.ch/work/m/mrudolph/public/testbeam/ut/TemporaryData/October2016/DQMTemporary"
-outputPath = "/eos/lhcb/testbeam/ut/TemporaryData/August2017/DQMTemporary"
+outputPath = "/eos/lhcb/testbeam/ut/TemporaryData/June2017/DQMTemporary"
+#outputPath = "/eos/lhcb/testbeam/ut/TemporaryData/August2017/DQMTemporary"
 #outputPath = "/afs/cern.ch/work/m/mrudolph/public/testbeam/August2017"
 
 

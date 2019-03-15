@@ -84,7 +84,7 @@ namespace {
     
     // PA regions take a bit more doing
     int boardIdx = getBoardIndex(m_board);
-    bool isMini = (boardIdx > 1);
+    bool isMini = (boardIdx > 2);
     double sensorStrip = nomStrip - lastChan[boardIdx]; // negative from right side of sensor
     if ( !isMini ) {
       sensorStrip += 511; //now starts from 0
@@ -329,6 +329,22 @@ void SummaryAnalysis::Loop()
      //outHistos.push_back( vRegionPlots[i][j] );
    }   
 
+   //Now make a version of the region plots for each defined region and noise scale combination
+   std::vector< std::vector<TH1*> > vRegionPlotsTightTiming(nRegions);
+   for (unsigned int i =0; i<nRegions; ++i ) {
+     //make an output directory
+     sprintf(hname,"TightTime_Region_%i",i);
+     TDirectory * newdir = fout->mkdir( hname );
+     newdir->cd();
+     vRegionPlotsTightTiming[i].resize( nreghists*(1 + nNoiseScale) );
+
+     for (unsigned int j=0; j<inclusivePlots.size(); ++j) {
+       sprintf(hname,"%s_reg%u", inclusivePlots[j]->GetName(), i );
+       vRegionPlotsTightTiming[i][ j ] = (TH1*) inclusivePlots[j]->Clone( hname );
+       //outHistos.push_back( vRegionPlotsTightTiming[i][j] );
+     }   
+   }
+   
    // Make the strip level plots for each channel in the beam location from iLo to iHi
    // these were found in PrepareDUT().  they are floats set to halway between two strips
    // For ADC and SNR *ALL* the strip is defined based on cluster seed strip
@@ -391,7 +407,8 @@ void SummaryAnalysis::Loop()
       //------------------------------------------------------------//
       for(int k=0; k<n_tp3_tracks; k++){
         if(dtime > trackTriggerTimeDiffCut) continue;
-
+        bool tightTime = (dtime < 1.0);
+        
         //Get the coordinates to use
         double x_trk = vec_trk_tx->at(k)*z_DUT+vec_trk_x->at(k);
         double y_trk = vec_trk_ty->at(k)*z_DUT+vec_trk_y->at(k);
@@ -460,7 +477,7 @@ void SummaryAnalysis::Loop()
 
         //Things to fill for all good tracks, inclusive
         inclusivePlots[YALL]->Fill(y_trk);
-        if ( dtime < 1.0 )
+        if ( tightTime )
           vTightTiming[YALL]->Fill(y_trk);
         int stripIdx = closeStrip - firstStrip;
         if( stripIdx >= 0 && stripIdx < nStripsInBeam ) {
@@ -476,7 +493,7 @@ void SummaryAnalysis::Loop()
           inclusivePlots[XALL]->Fill(x_trk);
           inclusivePlots[NOMSTRIPALL]->Fill(nomStrip);
 
-          if ( dtime < 1.0 ) {
+          if ( tightTime ) {
             vTightTiming[INTERALL]->Fill(dxNom);
             vTightTiming[XALL]->Fill(x_trk);
             vTightTiming[NOMSTRIPALL]->Fill(nomStrip);
@@ -503,7 +520,7 @@ void SummaryAnalysis::Loop()
             inclusivePlots[NEARADC2ALL]->Fill( twonearADC );
             inclusivePlots[NEARADC4ALL]->Fill( fournearADC );
             inclusivePlots[NEARADC100ALL]->Fill( sumADC );
-            if ( dtime < 1.0 ) {
+            if ( tightTime ) {
               vTightTiming[NEARADC1ALL]->Fill( nearADC );
               vTightTiming[NEARADC2ALL]->Fill( twonearADC );
               vTightTiming[NEARADC4ALL]->Fill( fournearADC );
@@ -523,7 +540,7 @@ void SummaryAnalysis::Loop()
               inclusivePlots[NEARADC4ALL + nreghists*(ni+1)]->Fill( fournearADC );
               inclusivePlots[NEARADC100ALL + nreghists*(ni+1)]->Fill( sumADC );
             }
-            if ( dtime < 1.0 ) {
+            if ( tightTime ) {
               vTightTiming[YALL + nreghists*(ni+1)]->Fill(y_trk);
               vTightTiming[INTERALL + nreghists*(ni+1)]->Fill(dxNom);
               vTightTiming[XALL + nreghists*(ni+1)]->Fill(x_trk);
@@ -572,7 +589,7 @@ void SummaryAnalysis::Loop()
 
           inclusivePlots[CLADCALL]->Fill(charge);
           inclusivePlots[CLSNRALL]->Fill(float(charge)/seedNoise);
-          if ( dtime < 1.0 ) {
+          if ( tightTime ) {
             vTightTiming[CLADCALL]->Fill(charge);
             vTightTiming[CLSNRALL]->Fill(float(charge)/seedNoise);
           }
@@ -586,12 +603,16 @@ void SummaryAnalysis::Loop()
             if(! passFiducialCut( ri, x_trk, y_trk, dxNom, nomStrip, yMax ) ) continue;
             vRegionPlots[ri][CLADCALL]->Fill(charge);
             vRegionPlots[ri][CLSNRALL]->Fill(float(charge)/seedNoise);
+            if ( tightTime ) {
+              vRegionPlotsTightTiming[ri][CLADCALL]->Fill(charge);
+              vRegionPlotsTightTiming[ri][CLSNRALL]->Fill(float(charge)/seedNoise);
+            }
           }
             
           for( unsigned int ni=0; ni < nNoiseScale; ++ni ) {
             if(foundClusterWithScaledNoise( j, noiseScales[ni] ) ) {
               inclusivePlots[CLADCALL + nreghists*(ni+1)]->Fill(charge);
-              if ( dtime < 1.0 ) {
+              if ( tightTime ) {
                 vTightTiming[CLADCALL + nreghists*(ni+1)]->Fill(charge);
               }
             }
@@ -670,7 +691,7 @@ void SummaryAnalysis::Loop()
         }
 
         fillMatchMiss( inclusivePlots, nreghists, foundHit, foundIdx, x_trk, y_trk, inTightFiducialY, nomStrip, dxNom, allDx, nearADC,  twonearADC,  fournearADC,  sumADC);
-        if ( dtime < 1.0 ) {
+        if ( tightTime ) {
           fillMatchMiss( vTightTiming, nreghists, foundHit, foundIdx, x_trk, y_trk, inTightFiducialY, nomStrip, dxNom, allDx, nearADC,  twonearADC,  fournearADC,  sumADC);
         }
         for(unsigned int ri = 0; ri< nRegions; ++ri ) {
@@ -681,12 +702,26 @@ void SummaryAnalysis::Loop()
           vRegionPlots[ri][XALL]->Fill(x_trk);
           vRegionPlots[ri][NOMSTRIPALL]->Fill(nomStrip);
           vRegionPlots[ri][YALL]->Fill(y_trk);
+          if ( tightTime ) {
+            vRegionPlotsTightTiming[ri][INTERALL]->Fill(dxNom);
+            vRegionPlotsTightTiming[ri][XALL]->Fill(x_trk);
+            vRegionPlotsTightTiming[ri][NOMSTRIPALL]->Fill(nomStrip);
+            vRegionPlotsTightTiming[ri][YALL]->Fill(y_trk);
+          }
+
+          
           if( fCMS != 0  ) {
 
             vRegionPlots[ri][NEARADC1ALL]->Fill( nearADC );
             vRegionPlots[ri][NEARADC2ALL]->Fill( twonearADC );
             vRegionPlots[ri][NEARADC4ALL]->Fill( fournearADC );
             vRegionPlots[ri][NEARADC100ALL]->Fill( sumADC );
+            if ( tightTime ) {
+              vRegionPlotsTightTiming[ri][NEARADC1ALL]->Fill( nearADC );
+              vRegionPlotsTightTiming[ri][NEARADC2ALL]->Fill( twonearADC );
+              vRegionPlotsTightTiming[ri][NEARADC4ALL]->Fill( fournearADC );
+              vRegionPlotsTightTiming[ri][NEARADC100ALL]->Fill( sumADC );
+            }
           }
 
           //Noise variations
@@ -695,17 +730,31 @@ void SummaryAnalysis::Loop()
             vRegionPlots[ri][YALL + nreghists*(ni+1)]->Fill(y_trk);
             vRegionPlots[ri][XALL + nreghists*(ni+1)]->Fill(x_trk);
             vRegionPlots[ri][NOMSTRIPALL + nreghists*(ni+1)]->Fill(nomStrip);
+            if ( tightTime ) {
+              vRegionPlotsTightTiming[ri][INTERALL + nreghists*(ni+1)]->Fill(dxNom);
+              vRegionPlotsTightTiming[ri][YALL + nreghists*(ni+1)]->Fill(y_trk);
+              vRegionPlotsTightTiming[ri][XALL + nreghists*(ni+1)]->Fill(x_trk);
+              vRegionPlotsTightTiming[ri][NOMSTRIPALL + nreghists*(ni+1)]->Fill(nomStrip);
+            }
             if(fCMS) {
               vRegionPlots[ri][NEARADC1ALL + nreghists*(ni+1)]->Fill( nearADC );
               vRegionPlots[ri][NEARADC2ALL + nreghists*(ni+1)]->Fill( twonearADC );
               vRegionPlots[ri][NEARADC4ALL + nreghists*(ni+1)]->Fill( fournearADC );
               vRegionPlots[ri][NEARADC100ALL + nreghists*(ni+1)]->Fill( sumADC );
+              if ( tightTime ) {
+                vRegionPlotsTightTiming[ri][NEARADC1ALL + nreghists*(ni+1)]->Fill( nearADC );
+                vRegionPlotsTightTiming[ri][NEARADC2ALL + nreghists*(ni+1)]->Fill( twonearADC );
+                vRegionPlotsTightTiming[ri][NEARADC4ALL + nreghists*(ni+1)]->Fill( fournearADC );
+                vRegionPlotsTightTiming[ri][NEARADC100ALL + nreghists*(ni+1)]->Fill( sumADC );
+              }
             }
           }
 
 
           fillMatchMiss( vRegionPlots[ri], nreghists, foundHit, foundIdx, x_trk, y_trk, true, nomStrip, dxNom,  allDx, nearADC,  twonearADC,  fournearADC,  sumADC);
-
+          if ( tightTime ) {
+            fillMatchMiss( vRegionPlotsTightTiming[ri], nreghists, foundHit, foundIdx, x_trk, y_trk, true, nomStrip, dxNom,  allDx, nearADC,  twonearADC,  fournearADC,  sumADC);
+          }
 	} //loop over regions
 
 

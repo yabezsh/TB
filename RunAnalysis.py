@@ -172,18 +172,32 @@ def RunAnalysis(board,PA,DUTRun,mode,evts,mask,onlyPlots) :
                 	line_run = "python "+kepler+"/../Analysis.py -b "+board+" -r "+PA+" -t "+typeDict[board]+" -e "+str(evts)+" -m "+str(mask)+" -s "+filenameNoPathPhys+" -p "+filenameNoPathPed + " -l "+str(sector) + " -y "+str(rotation) + " -v "+str(bias)        
 
             with open('clusterRun_'+filenameNoPathPhys.split('-')[3]+'.sh','w') as text_file :
+                text_file.write('echo Starting ...\n')
                 text_file.write(line_export_path)
                 text_file.write(line_empty)
                 text_file.write(line_export_ld_library_path)
                 text_file.write(line_empty)
+                text_file.write('echo '+line_run + '\n')
                 text_file.write(line_run)
+                text_file.write(line_empty)
+                text_file.write('echo Finishing...\n')
                 text_file.closed
             
-            command = 'chmod +x clusterRun_'+filenameNoPathPhys.split('-')[3]+'.sh'
+            command = 'chmod a+x clusterRun_'+filenameNoPathPhys.split('-')[3]+'.sh'
             print '>', command
             subprocess.call(command,shell=True,cwd='.')
-            
-            command = "bsub -q 1nd clusterRun_"+filenameNoPathPhys.split('-')[3]+".sh"
+
+            with open('condor_sub_'+filenameNoPathPhys.split('-')[3]+'.txt','w') as text_file :
+                text_file.write('executable = clusterRun_'+filenameNoPathPhys.split('-')[3]+".sh\n")
+                text_file.write('arguments = ""\n')
+                text_file.write('output = log/run_'+filenameNoPathPhys.split('-')[3]+".out\n")
+                text_file.write('error = log/run_'+filenameNoPathPhys.split('-')[3]+".err\n")
+                text_file.write('log = log/run_'+filenameNoPathPhys.split('-')[3]+".log\n")
+                text_file.write('+JobFlavour = "workday"\n')
+                text_file.write('RequestCpus = 4\n')
+                text_file.write('queue\n')
+                
+            command = "condor_submit condor_sub_"+filenameNoPathPhys.split('-')[3]+".txt"
             print command
             subprocess.call(command,shell=True)
             
